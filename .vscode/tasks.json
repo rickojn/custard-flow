@@ -1,0 +1,67 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build cuda",
+            "type": "shell",
+            "command": "nvcc",
+            "args": [
+                "-g", "-G",
+                "-arch=sm_50",  // Set the architecture to compile for
+                "-o",           // Specify the output file
+                "${workspaceFolder}/debug/mm_cuda", // Output path and executable name
+                "${workspaceFolder}/src/mm.cu" // Path to the source CUDA file
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Compile CUDA program using NVCC."
+        },
+        {
+            "label": "buildc",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "-o",           // Specify the output file
+                "${workspaceFolder}/debug/mm", // Output path and executable name
+                "${workspaceFolder}/src/*.c", // Path to the source C file
+                "-lm",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Compile C program using gcc."
+        },
+        {
+            "label": "buildomp",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-fopenmp",
+                "-g",
+                "-o",           // Specify the output file
+                "${workspaceFolder}/debug/mm-omp", // Output path and executable name
+                "${workspaceFolder}/src/omp-mlp.c", // Path to the source C file
+                "-lm",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Compile OMP C program using gcc."
+        }
+
+    ]
+}
