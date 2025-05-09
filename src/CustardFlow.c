@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <immintrin.h>
 
 
 
@@ -154,8 +155,33 @@ void l1_tiled_matmul(const float * A, const float * B, float * C, size_t m, size
     }
 }
 
-void simd_matmul(const float * A, const float * B, float * C, size_t m, size_t n, size_t k, size_t m_tile){
 
+
+
+/*
+
+a1 a2
+
+
+
+c1 c2
+c3 c4
+*/
+
+
+
+void simd_kernel(const float * tile_A, const float * tile_B, float * tile_C, size_t M, size_t N, size_t K, size_t tile_m, size_t tile_n){
+    __m256 reg_array_C[6][2] = {};
+    __m256 reg_col_tile_A_1;
+    __m256 reg_col_tile_A_2;
+    __m256 reg_tile_B_element;
+
+    for (size_t idx_k = 0; idx_k < K; idx_k++){
+        reg_col_tile_A_1 = _mm256_loadu_ps(&tile_A[idx_k * N]);
+        reg_col_tile_A_2 = _mm256_loadu_ps(&tile_A[idx_k * N  + 8]);
+        
+        reg_tile_B_element = _mm256_broadcast_ss(&tile_B[0]);
+    }    
 }
 
 
