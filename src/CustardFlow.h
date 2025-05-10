@@ -15,5 +15,6 @@ void tiled_matmul(const float *A, const float *B, float *C, size_t rows, size_t 
 void l1_tiled_matmul(const float *A, const float *B, float *C, size_t rows, size_t cols, size_t inner_dim, size_t tile_size, size_t inner_tile_size);
 void initialise_large_matrices(float *A, float *B, float *C);
 void check_result(const float *ref_C, const float *C, size_t rows, size_t cols);
+void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, size_t K);
 
 #endif // CUSTARD_FLOW_H

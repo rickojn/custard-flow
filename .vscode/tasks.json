@@ -31,6 +31,8 @@
                 "${workspaceFolder}/debug/mm", // Output path and executable name
                 "${workspaceFolder}/src/*.c", // Path to the source C file
                 "-lm",
+                "-march=native",
+                "-mfma"
             ],
             "group": {
                 "kind": "build",

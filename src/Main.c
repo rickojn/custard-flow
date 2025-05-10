@@ -3,16 +3,19 @@
 #include <time.h>
 #include  "CustardFlow.h"
 
-#define M 12000
-#define N 256
-#define K 784
+#define M 1024
+#define N 1024
+#define K 1024
 #define TILE 128
 #define INNER_TILE 32
 #define NAIVE 1
 #define OUTER 0
-#define TILED 1
 #define L1 0
+#define TILED 0
+#define SIMD 1
 #define ONLY_LARGE 0
+#define  SIMD_M 16
+#define SIMD_N 6
 
 
 
@@ -200,6 +203,19 @@ int main() {
         end = clock();
         time_spent = (double)(end - start) / CLOCKS_PER_SEC;
         printf("Time spent on l1 matmul: %f seconds\n", time_spent);
+        if (NAIVE){
+            check_result(ref_C, LC, 1024, 1024);
+        }
+    }
+
+    if (SIMD){
+        printf("executing simd matmul now with tile %d and inner tile %d ...\n", TILE, INNER_TILE);
+        initialise_large_matrices(LA, LB, LC);
+        start = clock();
+        simd_matmul(LA, LB, LC, M, N, K);
+        end = clock();
+        time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+        printf("Time spent on simd matmul: %f seconds\n", time_spent);
         if (NAIVE){
             check_result(ref_C, LC, 1024, 1024);
         }
