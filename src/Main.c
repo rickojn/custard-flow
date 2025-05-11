@@ -13,7 +13,7 @@
 #define L1 0
 #define TILED 0
 #define SIMD 1
-#define ONLY_LARGE 0
+#define ONLY_LARGE 1
 #define  SIMD_M 16
 #define SIMD_N 6
 
@@ -39,6 +39,20 @@ void check_result(const float * ref_result, const float * result, size_t m, size
             printf("this does not aggree with naive matmul\n");
             printf("ref_result[%zu] = %f  result[%zu] = %f\n", idx, ref_result[idx], idx, result[idx]);
             return;
+        }
+    }
+}
+
+
+void transpose_matrix(const float *A, float *TA, size_t rows, size_t cols){
+    for (size_t i = 0; i < rows; i++){
+        for (size_t j = 0; j < cols; j++){
+            if (i == 10 && j == 20){
+                printf("to be transposed A[10][20]:%f\n", A[i * cols + j]); // row major
+            }
+
+            // TA[j][i] = A[i][j];
+            TA[j * cols + i] = A[i * cols + j];
         }
     }
 }
@@ -154,6 +168,9 @@ int main() {
     float * LA = malloc(M * K * sizeof(float));
     float * LB = malloc(K * N * sizeof(float));
     float * LC = malloc(M * N * sizeof(float));
+    float * TLA = malloc(K * M * sizeof(float));
+    float * TLB = malloc(N * K * sizeof(float));
+    float * TLC = malloc(M * N * sizeof(float));
     initialise_large_matrices(LA, LB, LC);
     float * ref_C = calloc(M * N, sizeof(float));
     clock_t start, end;
@@ -162,6 +179,8 @@ int main() {
     if (NAIVE)
     {
         printf("Naive .. \n");
+        printf("LA[10][20]:%f\n", LA[10 * K + 20]); //row major
+        printf("LB[10][20]:%f\n", LB[10 + K * 20]); //column major
         start = clock();
         naive_matmul(LA, LB, ref_C, M, N, K, K, K, N);
         end = clock();
@@ -209,15 +228,22 @@ int main() {
     }
 
     if (SIMD){
-        printf("executing simd matmul now with tile %d and inner tile %d ...\n", TILE, INNER_TILE);
+        printf("executing simd matmul now ...\n");
         initialise_large_matrices(LA, LB, LC);
+        printf("LA[10][20]:%f\n", LA[10 * K + 20]); //row major
+        printf("LB[10][20]:%f\n", LB[10 + K * 20]); //column major
+        transpose_matrix(LA, TLA, M, K);
+        transpose_matrix(LB, TLB, K, N);        
+        printf("TLA[10][20]:%f\n", TLA[20 * M + 10]); // column major
+        printf("TLB[10][20]:%f\n", TLB[10 * K + 20]); // row major
         start = clock();
-        simd_matmul(LA, LB, LC, M, N, K);
+        simd_matmul(TLA, TLB, LC, M, N, K);
         end = clock();
         time_spent = (double)(end - start) / CLOCKS_PER_SEC;
         printf("Time spent on simd matmul: %f seconds\n", time_spent);
+        transpose_matrix(LC, TLC, M, N);
         if (NAIVE){
-            check_result(ref_C, LC, 1024, 1024);
+            check_result(ref_C, LC, M, N);
         }
     }
 
@@ -238,21 +264,6 @@ int main() {
 /*
 perf stat -e L1-dcache-loads,L1-dcache-load-misses,l2_rqsts.references,l2_rqsts.miss ./main
 
-matmul
-executing l1 matmul now with tile 128 and inner tile 32 ...
-Time spent on l1 matmul: 4.677510 seconds
-
- Performance counter stats for './main':
-
-       21718147654      L1-dcache-loads:u
-          18910847      L1-dcache-load-misses:u   #    0.09% of all L1-dcache accesses
-          36205262      l2_rqsts.references:u
-          14787220      l2_rqsts.miss:u
-
-       4.815381895 seconds time elapsed
-
-       4.805314000 seconds user
-       0.009990000 seconds sys
 
 
 */

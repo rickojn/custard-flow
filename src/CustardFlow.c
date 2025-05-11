@@ -239,7 +239,7 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
     {
         for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
         {
-            simd_kernel(&A[idx_m * M], &B[idx_n], &C[idx_m * N + idx_n], M, N, K, tile_m, tile_n);
+            simd_kernel(&A[idx_m], &B[idx_n], &C[idx_m * N + idx_n], M, N, K, tile_m, tile_n);
         }
     }
 }
