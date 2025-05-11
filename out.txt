@@ -1,0 +1,16 @@
+matmul
+Naive .. 
+LA[10][20]:1.000000
+LB[10][20]:1.000000
+Time spent on matmul: 4.020843 seconds
+executing simd matmul now ...
+LA[10][20]:1.000000
+LB[10][20]:1.000000
+to be transposed A[10][20]:1.000000
+to be transposed A[10][20]:1.000000
+TLA[10][20]:1.000000
+TLB[10][20]:1.000000
+Time spent on simd matmul: 0.484226 seconds
+to be transposed A[10][20]:0.000000
+this does not aggree with naive matmul
+ref_result[1098] = 1008.000000  result[1098] = 0.000000

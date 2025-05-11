@@ -3,9 +3,9 @@
 #include <time.h>
 #include  "CustardFlow.h"
 
-#define M 1024
-#define N 1024
-#define K 1024
+#define M 1008
+#define N 1008
+#define K 1008
 #define TILE 128
 #define INNER_TILE 32
 #define NAIVE 1
@@ -23,9 +23,11 @@ void initialise_large_matrices(float *A_large, float * B_large, float * C_large)
     srand(42);
     for (size_t i = 0; i < M * K; i++){
         A_large[i] = rand() % 100;
+        A_large[i] = 1.0;
     }
     for (size_t i = 0; i < K * N; i++){
         B_large[i] = rand() % 100;
+        B_large[i] = 1.0;
     }
     for (size_t i = 0; i < M * N; i++){
         C_large[i] = 0.0f;
