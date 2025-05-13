@@ -191,6 +191,8 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * tile_C, siz
     __m256 reg_tile_B_element;
 
     for (size_t idx_k = 0; idx_k < K; idx_k++){
+        int db_1 = idx_k * M;
+        float db_2 = tile_A[db_1];
         reg_col_tile_A_1 = _mm256_loadu_ps(&tile_A[idx_k * M]);
         reg_col_tile_A_2 = _mm256_loadu_ps(&tile_A[idx_k * M  + 8]);
         
@@ -239,7 +241,7 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
     {
         for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
         {
-            simd_kernel(&A[idx_m], &B[idx_n], &C[idx_m * N + idx_n], M, N, K, tile_m, tile_n);
+            simd_kernel(&A[idx_m], &B[idx_n], &C[idx_n * M + idx_m], M, N, K, tile_m, tile_n);
         }
     }
 }

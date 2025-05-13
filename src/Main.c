@@ -3,9 +3,9 @@
 #include <time.h>
 #include  "CustardFlow.h"
 
-#define M 1008
-#define N 1008
-#define K 1008
+#define M 48
+#define N 48
+#define K 48
 #define TILE 128
 #define INNER_TILE 32
 #define NAIVE 1
@@ -40,6 +40,13 @@ void check_result(const float * ref_result, const float * result, size_t m, size
         if (ref_result[idx] != result[idx]){
             printf("this does not aggree with naive matmul\n");
             printf("ref_result[%zu] = %f  result[%zu] = %f\n", idx, ref_result[idx], idx, result[idx]);
+            printf("all results:\n");
+            for (size_t i = 0; i < m; i++){
+                for (size_t j = 0; j < n; j++){
+                    printf("%f\t", result[i * n + j]);
+                }
+                printf("\n");
+            }
             return;
         }
     }
@@ -54,7 +61,7 @@ void transpose_matrix(const float *A, float *TA, size_t rows, size_t cols){
             }
 
             // TA[j][i] = A[i][j];
-            TA[j * cols + i] = A[i * cols + j];
+            TA[j * rows + i] = A[i * cols + j];
         }
     }
 }
@@ -232,12 +239,8 @@ int main() {
     if (SIMD){
         printf("executing simd matmul now ...\n");
         initialise_large_matrices(LA, LB, LC);
-        printf("LA[10][20]:%f\n", LA[10 * K + 20]); //row major
-        printf("LB[10][20]:%f\n", LB[10 + K * 20]); //column major
         transpose_matrix(LA, TLA, M, K);
         transpose_matrix(LB, TLB, K, N);        
-        printf("TLA[10][20]:%f\n", TLA[20 * M + 10]); // column major
-        printf("TLB[10][20]:%f\n", TLB[10 * K + 20]); // row major
         start = clock();
         simd_matmul(TLA, TLB, LC, M, N, K);
         end = clock();
@@ -245,7 +248,7 @@ int main() {
         printf("Time spent on simd matmul: %f seconds\n", time_spent);
         transpose_matrix(LC, TLC, M, N);
         if (NAIVE){
-            check_result(ref_C, LC, M, N);
+            check_result(ref_C, TLC, M, N);
         }
     }
 
