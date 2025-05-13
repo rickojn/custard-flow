@@ -230,18 +230,20 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * tile_C, siz
         _mm256_storeu_ps(&tile_C[idx * tile_m], reg_array_C[idx][0]);
         _mm256_storeu_ps(&tile_C[idx * tile_m + 8], reg_array_C[idx][1]);
     }
-
 }
 
 void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, size_t K)
 {
     const size_t tile_m = 16;
     const size_t tile_n = 6;
+    size_t offset_C = 0;
     for (size_t idx_m = 0; idx_m < M; idx_m += tile_m)
     {
         for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
         {
-            simd_kernel(&A[idx_m], &B[idx_n], &C[idx_n * M + idx_m], M, N, K, tile_m, tile_n);
+            int db_c_offset = offset_C;
+            simd_kernel(&A[idx_m], &B[idx_n], &C[offset_C], M, N, K, tile_m, tile_n);
+            offset_C += tile_m * tile_n;
         }
     }
 }

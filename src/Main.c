@@ -5,7 +5,7 @@
 
 #define M 48
 #define N 48
-#define K 48
+#define K 3
 #define TILE 128
 #define INNER_TILE 32
 #define NAIVE 1
@@ -30,23 +30,17 @@ void initialise_large_matrices(float *A_large, float * B_large, float * C_large)
         B_large[i] = 1.0;
     }
     for (size_t i = 0; i < M * N; i++){
-        C_large[i] = 0.0f;
+        C_large[i] = 6.0f;
     }
 
 }
 
 void check_result(const float * ref_result, const float * result, size_t m, size_t n){
+
     for (size_t idx = 0; idx < m * n; idx++){
         if (ref_result[idx] != result[idx]){
             printf("this does not aggree with naive matmul\n");
             printf("ref_result[%zu] = %f  result[%zu] = %f\n", idx, ref_result[idx], idx, result[idx]);
-            printf("all results:\n");
-            for (size_t i = 0; i < m; i++){
-                for (size_t j = 0; j < n; j++){
-                    printf("%f\t", result[i * n + j]);
-                }
-                printf("\n");
-            }
             return;
         }
     }
