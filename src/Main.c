@@ -3,9 +3,9 @@
 #include <time.h>
 #include  "CustardFlow.h"
 
-#define M 48
-#define N 48
-#define K 3
+#define M 1056
+#define N 768
+#define K 1056
 #define TILE 128
 #define INNER_TILE 32
 #define NAIVE 1
@@ -23,14 +23,14 @@ void initialise_large_matrices(float *A_large, float * B_large, float * C_large)
     srand(42);
     for (size_t i = 0; i < M * K; i++){
         A_large[i] = rand() % 100;
-        A_large[i] = 1.0;
+        // A_large[i] = 1.0;
     }
     for (size_t i = 0; i < K * N; i++){
         B_large[i] = rand() % 100;
-        B_large[i] = 1.0;
+        // B_large[i] = 1.0;
     }
     for (size_t i = 0; i < M * N; i++){
-        C_large[i] = 6.0f;
+        // C_large[i] = 6.0f;
     }
 
 }
@@ -44,6 +44,7 @@ void check_result(const float * ref_result, const float * result, size_t m, size
             return;
         }
     }
+    printf("this agrees with naive matmul\n");
 }
 
 
