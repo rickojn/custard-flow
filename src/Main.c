@@ -3,9 +3,9 @@
 #include <time.h>
 #include  "CustardFlow.h"
 
-#define M 1056
-#define N 768
-#define K 1056
+#define M 16
+#define N 6
+#define K 3
 #define TILE 128
 #define INNER_TILE 32
 #define NAIVE 1
@@ -30,7 +30,7 @@ void initialise_large_matrices(float *A_large, float * B_large, float * C_large)
         // B_large[i] = 1.0;
     }
     for (size_t i = 0; i < M * N; i++){
-        // C_large[i] = 6.0f;
+        C_large[i] = 0.0f;
     }
 
 }
@@ -61,6 +61,25 @@ void transpose_matrix(const float *A, float *TA, size_t rows, size_t cols){
     }
 }
 
+void print_row_major_matrix(const float *A, size_t rows, size_t cols){
+    for (size_t i = 0; i < rows; i++){
+        printf("\n");
+        for (size_t j = 0; j < cols; j++){
+            printf("%f\t", A[i * cols + j]);
+        }
+        printf("\n");
+    }
+}
+
+void print_column_major_matrix(const float *A, size_t rows, size_t cols){
+    for (size_t i = 0; i < rows; i++){
+        printf("\n");
+        for (size_t j = 0; j < cols; j++){
+            printf("%f\t", A[j * rows + i]);
+        }
+        printf("\n");
+    }
+}
 
 
 
@@ -183,10 +202,14 @@ int main() {
     if (NAIVE)
     {
         printf("Naive .. \n");
-        printf("LA[10][20]:%f\n", LA[10 * K + 20]); //row major
-        printf("LB[10][20]:%f\n", LB[10 + K * 20]); //column major
         start = clock();
         naive_matmul(LA, LB, ref_C, M, N, K, K, K, N);
+        printf("LA:\n");
+        print_row_major_matrix(LA, M, K);
+        printf("LB:\n");
+        print_row_major_matrix(LB, K, N);
+        printf("ref_C:\n");
+        print_row_major_matrix(ref_C, M, N);
         end = clock();
         time_spent = (double)(end - start) / CLOCKS_PER_SEC;
         printf("Time spent on matmul: %f seconds\n", time_spent);
@@ -238,6 +261,12 @@ int main() {
         transpose_matrix(LB, TLB, K, N);        
         start = clock();
         simd_matmul(TLA, TLB, LC, M, N, K);
+        printf("TLA:\n");
+        print_row_major_matrix(TLA, K, M);
+        printf("TLB:\n");
+        print_column_major_matrix(TLB, N, K);
+        printf("LC:\n");
+        print_row_major_matrix(LC, M, N);
         end = clock();
         time_spent = (double)(end - start) / CLOCKS_PER_SEC;
         printf("Time spent on simd matmul: %f seconds\n", time_spent);

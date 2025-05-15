@@ -6,12 +6,19 @@
 
 
 
-void naive_matmul(const float* A, const float *B, float * C, size_t m, size_t n, size_t k, size_t lead_dim_a, size_t lead_dim_b, size_t lead_dim_c){
+void naive_matmul(const float* A, const float *B, float * C, size_t m, size_t n, size_t k){
+    // A is m x k col major
+    // B is k x n row major
+    // C is m x n row major
     for (size_t idx_m = 0; idx_m < m; idx_m++ ){
         for (size_t idx_n = 0; idx_n < n; idx_n++){
             for (size_t idx_k = 0; idx_k < k; idx_k++){            
-                // C[m][n] = A[m][k] * B[k][n]
-                C[idx_m * lead_dim_c + idx_n] += A[idx_m * lead_dim_a + idx_k] * B[idx_n * lead_dim_b + idx_k]; 
+                // C[idx_m][idx_n] = A[idx_m][idx_k] * B[idx_k][idx_n]
+                C[idx_m * n + idx_n] += A[idx_k * m + idx_m] * B[idx_k * n + idx_n];
+                float db_1 = A[idx_k * m + idx_m];
+                float db_2 = B[idx_k * n + idx_n];
+                float db_3 = C[idx_m * n + idx_n];
+                int db_rando = idx_k;
             }
         }
     }
