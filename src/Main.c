@@ -207,7 +207,7 @@ int main() {
         printf("LA:\n");
         print_row_major_matrix(LA, M, K);
         printf("LB:\n");
-        print_row_major_matrix(LB, K, N);
+        print_column_major_matrix(LB, K, N);
         printf("ref_C:\n");
         print_row_major_matrix(ref_C, M, N);
         end = clock();

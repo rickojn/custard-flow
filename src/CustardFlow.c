@@ -7,16 +7,16 @@
 
 
 void naive_matmul(const float* A, const float *B, float * C, size_t m, size_t n, size_t k){
-    // A is m x k col major
-    // B is k x n row major
+    // A is m x k row major
+    // B is k x n col major
     // C is m x n row major
     for (size_t idx_m = 0; idx_m < m; idx_m++ ){
         for (size_t idx_n = 0; idx_n < n; idx_n++){
             for (size_t idx_k = 0; idx_k < k; idx_k++){            
                 // C[idx_m][idx_n] = A[idx_m][idx_k] * B[idx_k][idx_n]
-                C[idx_m * n + idx_n] += A[idx_k * m + idx_m] * B[idx_k * n + idx_n];
-                float db_1 = A[idx_k * m + idx_m];
-                float db_2 = B[idx_k * n + idx_n];
+                C[idx_m * n + idx_n] += A[idx_m * k + idx_k] * B[idx_k + idx_n * k];
+                float db_1 = A[idx_m * k + idx_k];
+                float db_2 = B[idx_k + idx_n * k];
                 float db_3 = C[idx_m * n + idx_n];
                 int db_rando = idx_k;
             }
