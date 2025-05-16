@@ -48,15 +48,14 @@ void check_result(const float * ref_result, const float * result, size_t m, size
 }
 
 
-void transpose_matrix(const float *A, float *TA, size_t rows, size_t cols){
-    for (size_t i = 0; i < rows; i++){
-        for (size_t j = 0; j < cols; j++){
-            if (i == 10 && j == 20){
-                printf("to be transposed A[10][20]:%f\n", A[i * cols + j]); // row major
-            }
-
-            // TA[j][i] = A[i][j];
-            TA[j * rows + i] = A[i * cols + j];
+void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t num_rows, size_t num_cols){
+    for (size_t i = 0; i < num_rows; i++){
+        for (size_t j = 0; j < num_cols; j++){            
+            int offset_dest = i * num_cols + j; //[i][j] row major
+            int offset_source = j * num_rows + i; //[i][j] col major
+            dest_matrix[offset_dest] = src_matrix[offset_source];
+            int db_copied_value = dest_matrix[offset_dest];
+            int db = 0;
         }
     }
 }
@@ -81,7 +80,15 @@ void print_column_major_matrix(const float *A, size_t rows, size_t cols){
     }
 }
 
+int maint(){
+    float cm [6] = {1,4,2,5,3,6}; // column major
+    float rm [6] = {};
+    
+    transpose_matrix(&cm[0],&rm[0], 2, 3);
 
+    print_column_major_matrix(&cm[0],2,3);
+    print_row_major_matrix(&rm[0],2,3);
+}
 
 int main() {
     printf("matmul\n");
@@ -256,15 +263,15 @@ int main() {
 
     if (SIMD){
         printf("executing simd matmul now ...\n");
-        initialise_large_matrices(LA, LB, LC);
+        //initialise_large_matrices(LA, LB, LC);
         transpose_matrix(LA, TLA, M, K);
         transpose_matrix(LB, TLB, K, N);        
         start = clock();
         simd_matmul(TLA, TLB, LC, M, N, K);
-        printf("TLA:\n");
-        print_row_major_matrix(TLA, K, M);
+        printf("LB:\n");
+        print_column_major_matrix(LB, K, N);
         printf("TLB:\n");
-        print_column_major_matrix(TLB, N, K);
+        print_row_major_matrix(TLB, K, N);
         printf("LC:\n");
         print_row_major_matrix(LC, M, N);
         end = clock();
