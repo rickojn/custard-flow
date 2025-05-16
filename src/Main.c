@@ -3,9 +3,9 @@
 #include <time.h>
 #include  "CustardFlow.h"
 
-#define M 16
-#define N 6
-#define K 3
+#define M 12000
+#define N 288
+#define K 784
 #define TILE 128
 #define INNER_TILE 32
 #define NAIVE 1
@@ -224,12 +224,6 @@ int main() {
         printf("Naive .. \n");
         start = clock();
         naive_matmul(LA, LB, ref_C, M, N, K, K, K, N);
-        printf("LA:\n");
-        print_row_major_matrix(LA, M, K);
-        printf("LB:\n");
-        print_column_major_matrix(LB, K, N);
-        printf("ref_C:\n");
-        print_row_major_matrix(ref_C, M, N);
         end = clock();
         time_spent = (double)(end - start) / CLOCKS_PER_SEC;
         printf("Time spent on matmul: %f seconds\n", time_spent);
@@ -281,12 +275,6 @@ int main() {
         col_to_row_major(LB, TLB, K, N);        
         start = clock();
         simd_matmul(TLA, TLB, LC, M, N, K);
-        printf("TLA:\n");
-        print_column_major_matrix(TLA, M, K);
-        printf("TLB:\n");
-        print_row_major_matrix(TLB, K, N);
-        printf("LC:\n");
-        print_row_major_matrix(LC, M, N);
         end = clock();
         time_spent = (double)(end - start) / CLOCKS_PER_SEC;
         printf("Time spent on simd matmul: %f seconds\n", time_spent);
