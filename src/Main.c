@@ -14,8 +14,8 @@
 #define TILED 0
 #define SIMD 1
 #define ONLY_LARGE 1
-#define  SIMD_M 16
-#define SIMD_N 6
+#define  SIMD_M 8
+#define SIMD_N 8
 
 
 
