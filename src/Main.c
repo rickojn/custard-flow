@@ -39,12 +39,12 @@ void check_result(const float * ref_result, const float * result, size_t m, size
 
     for (size_t idx = 0; idx < m * n; idx++){
         if (ref_result[idx] != result[idx]){
-            printf("this does not aggree with naive matmul\n");
+            printf("result does not aggree with naive matmul\n");
             printf("ref_result[%zu] = %f  result[%zu] = %f\n", idx, ref_result[idx], idx, result[idx]);
             return;
         }
     }
-    printf("this agrees with naive matmul\n");
+    printf("result agrees with naive matmul\n");
 }
 
 

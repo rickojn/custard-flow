@@ -250,7 +250,6 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
         {
             offset_C= idx_m + idx_n * M;
             simd_kernel(&A[idx_m], &B[idx_n], &C[offset_C], M, N, K, tile_m, tile_n);
-            // offset_C += tile_m * tile_n;
         }
     }
 }
