@@ -191,7 +191,7 @@ ab ab    ab ab   ab ab    ab ab
 
 
 
-void simd_kernel(const float * tile_A, const float * tile_B, float * tile_C, size_t M, size_t N, size_t K, size_t tile_m, size_t tile_n){
+void simd_kernel(const float * tile_A, const float * tile_B, float * C, size_t M, size_t N, size_t K, size_t tile_m, size_t tile_n, size_t offset_tile_C){
     __m256 reg_array_C[8][1] = {};
     __m256 reg_col_tile_A_1;
     __m256 reg_tile_B_element;
@@ -234,8 +234,8 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * tile_C, siz
         reg_array_C[7][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[7][0]);
     }   
 
-    for (size_t idx = 0; idx < 8; idx++){
-        _mm256_storeu_ps(&tile_C[idx * M], reg_array_C[idx][0]);
+    for (size_t idx_col = 0; idx_col * M + offset_tile_C < M * N && idx_col < 8; idx_col++){
+        _mm256_storeu_ps(&C[idx_col * M + offset_tile_C], reg_array_C[idx_col][0]);
     }
 }
 
@@ -249,7 +249,7 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
         for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
         {
             offset_C= idx_m + idx_n * M;
-            simd_kernel(&A[idx_m], &B[idx_n], &C[offset_C], M, N, K, tile_m, tile_n);
+            simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C);
         }
     }
 }

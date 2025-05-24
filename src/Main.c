@@ -4,7 +4,7 @@
 #include  "CustardFlow.h"
 
 #define M 10000
-#define N 16
+#define N 10
 #define K 288
 #define TILE 128
 #define INNER_TILE 32
