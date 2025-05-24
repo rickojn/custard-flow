@@ -3,9 +3,9 @@
 #include <time.h>
 #include  "CustardFlow.h"
 
-#define M 12000
-#define N 288
-#define K 784
+#define M 10000
+#define N 16
+#define K 288
 #define TILE 128
 #define INNER_TILE 32
 #define NAIVE 1
@@ -292,6 +292,11 @@ int main() {
     free(LA);
     free(LB);
     free(LC);
+    free(TLA);
+    free(TLB);
+    free(TLC);
+    free(ref_C);
+    return 0;
 
 }
 

@@ -1,6 +1,6 @@
 matmul
 Naive .. 
-Time spent on matmul: 17.091459 seconds
+Time spent on matmul: 0.248107 seconds
 executing simd matmul now ...
-Time spent on simd matmul: 1.413875 seconds
+Time spent on simd matmul: 0.022070 seconds
 result agrees with naive matmul
