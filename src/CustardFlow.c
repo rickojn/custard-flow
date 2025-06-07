@@ -257,10 +257,6 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
 
      /*
      C = A * B
-     dC/dB = A^T
-     dC/dA = B^T
-     dL/dB = dL/dC * dC/dB = dL/dC * A^T
-     dL/dA = dL/dC * dC/dA = dL/dC * B^T
      grads_C is dL/dC
      grads_B is dL/dB
      grads_A is dL/dA 
@@ -268,13 +264,7 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
      A is M x K 
      B is K x N 
      C is M x N 
-
-     A^T is K x M 
-     B^T is N x K 
      
-     grads_A is K x M
-     grads_B is N x K
-     grads_C is M x N
      
      K: input dimension
      M: batch size
@@ -285,13 +275,28 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
 
 
 void matmul_backwards(const float * grads_C, const float * B, const float * A, float * grads_B, float * grads_A, size_t M, size_t N, size_t K){
-
     for (size_t idx_m = 0; idx_m < M; idx_m++){
         for (size_t idx_n = 0; idx_n < N; idx_n++){
             for (size_t idx_k = 0; idx_k < K; idx_k++){
-                // grads_B[[idx_k][idx_n]] += grads_C[idx_m][idx_n] * A[idx_m][idx_k]
-                grads_B[idx_k * N + idx_n] += grads_C[idx_m * N + idx_n] * A[idx_m * K + idx_k];
-                grads_A[idx_m * K + idx_k] += grads_C[idx_m * N + idx_n] * B[idx_n * K + idx_k];
+                // grads_B[idx_k][idx_n] += grads_A[idx_m][idx_k] * grads_C[idx_m][idx_n];
+                grads_B[idx_k + idx_n * K] += A[idx_m * K + idx_k] * grads_C[idx_m * N + idx_n];
+            }
+        }
+    }
+
+
+    for (size_t idx_k = 0; idx_k < K; idx_k++){
+        for (size_t idx_n = 0; idx_n < N; idx_n++){
+            // grads_B[idx_k][idx_n] /= M; // average over batch size
+            grads_B[idx_k + idx_n * K] /= M;
+        }
+    }
+    
+    for (size_t idx_m = 0; idx_m < M; idx_m++){
+        for (size_t idx_k = 0; idx_k < K; idx_k++){
+            for (size_t idx_n = 0; idx_n < N; idx_n++){
+                // grads_A[idx_m][idx_k] += grads_C[idx_m][idx_n] * B[idx_k][idx_n];
+                grads_A[idx_m * K + idx_k] += grads_C[idx_m * N + idx_n] * B[idx_k + idx_n * K];
             }
         }
     }

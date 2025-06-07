@@ -226,7 +226,22 @@ int main() {
         naive_matmul(LA, LB, ref_C, M, N, K, K, K, N);
         end = clock();
         time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-        printf("Time spent on matmul: %f seconds\n", time_spent);
+        printf("Time spent on matmul: %f seconds\n", time_spent);        
+
+        float * grads_A = calloc(M * K, sizeof(float));
+        float * grads_B = calloc(K * N, sizeof(float));
+        float * grads_C = malloc(M * N * sizeof(float));
+        for (size_t i = 0; i < M * N; i++){
+            grads_C[i] = (float)rand() / (float)RAND_MAX;
+            if (i % 2 == 0){
+                grads_C[i] = grads_C[i] - 1;
+            }
+        }
+        start = clock();
+        matmul_backwards(grads_C, LB, LA, grads_B, grads_A, M, N, K);
+        end = clock();
+        time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+        printf("Time spent on matmul back: %f seconds\n", time_spent);        
     }
 
     if (TILED){
