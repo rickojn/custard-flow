@@ -22,7 +22,7 @@
 *.elf
 
 # Test binaries and output
-/test*
+# /test*
 /build/
 /bin/
 /dist/
