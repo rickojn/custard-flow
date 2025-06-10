@@ -1,9 +1,13 @@
 #include <gtest/gtest.h>
+#include "CustardFlow.h"
+// This is a simple test case for the CustardFlow library using Google Test.
 
-// Demonstrate some basic assertions.
-TEST(HelloTest, BasicAssertions) {
-  // Expect two strings not to be equal.
-  EXPECT_STRNE("hello", "world");
-  // Expect equality.
-  EXPECT_EQ(7 * 6, 42);
+TEST(MinTest, BasicFunctionality) {
+  // Test the min function.
+  EXPECT_EQ(min(3, 5), 3);
+  EXPECT_EQ(min(10, -2), -2);
+  EXPECT_EQ(min(0, 0), 0);
 }
+
+
+

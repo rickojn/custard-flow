@@ -5,6 +5,9 @@
 
 
 
+int min(int a, int b){
+    return a < b ? a : b;
+}
 
 void naive_matmul(const float* A, const float *B, float * C, size_t m, size_t n, size_t k){
     // A is m x k row major
