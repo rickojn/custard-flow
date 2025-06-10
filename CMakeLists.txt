@@ -14,6 +14,12 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+# Build the CustardFlow library
+add_library(custard-flow
+    src/CustardFlow.c
+)
+target_include_directories(custard-flow PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
 enable_testing()
 
 add_executable(
@@ -23,7 +29,15 @@ add_executable(
 target_link_libraries(
   hello_test
   GTest::gtest_main
+  custard-flow
 )
+
+# Enable intrinsics (SSE/AVX) if needed
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(custard-flow PRIVATE -march=native)
+elseif(MSVC)
+    target_compile_options(custard-flow PRIVATE /arch:AVX)
+endif()
 
 include(GoogleTest)
 gtest_discover_tests(hello_test)
