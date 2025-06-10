@@ -1,0 +1,69 @@
+# Compiled object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+*.elf
+
+# Test binaries and output
+/test*
+/build/
+/bin/
+/dist/
+/Debug/
+/Release/
+
+# GTest generated files
+gtest_*
+
+# CMake files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+install_manifest.txt
+
+# IDE files
+*.user
+*.suo
+*.userprefs
+*.vcxproj*
+*.idea/
+
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*~
+
+# Core dumps
+core
+core.*
+
+# Coverage and profiling
+*.gcda
+*.gcno
+*.gcov
+*.profraw
+*.profdata
+
+# Other
+.DS_Store
+Thumbs.db
