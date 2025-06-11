@@ -23,11 +23,11 @@ target_include_directories(custard-flow PUBLIC ${CMAKE_SOURCE_DIR}/include)
 enable_testing()
 
 add_executable(
-  hello_test
-  test/hello_test.cc
+  cf_test
+  test/cf_test.cc
 )
 target_link_libraries(
-  hello_test
+  cf_test
   GTest::gtest_main
   custard-flow
 )
@@ -40,4 +40,4 @@ elseif(MSVC)
 endif()
 
 include(GoogleTest)
-gtest_discover_tests(hello_test)
+gtest_discover_tests(cf_test)
