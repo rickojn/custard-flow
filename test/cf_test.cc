@@ -19,6 +19,8 @@ TEST(MatmulNaiveTest, BasicFunctionality) {
     B [1,4
        2,5
        3,6]
+   C  [14, 32
+       32, 77]
     */
     float A[] = {1, 2, 3, 4, 5, 6};
     float B[] = {1, 2, 3, 4, 5, 6};
@@ -28,4 +30,7 @@ TEST(MatmulNaiveTest, BasicFunctionality) {
 
     // Expected result for C is {22, 28, 34}
     EXPECT_FLOAT_EQ(C[0], 14);
+    EXPECT_FLOAT_EQ(C[1], 32);
+    EXPECT_FLOAT_EQ(C[2], 32);
+    EXPECT_FLOAT_EQ(C[3], 77);
 }
