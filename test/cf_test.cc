@@ -41,20 +41,28 @@ TEST(MatmulNaiveTest, BasicFunctionality) {
     B [1,4
        2,5              3 x 2
        3,6]
+grdsC [10,20,
+       30,40]       2 x 2
+
+
    C  [14, 32
        32, 77]
 
    Bt [1,2,3,
        4,5,6]
 
-c11 = a11*b11 + a12*b21 + 
+c11 = a11*b11 + a12*b21 + a13*b31
+c12 = a11*b12 + a12*b22 + a13*b32
+c21 = a21*b11 + a22*b21 + a23*b31
+c22 = a21*b12 + a22*b22 + a23*b32
 
-grads_C [10,20,
-         30,40]       2 x 2
 
 grads_A [90,120,150,
          190,260,330]
-	 
+
+grads_B [65, 90,
+         85, 120
+         105, 150]
 */
 
 TEST(MatmulBackwardsTest, BasicFunctionality) {
@@ -72,6 +80,13 @@ TEST(MatmulBackwardsTest, BasicFunctionality) {
     EXPECT_FLOAT_EQ(grads_A[3], 190);
     EXPECT_FLOAT_EQ(grads_A[4], 260);
     EXPECT_FLOAT_EQ(grads_A[5], 330);
+
+    EXPECT_FLOAT_EQ(grads_B[0], 65);
+    EXPECT_FLOAT_EQ(grads_B[1], 85);
+    EXPECT_FLOAT_EQ(grads_B[2], 105);
+    EXPECT_FLOAT_EQ(grads_B[3], 90);
+    EXPECT_FLOAT_EQ(grads_B[4], 120);
+    EXPECT_FLOAT_EQ(grads_B[5], 150);
 }
 
 

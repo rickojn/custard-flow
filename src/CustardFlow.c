@@ -281,7 +281,7 @@ void matmul_backwards(const float * grads_C, const float * B, const float * A, f
     for (size_t idx_m = 0; idx_m < M; idx_m++){
         for (size_t idx_n = 0; idx_n < N; idx_n++){
             for (size_t idx_k = 0; idx_k < K; idx_k++){
-                // grads_B[idx_k][idx_n] += grads_A[idx_m][idx_k] * grads_C[idx_m][idx_n];
+                // grads_B[idx_k][idx_n] += A[idx_m][idx_k] * grads_C[idx_m][idx_n];
                 grads_B[idx_k + idx_n * K] += A[idx_m * K + idx_k] * grads_C[idx_m * N + idx_n];
             }
         }
