@@ -5,7 +5,7 @@
       "name": "Debug hello_test",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/hello_test",
+      "program": "${workspaceFolder}/build/cf_test",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",

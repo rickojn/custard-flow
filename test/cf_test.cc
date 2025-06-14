@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <torch/torch.h>
 #include "CustardFlow.h"
+#include <stdlib.h>
 // This is a simple test case for the CustardFlow library using Google Test.
 
 TEST(MinTest, BasicFunctionality) {
@@ -92,14 +93,17 @@ TEST(MatmulBackwardsTest, BasicFunctionality) {
 
 TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
     // Create random matrices using LibTorch
-    torch::manual_seed(41); // For reproducibility
+    torch::manual_seed(42); // For reproducibility
     torch::Tensor A = torch::rand({3, 3});
     torch::Tensor B = torch::rand({3, 3});
     torch::Tensor expected = torch::mm(A, B);
 
     // Extract raw pointers
     float* A_ptr = A.data_ptr<float>();
+    float* A_ptr_transposed = A.t().data_ptr<float>();
     float* B_ptr = B.data_ptr<float>();
+    float* B_ptr_transposed = (float*)malloc(B.size(0) * B.size(1) * sizeof(float));
+    transpose_matrix(B_ptr, B_ptr_transposed, B.size(0), B.size(1));
     float* expected_ptr = expected.data_ptr<float>();
     // Get dimensions
     int m = A.size(0);
@@ -108,9 +112,10 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
 
     // Allocate memory for the result matrix
     float* my_result_ptr = new float[m * n];
+    std::fill(my_result_ptr, my_result_ptr + m * n, 0.0f); // Initialize to zero
 
     // Call your custom function
-    naive_matmul(A_ptr, B_ptr, my_result_ptr, m, k, n);
+    naive_matmul(A_ptr, B_ptr_transposed, my_result_ptr, m, k, n);
 
     // Print the matrices for debugging
     std::cout << "Matrix A:\n";
@@ -153,5 +158,6 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
     }
     // Free allocated memory
     delete[] my_result_ptr;
+    free(B_ptr_transposed);
 }
 
