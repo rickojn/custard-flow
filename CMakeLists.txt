@@ -4,6 +4,9 @@ project(custard-flow)
 # GoogleTest requires at least C++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_PREFIX_PATH "/usr/local/libtorch")
+
+find_package(Torch REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -30,6 +33,7 @@ target_link_libraries(
   cf_test
   GTest::gtest_main
   custard-flow
+  ${TORCH_LIBRARIES}
 )
 
 # Enable intrinsics (SSE/AVX) if needed

@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <torch/torch.h>
 #include "CustardFlow.h"
 // This is a simple test case for the CustardFlow library using Google Test.
 
@@ -89,4 +90,67 @@ TEST(MatmulBackwardsTest, BasicFunctionality) {
     EXPECT_FLOAT_EQ(grads_B[5], 150);
 }
 
+TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
+    // Create random matrices using LibTorch
+    torch::Tensor A = torch::rand({3, 3});
+    torch::Tensor B = torch::rand({3, 3});
+    torch::Tensor expected = torch::mm(A, B);
+
+    // Extract raw pointers
+    float* A_ptr = A.data_ptr<float>();
+    float* B_ptr = B.data_ptr<float>();
+    float* expected_ptr = expected.data_ptr<float>();
+    // Get dimensions
+    int m = A.size(0);
+    int k = A.size(1);
+    int n = B.size(1);
+
+    // Allocate memory for the result matrix
+    float* my_result_ptr = new float[m * n];
+
+    // Call your custom function
+    naive_matmul(A_ptr, B_ptr, my_result_ptr, m, k, n);
+
+    // Print the matrices for debugging
+    std::cout << "Matrix A:\n";
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < k; ++j) {
+            std::cout << A_ptr[i * k + j] << " ";
+        }
+        std::cout << "\n";
+    }
+    std::cout << "Matrix B:\n";
+    for (int i = 0; i < k; ++i) {
+        for (int j = 0; j < n; ++j) {
+            std::cout << B_ptr[i * n + j] << " ";
+        }
+        std::cout << "\n";
+    }
+    std::cout << "Expected Result:\n";
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            std::cout << expected_ptr[i * n + j] << " ";
+        }
+        std::cout << "\n";
+    }
+    std::cout << "My Result:\n";
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            std::cout << my_result_ptr[i * n + j] << " ";
+        }
+        std::cout << "\n";
+    }
+    // Print the dimensions
+    std::cout << "Dimensions: A(" << m << ", " << k << "), B(" << k << ", " << n << "), Result(" << m << ", " << n << ")\n";
+
+    // Compare results
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            EXPECT_FLOAT_EQ(my_result_ptr[i * n + j], expected_ptr[i * n + j])
+                << "Mismatch at (" << i << ", " << j << ")";
+        }
+    }
+    // Free allocated memory
+    delete[] my_result_ptr;
+}
 
