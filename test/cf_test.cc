@@ -92,6 +92,7 @@ TEST(MatmulBackwardsTest, BasicFunctionality) {
 
 TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
     // Create random matrices using LibTorch
+    torch::manual_seed(41); // For reproducibility
     torch::Tensor A = torch::rand({3, 3});
     torch::Tensor B = torch::rand({3, 3});
     torch::Tensor expected = torch::mm(A, B);

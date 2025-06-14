@@ -6,6 +6,16 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_PREFIX_PATH "/usr/local/libtorch")
 
+# Enable PCH support
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-Winvalid-pch" COMPILER_SUPPORTS_PCH)
+
+if(COMPILER_SUPPORTS_PCH)
+  message(STATUS "Compiler supports PCH")
+else()
+  message(FATAL_ERROR "Your compiler does not support PCH.")
+endif()
+
 find_package(Torch REQUIRED)
 
 include(FetchContent)
@@ -44,4 +54,7 @@ elseif(MSVC)
 endif()
 
 include(GoogleTest)
+
+# Precompiled header
+target_precompile_headers(cf_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/pch.h)
 gtest_discover_tests(cf_test)
