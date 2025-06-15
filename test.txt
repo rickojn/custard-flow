@@ -1,0 +1,146 @@
+Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src/googletest/src/gtest_main.cc
+[==========] Running 5 tests from 5 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from MinTest
+[ RUN      ] MinTest.BasicFunctionality
+[       OK ] MinTest.BasicFunctionality (0 ms)
+[----------] 1 test from MinTest (0 ms total)
+
+[----------] 1 test from MatmulNaiveTest
+[ RUN      ] MatmulNaiveTest.BasicFunctionality
+[       OK ] MatmulNaiveTest.BasicFunctionality (0 ms)
+[----------] 1 test from MatmulNaiveTest (0 ms total)
+
+[----------] 1 test from MatmulBackwardsTest
+[ RUN      ] MatmulBackwardsTest.BasicFunctionality
+[       OK ] MatmulBackwardsTest.BasicFunctionality (0 ms)
+[----------] 1 test from MatmulBackwardsTest (0 ms total)
+
+[----------] 1 test from MatrixMultiplicationTest
+[ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
+Matrix A:
+0.882269 0.915004 0.382864 
+0.959306 0.390448 0.600895 
+0.256572 0.793641 0.940771 
+Matrix B:
+0.133186 0.934598 0.59358 
+0.869404 0.567715 0.741094 
+0.429404 0.885443 0.573904 
+Expected Result:
+1.07742 1.68303 1.42153 
+0.725251 1.65029 1.20364 
+1.12814 1.52335 1.28037 
+My Result:
+1.07742 1.68303 1.42153 
+0.725251 1.65029 1.20364 
+1.12814 1.52335 1.28037 
+Dimensions: A(3, 3), B(3, 3), Result(3, 3)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (785 ms)
+[----------] 1 test from MatrixMultiplicationTest (785 ms total)
+
+[----------] 1 test from MatrixMultiplicationBackwardsTest
+[ RUN      ] MatrixMultiplicationBackwardsTest.CompareWithTorch
+Input:
+ 0.2666  0.6274  0.2696
+ 0.4414  0.2969  0.8317
+ 0.1053  0.2695  0.3588
+[ CPUFloatType{3,3} ]
+Weights:
+ 0.1994  0.5472  0.0062
+ 0.9516  0.0753  0.8860
+ 0.5832  0.3376  0.8090
+[ CPUFloatType{3,3} ]
+Grad Output:
+ 0.5779  0.9040  0.5547
+ 0.3423  0.6343  0.3644
+ 0.7104  0.9464  0.7890
+[ CPUFloatType{3,3} ]
+/home/rickojn/coding/custard-flow/test/cf_test.cc:204: Failure
+Expected equality of these values:
+  weights_grad_computed[i * 3 + j]
+    Which is: 0.12665559
+  weights_grad[i * 3 + j]
+    Which is: 0.3799668
+Mismatch in weights gradient at (0, 0)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:204: Failure
+Expected equality of these values:
+  weights_grad_computed[i * 3 + j]
+    Which is: 0.2185719
+  weights_grad[i * 3 + j]
+    Which is: 0.62063003
+Mismatch in weights gradient at (0, 1)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:204: Failure
+Expected equality of these values:
+  weights_grad_computed[i * 3 + j]
+    Which is: 0.23181164
+  weights_grad[i * 3 + j]
+    Which is: 0.39179525
+Mismatch in weights gradient at (0, 2)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:204: Failure
+Expected equality of these values:
+  weights_grad_computed[i * 3 + j]
+    Which is: 0.20687668
+  weights_grad[i * 3 + j]
+    Which is: 0.65571564
+Mismatch in weights gradient at (1, 0)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:204: Failure
+Expected equality of these values:
+  weights_grad_computed[i * 3 + j]
+    Which is: 0.33686826
+  weights_grad[i * 3 + j]
+    Which is: 1.0106047
+Mismatch in weights gradient at (1, 1)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:204: Failure
+Expected equality of these values:
+  weights_grad_computed[i * 3 + j]
+    Which is: 0.37029973
+  weights_grad[i * 3 + j]
+    Which is: 0.66886127
+Mismatch in weights gradient at (1, 2)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:204: Failure
+Expected equality of these values:
+  weights_grad_computed[i * 3 + j]
+    Which is: 0.13059841
+  weights_grad[i * 3 + j]
+    Which is: 0.69543493
+Mismatch in weights gradient at (2, 0)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:204: Failure
+Expected equality of these values:
+  weights_grad_computed[i * 3 + j]
+    Which is: 0.22295375
+  weights_grad[i * 3 + j]
+    Which is: 1.1108992
+Mismatch in weights gradient at (2, 1)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:204: Failure
+Expected equality of these values:
+  weights_grad_computed[i * 3 + j]
+    Which is: 0.24524748
+  weights_grad[i * 3 + j]
+    Which is: 0.73574245
+Mismatch in weights gradient at (2, 2)
+Input Gradient (Torch):
+0.613285,1.1094,1.09098,
+0.417596,0.696347,0.708623,
+0.664363,1.44634,1.37219,
+Weights Gradient (Torch):
+0.379967,0.62063,0.391795,
+0.655716,1.0106,0.668861,
+0.695435,1.1109,0.735742,
+Input Gradient:
+-4.86552 3.61143e-41 -0.0305481 
+3.61143e-41 0.696347 0.708623 
+0.664363 1.44634 1.37219 
+Weights Gradient:
+-4.86515 3.61143e-41 -0.0305481 
+3.61143e-41 1.74654e+19 1.88877e+31 
+0.129884 0.222954 0.245247 
+[  FAILED  ] MatrixMultiplicationBackwardsTest.CompareWithTorch (1 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 5 tests from 5 test suites ran. (787 ms total)
+[  PASSED  ] 4 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] MatrixMultiplicationBackwardsTest.CompareWithTorch
+
+ 1 FAILED TEST
