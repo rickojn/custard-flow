@@ -161,3 +161,54 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
     free(B_ptr_transposed);
 }
 
+TEST(MatrixMultiplicaitonBackwards, CompareWithTorch){
+    // Create random matrices using LibTorch
+    torch::manual_seed(42); // For reproducibility
+    torch::Tensor A = torch::rand({3, 3});
+    torch::Tensor B = torch::rand({3, 3});
+    torch::Tensor grads_C = torch::rand({3, 3});
+
+    // Extract raw pointers
+    float* A_ptr = A.data_ptr<float>();
+    float* B_ptr = B.data_ptr<float>();
+    float* grads_C_ptr = grads_C.data_ptr<float>();
+
+    // Get dimensions
+    int m = A.size(0);
+    int k = A.size(1);
+    int n = B.size(1);
+
+    // Allocate memory for the result matrices
+    float* grads_A_ptr = new float[m * k];
+    float* grads_B_ptr = new float[k * n];
+    std::fill(grads_A_ptr, grads_A_ptr + m * k, 0.0f); // Initialize to zero
+    std::fill(grads_B_ptr, grads_B_ptr + k * n, 0.0f); // Initialize to zero
+
+    // Call your custom function
+    matmul_backwards(grads_C_ptr, B_ptr, A_ptr, grads_B_ptr, grads_A_ptr, m, n, k);
+
+    // Print the matrices for debugging
+    std::cout << "Matrix A:\n";
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < k; ++j) {
+            std::cout << A_ptr[i * k + j] << " ";
+        }
+        std::cout << "\n";
+    }
+    
+    std::cout << "Matrix B:\n";
+    for (int i = 0; i < k; ++i) {
+        for (int j = 0; j < n; ++j) {
+            std::cout << B_ptr[i * n + j] << " ";
+        }
+        std::cout << "\n";
+    }
+
+    std::cout << "Grads C:\n";
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            std::cout << grads_C_ptr[i * n + j] << " ";
+        }
+        std::cout << "\n";
+    }
+}
