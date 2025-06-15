@@ -161,54 +161,41 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
     free(B_ptr_transposed);
 }
 
-TEST(MatrixMultiplicaitonBackwards, CompareWithTorch){
-    // Create random matrices using LibTorch
-    torch::manual_seed(42); // For reproducibility
-    torch::Tensor A = torch::rand({3, 3});
-    torch::Tensor B = torch::rand({3, 3});
-    torch::Tensor grads_C = torch::rand({3, 3});
 
-    // Extract raw pointers
-    float* A_ptr = A.data_ptr<float>();
-    float* B_ptr = B.data_ptr<float>();
-    float* grads_C_ptr = grads_C.data_ptr<float>();
+ TEST(MatrixMultiplicationBackwardsTest, CompareWithTorch){
+    torch::Tensor input = torch::rand({3, 3}, torch::requires_grad());
+    torch::Tensor weights = torch::rand({3, 3}, torch::requires_grad());
 
-    // Get dimensions
-    int m = A.size(0);
-    int k = A.size(1);
-    int n = B.size(1);
 
-    // Allocate memory for the result matrices
-    float* grads_A_ptr = new float[m * k];
-    float* grads_B_ptr = new float[k * n];
-    std::fill(grads_A_ptr, grads_A_ptr + m * k, 0.0f); // Initialize to zero
-    std::fill(grads_B_ptr, grads_B_ptr + k * n, 0.0f); // Initialize to zero
+    torch::Tensor output = torch::mm(input, weights);
+    torch::Tensor grad_output = torch::rand_like(output);
 
-    // Call your custom function
-    matmul_backwards(grads_C_ptr, B_ptr, A_ptr, grads_B_ptr, grads_A_ptr, m, n, k);
+    // Compute gradients using autograd
+    output.backward(grad_output);
 
-    // Print the matrices for debugging
-    std::cout << "Matrix A:\n";
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < k; ++j) {
-            std::cout << A_ptr[i * k + j] << " ";
+    // Extract gradients
+    float* input_grad = input.grad().data_ptr<float>();
+    float* weights_grad = weights.grad().data_ptr<float>();
+
+    // Function under test
+    float* input_ptr = input.data_ptr<float>();
+    float* weights_ptr = weights.data_ptr<float>();
+    float* grad_output_ptr = grad_output.data_ptr<float>();
+    float* input_grad_computed = new float[3 * 3];
+    float* weights_grad_computed = new float[3 * 3];
+    std::fill(input_grad_computed, input_grad_computed + 3 * 3, 0.0f);
+    std::fill(weights_grad_computed, weights_grad_computed + 3 * 3, 0.0f);
+
+    matmul_backwards(grad_output_ptr, weights_ptr, input_ptr, weights_grad_computed, input_grad_computed, 3, 3, 3);
+
+    // Compare computed gradients with autograd gradients
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            EXPECT_FLOAT_EQ(input_grad_computed[i * 3 + j], input_grad[i * 3 + j])
+                << "Mismatch in input gradient at (" << i << ", " << j << ")";
+            EXPECT_FLOAT_EQ(weights_grad_computed[i * 3 + j], weights_grad[i * 3 + j])
+                << "Mismatch in weights gradient at (" << i << ", " << j << ")";
         }
-        std::cout << "\n";
-    }
-    
-    std::cout << "Matrix B:\n";
-    for (int i = 0; i < k; ++i) {
-        for (int j = 0; j < n; ++j) {
-            std::cout << B_ptr[i * n + j] << " ";
-        }
-        std::cout << "\n";
     }
 
-    std::cout << "Grads C:\n";
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < n; ++j) {
-            std::cout << grads_C_ptr[i * n + j] << " ";
-        }
-        std::cout << "\n";
-    }
-}
+ }
