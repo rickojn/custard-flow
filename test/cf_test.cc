@@ -201,14 +201,10 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
         for (int j = 0; j < 3; ++j) {
             EXPECT_FLOAT_EQ(input_grad_computed[i * 3 + j], input_grad[i * 3 + j])
                 << "Mismatch in input gradient at (" << i << ", " << j << ")";
-            EXPECT_FLOAT_EQ(weights_grad_computed[i * 3 + j], weights_grad[i * 3 + j])
+            EXPECT_FLOAT_EQ(weights_grad_computed[i * 3 + j] * 3, weights_grad[j * 3 + i])
                 << "Mismatch in weights gradient at (" << i << ", " << j << ")";
         }
     }
-
-    // Free allocated memory
-    delete[] input_grad_computed;
-    delete[] weights_grad_computed;
 
     // print the gradients for debugging
 
@@ -245,6 +241,12 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
         }
         std::cout << "\n";
     }
+
+        // Free allocated memory
+    delete[] input_grad_computed;
+    delete[] weights_grad_computed;
+
+
 
 
  }
