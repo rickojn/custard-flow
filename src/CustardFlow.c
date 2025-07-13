@@ -314,3 +314,121 @@ void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_nu
     }
 }
 
+void simd_kernel_div(const float * tile_A, const float * tile_B, float * C, size_t M, size_t N, size_t K, size_t tile_m, size_t tile_n, size_t offset_tile_C){
+    __m256 reg_array_C[8][1] = {};
+    __m256 reg_col_tile_A_1;
+    __m256 reg_tile_B_element;
+
+    for (size_t idx_k = 0; idx_k < K; idx_k++){
+        reg_col_tile_A_1 = _mm256_loadu_ps(&tile_A[idx_k * M]);
+
+        
+        reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N]);
+
+        reg_array_C[0][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[0][0]);
+        if (N == 10 && offset_tile_C == 0)
+        {
+            float db_sum = _mm256_cvtss_f32(reg_array_C[0][0]);
+            float db_input = _mm256_cvtss_f32(reg_col_tile_A_1);
+            float db_z_grad = tile_B[idx_k * N];
+            printf("input = %f z grad = %f  wg sum[0][0]: %f  avg = %f\n",db_input, db_z_grad, db_sum, db_sum/K);
+        }
+        // _mm256_cvtss_f32 extracts the lowest (first) float from a __m256 AVX register.
+
+        reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 1]);
+
+        reg_array_C[1][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[1][0]);
+
+
+        reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 2]);
+
+        reg_array_C[2][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[2][0]);
+
+
+        reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 3]);
+
+        reg_array_C[3][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[3][0]);
+
+
+        reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 4]);
+
+        reg_array_C[4][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[4][0]);
+
+
+        reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 5]);
+        reg_array_C[5][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[5][0]);
+
+        reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 6]);
+        reg_array_C[6][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[6][0]);
+        reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 7]);
+        reg_array_C[7][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[7][0]);
+    }   
+
+
+    float Kf = (float)K;
+    __m256 reg_K = _mm256_broadcast_ss(&Kf);
+    for (size_t idx = 0; idx * M + offset_tile_C < M * N && idx < 8; idx++){
+        reg_array_C[idx][0] = _mm256_div_ps(reg_array_C[idx][0], reg_K);
+    }
+
+    for (size_t idx = 0; idx * M + offset_tile_C < M * N && idx < 8; idx++){
+        _mm256_storeu_ps(&C[idx * M + offset_tile_C], reg_array_C[idx][0]);
+    }
+}
+
+
+void simd_matmul_b(const float *A, const float *B, float *C, size_t M, size_t N, size_t K)
+{
+    const size_t tile_m = 8;
+    const size_t tile_n = 8;
+    size_t offset_C = 0;
+    for (size_t idx_m = 0; idx_m < M; idx_m += tile_m)
+    {
+        for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
+        {
+            offset_C= idx_m + idx_n * M;
+            simd_kernel_div(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C);
+        }
+    }
+}
+
+void simd_matmul_backward(float *grads_C, const float *A, const float* B, float * grads_A, float * grads_B,  
+    size_t M, size_t N, size_t K)
+{
+    printf("matmul simd backward weight grads ...\n");
+    clock_t begin, end;
+    double time_spent;
+    begin = clock();
+    float *C_transposed = (float *)malloc(M * N * sizeof(float));
+    simd_matmul_b(A, B, C_transposed, M, N, K);
+    transpose_matrix(C_transposed, grads_C, M, N);
+    end = clock();
+    time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("Time spent in simd_matmul_backward weight grads: %f seconds\n", time_spent);
+    printf("matmul simd backward input grads ...\n");
+    begin = clock();
+    for (size_t idx_sample = 0; idx_sample < K; idx_sample++){
+        for (size_t idx_neuron = 0; idx_neuron < N; idx_neuron++){
+            size_t offset_grad_pre_act = idx_sample * N + idx_neuron;
+            // if (layer->gradients_biases){
+            //     layer->gradients_biases[idx_neuron] += layer->gradients_output[offset_grad_pre_act];
+            // }
+            for (size_t idx_weight = 0; idx_weight < M; idx_weight++){
+                size_t offset_weight = idx_neuron * M + idx_weight;
+                size_t offset_input = idx_sample * M + idx_weight;
+                if (grads_A){
+                    grads_A[offset_input] += B[offset_weight] * grads_C[offset_grad_pre_act];
+                }
+            }
+        }
+    }
+    // for (size_t idx_neuron = 0; idx_neuron < N; idx_neuron++){
+    //     if (layer->gradients_biases){
+    //         layer->gradients_biases[idx_neuron] /= K;
+    //     }
+    // }
+    end = clock();
+    time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("Time spent for input activation grads: %f seconds\n", time_spent);
+}
+

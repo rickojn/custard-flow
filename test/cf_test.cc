@@ -261,6 +261,10 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
  }
 
 
-TEST(MatrixMultiplicationBackwardsTest, CompareWithTorch){
+TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
     mat_mul_backwards_test(matmul_backwards, "matmul_backwards");
+ }
+
+ TEST(MatrixMultiplicationBackwardsTest, SIMDMatmulBackwards) {
+    mat_mul_backwards_test(simd_matmul_backward, "simd_matmul_backwards");
  }
