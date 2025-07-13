@@ -162,91 +162,105 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
 }
 
 
- TEST(MatrixMultiplicationBackwardsTest, CompareWithTorch){
-    torch::Tensor input = torch::rand({3, 3}, torch::requires_grad());
-    torch::Tensor weights = torch::rand({3, 3}, torch::requires_grad());
+ 
+ void mat_mul_backwards_test(
+     std::function<void(const float *, const float *, const float *, float *, float *, size_t, size_t, size_t)> matmul_backwards_func,
+     std::string func_name)
+ {
+     std::cout << "Testing " << func_name << " function with autograd comparison.\n";
+     torch::Tensor input = torch::rand({3, 3}, torch::requires_grad());
+     torch::Tensor weights = torch::rand({3, 3}, torch::requires_grad());
+
+     torch::Tensor output = torch::mm(input, weights);
+     torch::Tensor grad_output = torch::rand_like(output);
+
+     // Compute gradients using autograd
+     output.backward(grad_output);
+     // print input and weights for debugging
+     std::cout << "Input:\n"
+               << input << "\n";
+     std::cout << "Weights:\n"
+               << weights << "\n";
+     std::cout << "Grad Output:\n"
+               << grad_output << "\n";
+
+     // Extract gradients
+     float *input_grad = input.grad().data_ptr<float>();
+     float *weights_grad = weights.grad().data_ptr<float>();
+
+     // Function under test
+     float *input_ptr = input.data_ptr<float>();
+     float *weights_ptr = weights.data_ptr<float>();
+     float *transposed_weights_ptr = (float *)malloc(weights.size(0) * weights.size(1) * sizeof(float));
+     transpose_matrix(weights_ptr, transposed_weights_ptr, weights.size(0), weights.size(1));
+     float *grad_output_ptr = grad_output.data_ptr<float>();
+     float *input_grad_computed = new float[3 * 3];
+     float *weights_grad_computed = new float[3 * 3];
+     std::fill(input_grad_computed, input_grad_computed + 3 * 3, 0.0f);
+     std::fill(weights_grad_computed, weights_grad_computed + 3 * 3, 0.0f);
+
+     matmul_backwards_func(grad_output_ptr, transposed_weights_ptr, input_ptr, weights_grad_computed, input_grad_computed, 3, 3, 3);
+
+     // Compare computed gradients with autograd gradients
+     for (int i = 0; i < 3; ++i)
+     {
+         for (int j = 0; j < 3; ++j)
+         {
+             EXPECT_FLOAT_EQ(input_grad_computed[i * 3 + j], input_grad[i * 3 + j])
+                 << "Mismatch in input gradient at (" << i << ", " << j << ")";
+             EXPECT_FLOAT_EQ(weights_grad_computed[i * 3 + j] * 3, weights_grad[j * 3 + i])
+                 << "Mismatch in weights gradient at (" << i << ", " << j << ")";
+         }
+     }
+
+     // print the gradients for debugging
+
+     // torch gradients
+     std::cout << "Input Gradient (Torch):\n";
+     for (int i = 0; i < 3; ++i)
+     {
+         for (int j = 0; j < 3; ++j)
+         {
+             std::cout << input.grad()[i][j].item<float>() << ",";
+         }
+         std::cout << "\n";
+     }
+     std::cout << "Weights Gradient (Torch):\n";
+     for (int i = 0; i < 3; ++i)
+     {
+         for (int j = 0; j < 3; ++j)
+         {
+             std::cout << weights.grad()[i][j].item<float>() << ",";
+         }
+         std::cout << "\n";
+     }
+
+     // computed gradients
+     std::cout << "Input Gradient:\n";
+     for (int i = 0; i < 3; ++i)
+     {
+         for (int j = 0; j < 3; ++j)
+         {
+             std::cout << input_grad_computed[i * 3 + j] << " ";
+         }
+         std::cout << "\n";
+     }
+     std::cout << "Weights Gradient:\n";
+     for (int i = 0; i < 3; ++i)
+     {
+         for (int j = 0; j < 3; ++j)
+         {
+             std::cout << weights_grad_computed[i * 3 + j] << " ";
+         }
+         std::cout << "\n";
+     }
+
+     // Free allocated memory
+     delete[] input_grad_computed;
+     delete[] weights_grad_computed;
+ }
 
 
-    torch::Tensor output = torch::mm(input, weights);
-    torch::Tensor grad_output = torch::rand_like(output);
-
-    // Compute gradients using autograd
-    output.backward(grad_output);
-    // print input and weights for debugging
-    std::cout << "Input:\n" << input << "\n";
-    std::cout << "Weights:\n" << weights << "\n";
-    std::cout << "Grad Output:\n" << grad_output << "\n";
-
-
-    // Extract gradients
-    float* input_grad = input.grad().data_ptr<float>();
-    float* weights_grad = weights.grad().data_ptr<float>();
-
-
-    // Function under test
-    float* input_ptr = input.data_ptr<float>();
-    float* weights_ptr = weights.data_ptr<float>();
-    float* transposed_weights_ptr = (float*)malloc(weights.size(0) * weights.size(1) * sizeof(float));
-    transpose_matrix(weights_ptr, transposed_weights_ptr, weights.size(0), weights.size(1));
-    float* grad_output_ptr = grad_output.data_ptr<float>();
-    float* input_grad_computed = new float[3 * 3];
-    float* weights_grad_computed = new float[3 * 3];
-    std::fill(input_grad_computed, input_grad_computed + 3 * 3, 0.0f);
-    std::fill(weights_grad_computed, weights_grad_computed + 3 * 3, 0.0f);
-
-    matmul_backwards(grad_output_ptr, transposed_weights_ptr, input_ptr, weights_grad_computed, input_grad_computed, 3, 3, 3);
-
-    // Compare computed gradients with autograd gradients
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 3; ++j) {
-            EXPECT_FLOAT_EQ(input_grad_computed[i * 3 + j], input_grad[i * 3 + j])
-                << "Mismatch in input gradient at (" << i << ", " << j << ")";
-            EXPECT_FLOAT_EQ(weights_grad_computed[i * 3 + j] * 3, weights_grad[j * 3 + i])
-                << "Mismatch in weights gradient at (" << i << ", " << j << ")";
-        }
-    }
-
-    // print the gradients for debugging
-
-    // torch gradients
-    std::cout << "Input Gradient (Torch):\n";
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 3; ++j) {
-            std::cout << input.grad()[i][j].item<float>() << ",";
-        }
-        std::cout << "\n";
-    }
-    std::cout << "Weights Gradient (Torch):\n";
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 3; ++j) {
-            std::cout << weights.grad()[i][j].item<float>() << ",";
-        }
-        std::cout << "\n";
-    }
-
-
-
-    // computed gradients
-    std::cout << "Input Gradient:\n"; 
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 3; ++j) {
-            std::cout << input_grad_computed[i * 3 + j] << " ";
-        }
-        std::cout << "\n";
-    }
-    std::cout << "Weights Gradient:\n";
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 3; ++j) {
-            std::cout << weights_grad_computed[i * 3 + j] << " ";
-        }
-        std::cout << "\n";
-    }
-
-        // Free allocated memory
-    delete[] input_grad_computed;
-    delete[] weights_grad_computed;
-
-
-
-
+TEST(MatrixMultiplicationBackwardsTest, CompareWithTorch){
+    mat_mul_backwards_test(matmul_backwards, "matmul_backwards");
  }
