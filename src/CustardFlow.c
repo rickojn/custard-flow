@@ -392,7 +392,7 @@ void simd_matmul_b(const float *A, const float *B, float *C, size_t M, size_t N,
     }
 }
 
-void simd_matmul_backward(float *grads_C, const float *A, const float* B, float * grads_A, float * grads_B,  
+void simd_matmul_backward(float *grads_C, const float *B, const float* A, float * grads_B, float * grads_A,  
     size_t M, size_t N, size_t K)
 {
     printf("matmul simd backward weight grads ...\n");
