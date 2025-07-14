@@ -35,214 +35,118 @@ My Result:
 0.725251 1.65029 1.20364 
 1.12814 1.52335 1.28037 
 Dimensions: A(3, 3), B(3, 3), Result(3, 3)
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (769 ms)
-[----------] 1 test from MatrixMultiplicationTest (769 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (879 ms)
+[----------] 1 test from MatrixMultiplicationTest (879 ms total)
 
 [----------] 2 tests from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
 Testing matmul_backwards function with autograd comparison.
 Input:
+ 0.8823  0.9150  0.3829
+ 0.9593  0.3904  0.6009
+ 0.2566  0.7936  0.9408
+[ CPUFloatType{3,3} ]
+Weights:
+ 0.1332  0.9346  0.5936
+ 0.8694  0.5677  0.7411
+ 0.4294  0.8854  0.5739
+[ CPUFloatType{3,3} ]
+Grad Output:
  0.2666  0.6274  0.2696
  0.4414  0.2969  0.8317
  0.1053  0.2695  0.3588
 [ CPUFloatType{3,3} ]
-Weights:
- 0.1994  0.5472  0.0062
- 0.9516  0.0753  0.8860
- 0.5832  0.3376  0.8090
-[ CPUFloatType{3,3} ]
-Grad Output:
- 0.5779  0.9040  0.5547
- 0.3423  0.6343  0.3644
- 0.7104  0.9464  0.7890
-[ CPUFloatType{3,3} ]
 Input Gradient (Torch):
-0.613285,1.1094,1.09098,
-0.417596,0.696347,0.708623,
-0.664363,1.44634,1.37219,
+0.781965,0.787801,0.824784,
+0.829957,1.16865,0.929738,
+0.47888,0.510471,0.489769,
 Weights Gradient (Torch):
-0.379967,0.62063,0.391795,
-0.655716,1.0106,0.668861,
-0.695435,1.1109,0.735742,
+0.685619,0.907562,1.12779,
+0.499834,0.903933,0.856213,
+0.466354,0.672179,0.940549,
 Input Gradient:
-0.613285 1.1094 1.09098 
-0.417596 0.696347 0.708623 
-0.664363 1.44634 1.37219 
+0.781965 0.787801 0.824784 
+0.829957 1.16865 0.929738 
+0.47888 0.510471 0.489769 
 Weights Gradient:
-0.126656 0.218572 0.231812 
-0.206877 0.336868 0.3703 
-0.130598 0.222954 0.245247 
-[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (1 ms)
+0.22854 0.166611 0.155451 
+0.302521 0.301311 0.22406 
+0.37593 0.285404 0.313516 
+[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (18 ms)
 [ RUN      ] MatrixMultiplicationBackwardsTest.SIMDMatmulBackwards
 Testing simd_matmul_backwards function with autograd comparison.
 Input:
- 0.2814  0.7886  0.5895
- 0.7539  0.1952  0.0050
- 0.3068  0.1165  0.9103
+ 0.8823  0.9150  0.3829
+ 0.9593  0.3904  0.6009
+ 0.2566  0.7936  0.9408
 [ CPUFloatType{3,3} ]
 Weights:
- 0.6440  0.7071  0.6581
- 0.4913  0.8913  0.1447
- 0.5315  0.1587  0.6542
+ 0.1332  0.9346  0.5936
+ 0.8694  0.5677  0.7411
+ 0.4294  0.8854  0.5739
 [ CPUFloatType{3,3} ]
 Grad Output:
- 0.3278  0.6532  0.3958
- 0.9147  0.2036  0.2018
- 0.2018  0.9497  0.6666
+ 0.2666  0.6274  0.2696
+ 0.4414  0.2969  0.8317
+ 0.1053  0.2695  0.3588
 [ CPUFloatType{3,3} ]
 matmul simd backward weight grads ...
-Time spent in simd_matmul_backward weight grads: 0.000003 seconds
+Time spent in simd_matmul_backward weight grads: 0.000004 seconds
 matmul simd backward input grads ...
 Time spent for input activation grads: 0.000001 seconds
-/home/rickojn/coding/custard-flow/test/cf_test.cc:209: Failure
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
 Expected equality of these values:
   input_grad_computed[i * 3 + j]
-    Which is: 0.50123221
+    Which is: 0.7918008
   input_grad[i * 3 + j]
-    Which is: 0.93350929
+    Which is: 0.78196537
 Mismatch in input gradient at (0, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+/home/rickojn/coding/custard-flow/test/cf_test.cc:213: Failure
 Expected equality of these values:
   weights_grad_computed[i * 3 + j] * 3
     Which is: 0
   weights_grad[j * 3 + i]
-    Which is: 0.84376621
+    Which is: 0.68561888
 Mismatch in weights gradient at (0, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:209: Failure
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
 Expected equality of these values:
   input_grad_computed[i * 3 + j]
-    Which is: 0.42664227
+    Which is: 0.96200812
   input_grad[i * 3 + j]
-    Which is: 0.80055386
+    Which is: 0.78780079
 Mismatch in input gradient at (0, 1)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+/home/rickojn/coding/custard-flow/test/cf_test.cc:213: Failure
 Expected equality of these values:
   weights_grad_computed[i * 3 + j] * 3
     Which is: 0
   weights_grad[j * 3 + i]
-    Which is: 0.46061817
+    Which is: 0.49983367
 Mismatch in weights gradient at (0, 1)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:209: Failure
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
 Expected equality of these values:
   input_grad_computed[i * 3 + j]
-    Which is: 0.31002116
+    Which is: 0.87333906
   input_grad[i * 3 + j]
-    Which is: 0.53685015
+    Which is: 0.82478392
 Mismatch in input gradient at (0, 2)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+/home/rickojn/coding/custard-flow/test/cf_test.cc:213: Failure
 Expected equality of these values:
   weights_grad_computed[i * 3 + j] * 3
     Which is: 0
   weights_grad[j * 3 + i]
-    Which is: 0.38152349
+    Which is: 0.4663544
 Mismatch in weights gradient at (0, 2)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:209: Failure
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
 Expected equality of these values:
   input_grad_computed[i * 3 + j]
-    Which is: 0.40690887
+    Which is: 0.77890372
   input_grad[i * 3 + j]
-    Which is: 0.86589152
+    Which is: 0.82995665
 Mismatch in input gradient at (1, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+/home/rickojn/coding/custard-flow/test/cf_test.cc:213: Failure
 Expected equality of these values:
   weights_grad_computed[i * 3 + j] * 3
     Which is: 0
   weights_grad[j * 3 + i]
-    Which is: 0.62874961
+    Which is: 0.9075619
 Mismatch in weights gradient at (1, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:209: Failure
-Expected equality of these values:
-  input_grad_computed[i * 3 + j]
-    Which is: 0.3155621
-  input_grad[i * 3 + j]
-    Which is: 0.66011453
-Mismatch in input gradient at (1, 1)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j] * 3
-    Which is: 0
-  weights_grad[j * 3 + i]
-    Which is: 0.66553473
-Mismatch in weights gradient at (1, 1)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:209: Failure
-Expected equality of these values:
-  input_grad_computed[i * 3 + j]
-    Which is: 0.27339223
-  input_grad[i * 3 + j]
-    Which is: 0.65048289
-Mismatch in input gradient at (1, 2)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j] * 3
-    Which is: 0
-  weights_grad[j * 3 + i]
-    Which is: 1.250572
-Mismatch in weights gradient at (1, 2)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:209: Failure
-Expected equality of these values:
-  input_grad_computed[i * 3 + j]
-    Which is: 0.51077849
-  input_grad[i * 3 + j]
-    Which is: 1.2402325
-Mismatch in input gradient at (2, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j] * 3
-    Which is: 0
-  weights_grad[j * 3 + i]
-    Which is: 0.46806696
-Mismatch in weights gradient at (2, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:209: Failure
-Expected equality of these values:
-  input_grad_computed[i * 3 + j]
-    Which is: 0.33127058
-  input_grad[i * 3 + j]
-    Which is: 1.0421165
-Mismatch in input gradient at (2, 1)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j] * 3
-    Which is: 0
-  weights_grad[j * 3 + i]
-    Which is: 0.42921916
-Mismatch in weights gradient at (2, 1)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:209: Failure
-Expected equality of these values:
-  input_grad_computed[i * 3 + j]
-    Which is: 0.39489007
-  input_grad[i * 3 + j]
-    Which is: 0.69408363
-Mismatch in input gradient at (2, 2)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j] * 3
-    Which is: 0
-  weights_grad[j * 3 + i]
-    Which is: 0.84115386
-Mismatch in weights gradient at (2, 2)
-Input Gradient (Torch):
-0.933509,0.800554,0.53685,
-0.865892,0.660115,0.650483,
-1.24023,1.04212,0.694084,
-Weights Gradient (Torch):
-0.843766,0.62875,0.468067,
-0.460618,0.665535,0.429219,
-0.381523,1.25057,0.841154,
-Input Gradient:
-0.501232 0.426642 0.310021 
-0.406909 0.315562 0.273392 
-0.510778 0.331271 0.39489 
-Weights Gradient:
-0 0 0 
-0 0 0 
-0 0 0 
-[  FAILED  ] MatrixMultiplicationBackwardsTest.SIMDMatmulBackwards (0 ms)
-[----------] 2 tests from MatrixMultiplicationBackwardsTest (2 ms total)
-
-[----------] Global test environment tear-down
-[==========] 6 tests from 5 test suites ran. (772 ms total)
-[  PASSED  ] 5 tests.
-[  FAILED  ] 1 test, listed below:
-[  FAILED  ] MatrixMultiplicationBackwardsTest.SIMDMatmulBackwards
-
- 1 FAILED TEST

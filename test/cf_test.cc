@@ -168,6 +168,8 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
      std::string func_name)
  {
      std::cout << "Testing " << func_name << " function with autograd comparison.\n";
+     // set the random seed for reproducibility
+     torch::manual_seed(42);
      torch::Tensor input = torch::rand({3, 3}, torch::requires_grad());
      torch::Tensor weights = torch::rand({3, 3}, torch::requires_grad());
 
