@@ -260,6 +260,8 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
      // Free allocated memory
      delete[] input_grad_computed;
      delete[] weights_grad_computed;
+     free(transposed_weights_ptr);
+     std::cout << "Finished testing " << func_name << " function.\n";
  }
 
 
