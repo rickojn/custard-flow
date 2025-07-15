@@ -92,71 +92,39 @@ TEST(MatmulBackwardsTest, BasicFunctionality) {
 }
 
 TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
-    // Create random matrices using LibTorch
-    torch::manual_seed(42); // For reproducibility
+    // ARRANGE
+    torch::manual_seed(42);
     torch::Tensor A = torch::rand({3, 3});
     torch::Tensor B = torch::rand({3, 3});
     torch::Tensor expected = torch::mm(A, B);
 
-    // Extract raw pointers
     float* A_ptr = A.data_ptr<float>();
     float* A_ptr_transposed = A.t().data_ptr<float>();
     float* B_ptr = B.data_ptr<float>();
     float* B_ptr_transposed = (float*)malloc(B.size(0) * B.size(1) * sizeof(float));
     transpose_matrix(B_ptr, B_ptr_transposed, B.size(0), B.size(1));
     float* expected_ptr = expected.data_ptr<float>();
-    // Get dimensions
+
     int m = A.size(0);
     int k = A.size(1);
     int n = B.size(1);
 
-    // Allocate memory for the result matrix
     float* my_result_ptr = new float[m * n];
-    std::fill(my_result_ptr, my_result_ptr + m * n, 0.0f); // Initialize to zero
+    std::fill(my_result_ptr, my_result_ptr + m * n, 0.0f); 
 
-    // Call your custom function
+    // ACT
     naive_matmul(A_ptr, B_ptr_transposed, my_result_ptr, m, k, n);
 
-    // Print the matrices for debugging
-    std::cout << "Matrix A:\n";
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < k; ++j) {
-            std::cout << A_ptr[i * k + j] << " ";
-        }
-        std::cout << "\n";
-    }
-    std::cout << "Matrix B:\n";
-    for (int i = 0; i < k; ++i) {
-        for (int j = 0; j < n; ++j) {
-            std::cout << B_ptr[i * n + j] << " ";
-        }
-        std::cout << "\n";
-    }
-    std::cout << "Expected Result:\n";
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < n; ++j) {
-            std::cout << expected_ptr[i * n + j] << " ";
-        }
-        std::cout << "\n";
-    }
-    std::cout << "My Result:\n";
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < n; ++j) {
-            std::cout << my_result_ptr[i * n + j] << " ";
-        }
-        std::cout << "\n";
-    }
-    // Print the dimensions
-    std::cout << "Dimensions: A(" << m << ", " << k << "), B(" << k << ", " << n << "), Result(" << m << ", " << n << ")\n";
 
-    // Compare results
+    // ASSERT
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < n; ++j) {
             EXPECT_FLOAT_EQ(my_result_ptr[i * n + j], expected_ptr[i * n + j])
                 << "Mismatch at (" << i << ", " << j << ")";
         }
     }
-    // Free allocated memory
+
+    // Clean up
     delete[] my_result_ptr;
     free(B_ptr_transposed);
 }
@@ -167,43 +135,31 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
      std::function<void(const float *, const float *, const float *, float *, float *, size_t, size_t, size_t)> matmul_backwards_func,
      std::string func_name)
  {
-     std::cout << "Testing " << func_name << " function with autograd comparison.\n";
-     // set the random seed for reproducibility
+     // ARRANGE
      torch::manual_seed(42);
      torch::Tensor input = torch::rand({3, 3}, torch::requires_grad());
      torch::Tensor weights = torch::rand({3, 3}, torch::requires_grad());
-
      torch::Tensor output = torch::mm(input, weights);
      torch::Tensor grad_output = torch::rand_like(output);
-
-     // Compute gradients using autograd
      output.backward(grad_output);
-     // print input and weights for debugging
-     std::cout << "Input:\n"
-               << input << "\n";
-     std::cout << "Weights:\n"
-               << weights << "\n";
-     std::cout << "Grad Output:\n"
-               << grad_output << "\n";
-
-     // Extract gradients
+     
      float *input_grad = input.grad().data_ptr<float>();
      float *weights_grad = weights.grad().data_ptr<float>();
-
-     // Function under test
      float *input_ptr = input.data_ptr<float>();
      float *weights_ptr = weights.data_ptr<float>();
      float *transposed_weights_ptr = (float *)malloc(weights.size(0) * weights.size(1) * sizeof(float));
      transpose_matrix(weights_ptr, transposed_weights_ptr, weights.size(0), weights.size(1));
      float *grad_output_ptr = grad_output.data_ptr<float>();
+     
      float *input_grad_computed = new float[3 * 3];
      float *weights_grad_computed = new float[3 * 3];
      std::fill(input_grad_computed, input_grad_computed + 3 * 3, 0.0f);
      std::fill(weights_grad_computed, weights_grad_computed + 3 * 3, 0.0f);
 
+     // ACT
      matmul_backwards_func(grad_output_ptr, transposed_weights_ptr, input_ptr, weights_grad_computed, input_grad_computed, 3, 3, 3);
 
-     // Compare computed gradients with autograd gradients
+     // ASSERT
      for (int i = 0; i < 3; ++i)
      {
          for (int j = 0; j < 3; ++j)
@@ -215,53 +171,11 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
          }
      }
 
-     // print the gradients for debugging
+     
 
-     // torch gradients
-     std::cout << "Input Gradient (Torch):\n";
-     for (int i = 0; i < 3; ++i)
-     {
-         for (int j = 0; j < 3; ++j)
-         {
-             std::cout << input.grad()[i][j].item<float>() << ",";
-         }
-         std::cout << "\n";
-     }
-     std::cout << "Weights Gradient (Torch):\n";
-     for (int i = 0; i < 3; ++i)
-     {
-         for (int j = 0; j < 3; ++j)
-         {
-             std::cout << weights.grad()[i][j].item<float>() << ",";
-         }
-         std::cout << "\n";
-     }
-
-     // computed gradients
-     std::cout << "Input Gradient:\n";
-     for (int i = 0; i < 3; ++i)
-     {
-         for (int j = 0; j < 3; ++j)
-         {
-             std::cout << input_grad_computed[i * 3 + j] << " ";
-         }
-         std::cout << "\n";
-     }
-     std::cout << "Weights Gradient:\n";
-     for (int i = 0; i < 3; ++i)
-     {
-         for (int j = 0; j < 3; ++j)
-         {
-             std::cout << weights_grad_computed[i * 3 + j] << " ";
-         }
-         std::cout << "\n";
-     }
-
-     // Free allocated memory
      delete[] input_grad_computed;
      delete[] weights_grad_computed;
      free(transposed_weights_ptr);
-     std::cout << "Finished testing " << func_name << " function.\n";
  }
 
 
