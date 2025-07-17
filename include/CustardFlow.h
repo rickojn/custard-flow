@@ -26,6 +26,7 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
 void matmul_backwards(const float *grads_C, const float *B, const float *A, float *grads_B, float *grads_A, size_t M, size_t N, size_t K);
 void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_num_rows, size_t src_num_cols);
 void simd_matmul_backward(const float *grads_C, const float *B, const float *A, float *grads_B, float *grads_A, size_t M, size_t N, size_t K);
+void loss_softmax_backward(const float *probs, const long *targets, float *grad_logits, size_t batch_size, size_t num_classes);
 
 #ifdef __cplusplus
 }
