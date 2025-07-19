@@ -208,6 +208,8 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
     // ASSERT
     EXPECT_FLOAT_EQ(loss.item<float>(), loss_value);
 
+    delete[] log_probs;
+
  }
 
  

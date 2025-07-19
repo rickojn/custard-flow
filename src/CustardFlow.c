@@ -310,18 +310,26 @@ void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_nu
     }
 }
 
-
-float cross_entropy_forward(const float *logits, const long *targets, float *log_probs, size_t batch_size, size_t num_classes) {
+float cross_entropy_forward(const float *logits, const long *targets, float *log_probs, size_t batch_size, size_t num_classes)
+{
     float loss = 0.0f;
-    for (size_t idx_sample = 0; idx_sample < batch_size; idx_sample++) {
-        for (size_t idx_class = 0; idx_class < num_classes; idx_class++) {
-            size_t offset = idx_sample * num_classes + idx_class;
-            log_probs[offset] = logits[offset] - logf(expf(logits[offset]));
-            if (idx_class == targets[idx_sample]) {
-                loss -= log_probs[offset];
+    for (size_t idx_sample = 0; idx_sample < batch_size; idx_sample++)
+    {
+        float logit_sum = 0.0f;
+        // TBC .. calculate logit_sum for normalization
+        for (size_t idx_class = 0; idx_class < num_classes; idx_class++)
+        {
+            logit_sum += expf(logits[idx_sample * num_classes + idx_class]);
+        }
+        for (size_t idx_class = 0; idx_class < num_classes; idx_class++)
+        {
+            float log_prob = logits[idx_sample * num_classes + idx_class] - logit_sum;
+            log_probs[idx_sample * num_classes + idx_class] = log_prob;
+            if (idx_class == targets[idx_sample])
+            {
+                loss -= log_prob; // accumulate loss only for the target class
             }
         }
+        return loss / batch_size;
     }
-    return loss / batch_size;
 }
-
