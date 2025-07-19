@@ -183,46 +183,31 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
     mat_mul_backwards_test(matmul_backwards, "matmul_backwards");
  }
 
-TEST(SoftmaxLossBackwardsTest, CompareWithLibTorch) {
+
+ TEST(CrossEntropyLossTest, BasicFunctionality) {
     // ARRANGE
     torch::manual_seed(42);
     int batch_size = 4;
-    int num_classes = 3;
+    int num_classes = 5;
 
-    // Random logits and target labels
+    // Random logits and targets
     torch::Tensor logits = torch::randn({batch_size, num_classes}, torch::requires_grad());
     torch::Tensor targets = torch::randint(0, num_classes, {batch_size}, torch::kLong);
 
-    // Compute  loss and backward with LibTorch
-    torch::Tensor probs = torch::softmax(logits, /*dim=*/1);
-    torch::Tensor loss = torch::nn::functional::cross_entropy(logits, targets);
-    loss.backward();
-    float* logits_grad = logits.grad().data_ptr<float>();
-
-    // Prepare inputs for custom function
-    float* logits_ptr = logits.data_ptr<float>();
-    long * targets_ptr = targets.data_ptr<long>();
-    float* grad_output = new float[batch_size * num_classes]();
-    float* grad_loss = new float[batch_size]();
+    auto loss = torch::nn::functional::cross_entropy(logits, targets, torch::nn::functional::CrossEntropyFuncOptions().reduction(torch::kMean));
 
 
-    // Output buffer for computed gradients
-    float* computed_grad = new float[batch_size * num_classes]();
-    std::fill(computed_grad, computed_grad + batch_size * num_classes, 0.0f);
+    float *logits_ptr = logits.data_ptr<float>();
+    long *targets_ptr = targets.data_ptr<long>();
 
     // ACT
-    // Assume loss_softmax_backwards(float* logits, int* targets, float* grad_loss, float* grad_logits, int batch_size, int num_classes)
-    loss_softmax_backward(logits_ptr, targets_ptr, computed_grad, batch_size, num_classes);
+
+    float *log_probs = new float[batch_size * num_classes];
+    float loss_value = cross_entropy_forward(logits_ptr, targets_ptr, log_probs, batch_size, num_classes);
 
     // ASSERT
-    for (int i = 0; i < batch_size * num_classes; ++i) {
-        EXPECT_NEAR(computed_grad[i], logits_grad[i], 1e-5)
-            << "Mismatch in gradient at index " << i;
-    }
+    EXPECT_FLOAT_EQ(loss.item<float>(), loss_value);
 
-    delete[] grad_output;
-    delete[] grad_loss;
-    delete[] computed_grad;
-}
+ }
 
  

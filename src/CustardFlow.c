@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <immintrin.h>
+#include <math.h>
 
 
 
@@ -309,15 +310,18 @@ void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_nu
     }
 }
 
-void loss_softmax_backward(const float * probs, const long *targets, float * grad_logits,
-     size_t size_batch, size_t size_classes)
-{
 
-    for (size_t idx_sample = 0; idx_sample < size_batch; idx_sample++){
-        for (size_t idx_logit = 0; idx_logit < size_classes; idx_logit++){
-            float label = idx_logit == targets[idx_sample] ? 1.0 : 0.0;
-            size_t offset_logit = idx_sample * size_classes + idx_logit;
-            grad_logits[offset_logit] = probs[offset_logit] - label;
+float cross_entropy_forward(const float *logits, const long *targets, float *log_probs, size_t batch_size, size_t num_classes) {
+    float loss = 0.0f;
+    for (size_t idx_sample = 0; idx_sample < batch_size; idx_sample++) {
+        for (size_t idx_class = 0; idx_class < num_classes; idx_class++) {
+            size_t offset = idx_sample * num_classes + idx_class;
+            log_probs[offset] = logits[offset] - logf(expf(logits[offset]));
+            if (idx_class == targets[idx_sample]) {
+                loss -= log_probs[offset];
+            }
         }
-    }    
+    }
+    return loss / batch_size;
 }
+
