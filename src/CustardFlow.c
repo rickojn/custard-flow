@@ -316,13 +316,23 @@ float cross_entropy_forward(const float *logits, const long *targets, float *log
     for (size_t idx_sample = 0; idx_sample < batch_size; idx_sample++)
     {
         float logit_sum = 0.0f;
+        // subtract logit max for numerical stability
+        float max_logit = logits[idx_sample * num_classes];
+        for (size_t idx_class = 1; idx_class < num_classes; idx_class++)
+        {
+            if (logits[idx_sample * num_classes + idx_class] > max_logit)
+            {
+                max_logit = logits[idx_sample * num_classes + idx_class];
+            }
+        }
+        
         for (size_t idx_class = 0; idx_class < num_classes; idx_class++)
         {
-            logit_sum += expf(logits[idx_sample * num_classes + idx_class]);
+            logit_sum += expf(logits[idx_sample * num_classes + idx_class] - max_logit);
         }
         for (size_t idx_class = 0; idx_class < num_classes; idx_class++)
         {
-            float log_prob = logits[idx_sample * num_classes + idx_class] - logf(logit_sum);
+            float log_prob = logits[idx_sample * num_classes + idx_class] - max_logit - logf(logit_sum);
             log_probs[idx_sample * num_classes + idx_class] = log_prob;
             if (idx_class == targets[idx_sample])
             {
