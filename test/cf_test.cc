@@ -198,11 +198,13 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
 
 
     float *logits_ptr = logits.data_ptr<float>();
+    float * transposed_logits_ptr = (float *)malloc(logits.size(0) * logits.size(1) * sizeof(float));
+    transpose_matrix(logits_ptr, transposed_logits_ptr, logits.size(0), logits.size(1));
     long *targets_ptr = targets.data_ptr<long>();
 
-    // ACT
-
     float *log_probs = new float[batch_size * num_classes];
+
+    // ACT
     float loss_value = cross_entropy_forward(logits_ptr, targets_ptr, log_probs, batch_size, num_classes);
 
     // ASSERT
