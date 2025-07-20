@@ -343,3 +343,30 @@ float cross_entropy_forward(const float *logits, const long *targets, float *log
 
     return loss/batch_size;
 }
+
+void loss_backward(const float *logits, const long *targets, float *grad_logits, size_t size_batch, size_t num_classes)
+{
+    for (size_t idx_sample = 0; idx_sample < size_batch; idx_sample++)
+    {
+        float max_logit = logits[idx_sample * num_classes];
+        for (size_t idx_class = 0; idx_class < num_classes; idx_class++)
+        {
+            if (logits[idx_sample * num_classes + idx_class] > max_logit)
+            {
+                max_logit = logits[idx_sample * num_classes + idx_class];
+            }
+        }
+        float logit_sum = 0.0f;
+        for (size_t idx_class = 0; idx_class < num_classes; idx_class++)
+        {
+            logit_sum += expf(logits[idx_sample * num_classes + idx_class] - max_logit);
+        }
+
+        for (size_t idx_class = 0; idx_class < num_classes; idx_class++)
+        {
+            float prob = expf(logits[idx_sample * num_classes + idx_class] - max_logit) / logit_sum;
+            float target = (idx_class == targets[idx_sample]) ? 1.0f : 0.0f;
+            grad_logits[idx_sample * num_classes + idx_class] = (prob - target) / size_batch;
+        }
+    }
+}

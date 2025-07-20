@@ -214,4 +214,33 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
 
  }
 
+ TEST(LossBackwardTest, BasicFunctionality) {
+    // ARRANGE
+    torch::manual_seed(42);
+    int batch_size = 4;
+    int num_classes = 5;
+
+    // Random logits and targets
+    torch::Tensor logits = torch::randn({batch_size, num_classes}, torch::requires_grad());
+    torch::Tensor targets = torch::randint(0, num_classes, {batch_size}, torch::kLong);
+
+    auto loss = torch::nn::functional::cross_entropy(logits, targets, torch::nn::functional::CrossEntropyFuncOptions().reduction(torch::kMean));
+    loss.backward();
+
+    float *logits_ptr = logits.data_ptr<float>();
+    long *targets_ptr = targets.data_ptr<long>();
+    float *grad_logits = logits.grad().data_ptr<float>();
+
+    // ACT
+    loss_backward(logits_ptr, targets_ptr, grad_logits, batch_size, num_classes);
+
+    // ASSERT
+    for (int i = 0; i < batch_size; ++i) {
+        for (int j = 0; j < num_classes; ++j) {
+            EXPECT_FLOAT_EQ(grad_logits[i * num_classes + j], logits.grad()[i][j].item<float>())
+                << "Mismatch in gradient at (" << i << ", " << j << ")";
+        }
+    }
+ }
+
  
