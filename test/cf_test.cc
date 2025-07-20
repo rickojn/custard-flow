@@ -243,4 +243,41 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
     }
  }
 
- 
+ TEST(SIMDMatrixMultiplicationTest, CompareWithLibTorch) {
+    // ARRANGE
+    torch::manual_seed(42);
+    torch::Tensor A = torch::rand({3, 3});
+    torch::Tensor B = torch::rand({3, 3});
+    torch::Tensor expected = torch::mm(A, B);
+
+    float* A_ptr = A.data_ptr<float>();
+    float* A_ptr_transposed = A.t().data_ptr<float>();
+    float* B_ptr = B.data_ptr<float>();
+    float* B_ptr_transposed = (float*)malloc(B.size(0) * B.size(1) * sizeof(float));
+    transpose_matrix(B_ptr, B_ptr_transposed, B.size(0), B.size(1));
+    float* expected_ptr = expected.data_ptr<float>();
+
+    int m = A.size(0);
+    int k = A.size(1);
+    int n = B.size(1);
+
+    float* my_result_ptr = new float[m * n];
+    std::fill(my_result_ptr, my_result_ptr + m * n, 0.0f); 
+
+    // ACT
+    simd_matmul(A_ptr, B_ptr_transposed, my_result_ptr, m, k, n);
+
+
+    // ASSERT
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            EXPECT_FLOAT_EQ(my_result_ptr[i * n + j], expected_ptr[i * n + j])
+                << "Mismatch at (" << i << ", " << j << ")";
+        }
+    }
+
+    // Clean up
+    delete[] my_result_ptr;
+    free(B_ptr_transposed);
+}
+

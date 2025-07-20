@@ -29,6 +29,7 @@ void simd_matmul_backward(const float *grads_C, const float *B, const float *A, 
 float cross_entropy_forward(const float *logits, const long *targets, float * log_probs, size_t batch_size, size_t num_classes);
 void loss_backward(const float *logits, const long *targets, float *grad_logits, size_t batch_size, size_t num_classes);
 
+
 #ifdef __cplusplus
 }
 #endif

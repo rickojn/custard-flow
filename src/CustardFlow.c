@@ -370,3 +370,4 @@ void loss_backward(const float *logits, const long *targets, float *grad_logits,
         }
     }
 }
+
