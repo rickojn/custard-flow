@@ -202,6 +202,11 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * C, size_t M
 
     for (size_t idx_k = 0; idx_k < K; idx_k++){
         reg_col_tile_A_1 = _mm256_loadu_ps(&tile_A[idx_k * M]);
+        // Create a zero vector
+        __m256 zero = _mm256_setzero_ps();
+
+        // Blend with zero on the last two positions (indices 6 and 7)
+        reg_col_tile_A_1 = _mm256_blend_ps(reg_col_tile_A_1, zero, 0b11000000);
 
         
         reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N]);

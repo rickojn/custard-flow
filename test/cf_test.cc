@@ -37,6 +37,31 @@ TEST(MatmulNaiveTest, BasicFunctionality) {
     EXPECT_FLOAT_EQ(C[3], 77);
 }
 
+TEST(MatmulSIMDTest, BasicFunctionality) {
+
+
+    /*
+    A [1,2,3
+       4,5,6]
+    B [1,4
+       2,5
+       3,6]
+   C  [14, 32
+       32, 77]
+    */
+    float A[] = {1, 2, 3, 4, 5, 6};
+    // float B[] = {1, 2, 3, 4, 5, 6};
+    float B[] = {1, 4, 2, 5, 3, 6}; 
+    float C[4] = {0};
+
+    simd_matmul(A, B, C, 2, 2, 3);
+
+    EXPECT_FLOAT_EQ(C[0], 14);
+    EXPECT_FLOAT_EQ(C[1], 32);
+    EXPECT_FLOAT_EQ(C[2], 32);
+    EXPECT_FLOAT_EQ(C[3], 77);
+}
+
 /* Test matmul_backwards function
     A [1,2,3      
        4,5,6]           2 x 3
