@@ -125,6 +125,32 @@ void tiled_matmul(const float * A, const float * B, float * C, size_t m, size_t 
     }
 }
 
+/*
+Naïve: 
+Each element of the result matrix is equal to the dot product of the row vector of A and column vector of B. 
+	- C[0][0] = A[0][] * B[][0]
+	- C[0][1] = A[0][] * B[][1]
+	- C[0][n] = A[0][] * B[][n]
+
+    - C[1][0] = A[1][] * B[][0]
+    - C[1][1] = A[1][] * B[][1]
+    - C[1][n] = A[1][] * B[][n]
+
+    - C[m][0] = A[m][] * B[][0]
+    - C[m][1] = A[m][] * B[][1]
+    - C[m][n] = A[m][] * B[][n]
+
+
+Memory Layout with Large Matrices:
+If A, B and C are all row major then when obtaining the dot product of A's row by B's column the A row vector will be contiguous in memory but B elements will be spaced M elements apart and M will be larger than the cache line leading to more misses and fetches from slower memories. So A should be row major while B should be column major.
+
+Tiling:
+In the naïve approach each element of C is calculated from the dot product of its row vector in A and its column vector in B. 
+Elements are calculated one by one. Let us say we have matrices all of 1024 x1024 floats.  
+With the naïve approach, by the time C[0][1] is being calculated there is a strong chance that the intial elements of A[0][]
+have been evicted during the fetching of elements of B.
+
+*/
 
 
 void l1_tiled_matmul(const float * A, const float * B, float * C, size_t m, size_t n, size_t k, size_t size_outer_tile, size_t size_inner_tile){
@@ -202,19 +228,11 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * C, size_t M
 
     for (size_t idx_k = 0; idx_k < K; idx_k++){
         reg_col_tile_A_1 = _mm256_loadu_ps(&tile_A[idx_k * M]);
-        // Create a zero vector
-        __m256 zero = _mm256_setzero_ps();
-
-        // Blend with zero on the last two positions (indices 6 and 7)
-        reg_col_tile_A_1 = _mm256_blend_ps(reg_col_tile_A_1, zero, 0b11000000);
-
         
         reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N]);
 
         reg_array_C[0][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[0][0]);
 
-
-        reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 1]);
 
         reg_array_C[1][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[1][0]);
 
