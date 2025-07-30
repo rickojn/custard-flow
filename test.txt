@@ -1,5 +1,5 @@
 Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src/googletest/src/gtest_main.cc
-[==========] Running 8 tests from 8 test suites.
+[==========] Running 9 tests from 9 test suites.
 [----------] Global test environment set-up.
 [----------] 1 test from MinTest
 [ RUN      ] MinTest.BasicFunctionality
@@ -11,6 +11,11 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 [       OK ] MatmulNaiveTest.BasicFunctionality (0 ms)
 [----------] 1 test from MatmulNaiveTest (0 ms total)
 
+[----------] 1 test from MatmulSIMDTest
+[ RUN      ] MatmulSIMDTest.BasicFunctionality
+[       OK ] MatmulSIMDTest.BasicFunctionality (0 ms)
+[----------] 1 test from MatmulSIMDTest (0 ms total)
+
 [----------] 1 test from MatmulBackwardsTest
 [ RUN      ] MatmulBackwardsTest.BasicFunctionality
 [       OK ] MatmulBackwardsTest.BasicFunctionality (0 ms)
@@ -18,8 +23,8 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (45 ms)
-[----------] 1 test from MatrixMultiplicationTest (45 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (41 ms)
+[----------] 1 test from MatrixMultiplicationTest (41 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
@@ -38,59 +43,77 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 
 [----------] 1 test from SIMDMatrixMultiplicationTest
 [ RUN      ] SIMDMatrixMultiplicationTest.CompareWithLibTorch
-/home/rickojn/coding/custard-flow/test/cf_test.cc:274: Failure
+A: 0.882269	B: 0.940771 
+A: 0.915004	B: 0.133186 
+A: 0.382864	B: 0.934598 
+A: 0.959306	B: 0.593580 
+A: 0.390448	B: 0.869404 
+A: 0.600895	B: 0.567715 
+A: 0.256572	B: 0.741094 
+A: 0.793641	B: 0.429404 
+/home/rickojn/coding/custard-flow/test/cf_test.cc:317: Failure
 Expected equality of these values:
   my_result_ptr[i * n + j]
-    Which is: 1.1663673
-  expected_ptr[i * n + j]
-    Which is: 1.0774177
-Mismatch at (0, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:274: Failure
-Expected equality of these values:
-  my_result_ptr[i * n + j]
-    Which is: 0.95786715
-  expected_ptr[i * n + j]
-    Which is: 1.683033
-Mismatch at (0, 1)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:274: Failure
-Expected equality of these values:
-  my_result_ptr[i * n + j]
-    Which is: 1.1710105
-  expected_ptr[i * n + j]
-    Which is: 1.4215282
-Mismatch at (0, 2)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:274: Failure
-Expected equality of these values:
-  my_result_ptr[i * n + j]
-    Which is: 1.5018057
-  expected_ptr[i * n + j]
-    Which is: 0.7252506
+    Which is: 0.83001375
+  expected_ptr_transposed[i * n + j]
+    Which is: 0.11750585
 Mismatch at (1, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:274: Failure
+/home/rickojn/coding/custard-flow/test/cf_test.cc:317: Failure
 Expected equality of these values:
   my_result_ptr[i * n + j]
-    Which is: 1.6053349
-  expected_ptr[i * n + j]
-    Which is: 1.6502872
+    Which is: 0.86080962
+  expected_ptr_transposed[i * n + j]
+    Which is: 0.12186565
 Mismatch at (1, 1)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:274: Failure
+/home/rickojn/coding/custard-flow/test/cf_test.cc:317: Failure
 Expected equality of these values:
   my_result_ptr[i * n + j]
-    Which is: 1.371201
-  expected_ptr[i * n + j]
-    Which is: 1.2036397
+    Which is: 0.36018729
+  expected_ptr_transposed[i * n + j]
+    Which is: 0.050992064
 Mismatch at (1, 2)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:274: Failure
+/home/rickojn/coding/custard-flow/test/cf_test.cc:317: Failure
 Expected equality of these values:
   my_result_ptr[i * n + j]
-    Which is: 1.3755089
-  expected_ptr[i * n + j]
-    Which is: 1.1281387
-Mismatch at (2, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:274: Failure
+    Which is: 0.9024874
+  expected_ptr_transposed[i * n + j]
+    Which is: 0.12776601
+Mismatch at (1, 3)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:317: Failure
 Expected equality of these values:
   my_result_ptr[i * n + j]
-    Which is: 1.1941007
-  expected_ptr[i * n + j]
-    Which is: 1.5233539
-Mismatch at (2, 1)
+    Which is: 0.36732253
+  expected_ptr_transposed[i * n + j]
+    Which is: 0.052002206
+Mismatch at (1, 4)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:317: Failure
+Expected equality of these values:
+  my_result_ptr[i * n + j]
+    Which is: 0.56530517
+  expected_ptr_transposed[i * n + j]
+    Which is: 0.080030799
+Mismatch at (1, 5)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:317: Failure
+Expected equality of these values:
+  my_result_ptr[i * n + j]
+    Which is: 0.24137607
+  expected_ptr_transposed[i * n + j]
+    Which is: 0.034171842
+Mismatch at (1, 6)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:317: Failure
+Expected equality of these values:
+  my_result_ptr[i * n + j]
+    Which is: 0.74663514
+  expected_ptr_transposed[i * n + j]
+    Which is: 0.10570186
+Mismatch at (1, 7)
+[  FAILED  ] SIMDMatrixMultiplicationTest.CompareWithLibTorch (0 ms)
+[----------] 1 test from SIMDMatrixMultiplicationTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 9 tests from 9 test suites ran. (44 ms total)
+[  PASSED  ] 8 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] SIMDMatrixMultiplicationTest.CompareWithLibTorch
+
+ 1 FAILED TEST
