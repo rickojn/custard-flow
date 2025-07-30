@@ -282,8 +282,8 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
  TEST(SIMDMatrixMultiplicationTest, CompareWithLibTorch) {
     // ARRANGE
     torch::manual_seed(42);
-    torch::Tensor A = torch::rand({8, 1});
-    torch::Tensor B = torch::rand({1, 8});
+    torch::Tensor A = torch::rand({1024, 1024});
+    torch::Tensor B = torch::rand({1024, 1024});
     torch::Tensor expected = torch::mm(A, B);
 
     float* A_ptr = A.data_ptr<float>();
