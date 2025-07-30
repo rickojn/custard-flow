@@ -282,8 +282,8 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
  TEST(SIMDMatrixMultiplicationTest, CompareWithLibTorch) {
     // ARRANGE
     torch::manual_seed(42);
-    torch::Tensor A = torch::rand({8, 8});
-    torch::Tensor B = torch::rand({8, 8});
+    torch::Tensor A = torch::rand({8, 1});
+    torch::Tensor B = torch::rand({1, 8});
     torch::Tensor expected = torch::mm(A, B);
 
     float* A_ptr = A.data_ptr<float>();
@@ -302,10 +302,14 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
     std::fill(my_result_ptr, my_result_ptr + m * n, 0.0f); 
 
     // ACT
-    simd_matmul(A_ptr_transposed, B_ptr, my_result_ptr, m, k, n);
+    simd_matmul(A_ptr_transposed, B_ptr, my_result_ptr, m, n, k);
 
 
-    // ASSERT
+//    ASSERT
+for (int i = 0; i < 8; i++){
+    printf("A: %f\tB: %f \n", A_ptr_transposed[i], B_ptr[i]);
+}
+EXPECT_FLOAT_EQ(my_result_ptr[0], expected_ptr[0]);
     // for (int i = 0; i < m; ++i) {
     //     for (int j = 0; j < n; ++j) {
     //         EXPECT_FLOAT_EQ(my_result_ptr[i * n + j], expected_ptr[i * n + j])
