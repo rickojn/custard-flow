@@ -233,6 +233,7 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * C, size_t M
 
         reg_array_C[0][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[0][0]);
 
+        reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 1]);
 
         reg_array_C[1][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[1][0]);
 
