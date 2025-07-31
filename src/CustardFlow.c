@@ -222,7 +222,7 @@ ab ab    ab ab   ab ab    ab ab
 
 
 void simd_kernel(const float * tile_A, const float * tile_B, float * C, size_t M, size_t N, size_t K, size_t tile_m, size_t tile_n, size_t offset_tile_C){
-    __m256 reg_array_C[8][1] = {};
+    __m256 reg_array_C[8] = {};
     __m256 reg_col_tile_A_1;
     __m256 reg_tile_B_element;
 
@@ -231,39 +231,39 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * C, size_t M
         
         reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N]);
 
-        reg_array_C[0][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[0][0]);
+        reg_array_C[0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[0]);
 
         reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 1]);
 
-        reg_array_C[1][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[1][0]);
+        reg_array_C[1] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[1]);
 
 
         reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 2]);
 
-        reg_array_C[2][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[2][0]);
+        reg_array_C[2] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[2]);
 
 
         reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 3]);
 
-        reg_array_C[3][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[3][0]);
+        reg_array_C[3] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[3]);
 
 
         reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 4]);
 
-        reg_array_C[4][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[4][0]);
+        reg_array_C[4] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[4]);
 
 
         reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 5]);
-        reg_array_C[5][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[5][0]);
+        reg_array_C[5] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[5]);
 
         reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 6]);
-        reg_array_C[6][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[6][0]);
+        reg_array_C[6] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[6]);
         reg_tile_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + 7]);
-        reg_array_C[7][0] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[7][0]);
+        reg_array_C[7] = _mm256_fmadd_ps(reg_col_tile_A_1, reg_tile_B_element, reg_array_C[7]);
     }   
 
     for (size_t idx_col = 0; idx_col * M + offset_tile_C < M * N && idx_col < 8; idx_col++){
-        _mm256_storeu_ps(&C[idx_col * M + offset_tile_C], reg_array_C[idx_col][0]);
+        _mm256_storeu_ps(&C[idx_col * M + offset_tile_C], reg_array_C[idx_col]);
     }
 }
 
