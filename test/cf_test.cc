@@ -279,48 +279,46 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
     }
  }
 
- TEST(SIMDMatrixMultiplicationTest, CompareWithLibTorch) {
-    // ARRANGE
-    torch::manual_seed(42);
-    torch::Tensor A = torch::rand({1024, 1024});
-    torch::Tensor B = torch::rand({1024, 1024});
-    torch::Tensor expected = torch::mm(A, B);
+ TEST(SIMDMatrixMultiplicationTest, CompareWithLibTorch)
+ {
+     // ARRANGE
+     torch::manual_seed(42);
+     torch::Tensor A = torch::rand({1024, 1024});
+     torch::Tensor B = torch::rand({1024, 1024});
+     torch::Tensor expected = torch::mm(A, B); 
 
-    float* A_ptr = A.data_ptr<float>();
-    float* A_ptr_transposed = (float*)malloc(A.size(0) * A.size(1) * sizeof(float));
-    transpose_matrix(A_ptr, A_ptr_transposed, A.size(0), A.size(1));
-    float* B_ptr = B.data_ptr<float>();
-    float* B_ptr_transposed = (float*)malloc(B.size(0) * B.size(1) * sizeof(float));
-    transpose_matrix(B_ptr, B_ptr_transposed, B.size(0), B.size(1));
-    float* expected_ptr = expected.data_ptr<float>();
+     float *A_ptr = A.data_ptr<float>(); // row-major
+     float *A_ptr_transposed = (float *)malloc(A.size(0) * A.size(1) * sizeof(float));
+     transpose_matrix(A_ptr, A_ptr_transposed, A.size(0), A.size(1));
 
-    int m = A.size(0);
-    int k = A.size(1);
-    int n = B.size(1);
+     float *B_ptr = B.data_ptr<float>();
+     float *B_ptr_transposed = (float *)malloc(B.size(0) * B.size(1) * sizeof(float));
+     transpose_matrix(B_ptr, B_ptr_transposed, B.size(0), B.size(1));
+     float *expected_ptr = expected.data_ptr<float>(); // row-major
 
-    float* my_result_ptr = new float[m * n];
-    std::fill(my_result_ptr, my_result_ptr + m * n, 0.0f); 
+     int m = A.size(0);
+     int k = A.size(1);
+     int n = B.size(1);
 
-    // ACT
-    simd_matmul(A_ptr_transposed, B_ptr, my_result_ptr, m, n, k);
+     float *actual_ptr = new float[m * n];
+     std::fill(actual_ptr, actual_ptr + m * n, 0.0f);
 
+     // ACT
+     simd_matmul(A_ptr_transposed, B_ptr, actual_ptr, m, n, k);
 
-//    ASSERT
-for (int i = 0; i < 8; i++){
-    printf("A: %f\tB: %f \n", A_ptr_transposed[i], B_ptr[i]);
-}
-float *expected_ptr_transposed = (float *)malloc(m * n * sizeof(float));
-transpose_matrix(expected_ptr, expected_ptr_transposed, m, n);
-EXPECT_FLOAT_EQ(my_result_ptr[0], expected_ptr[0]);
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j < n; ++j) {
-            EXPECT_NEAR(my_result_ptr[i * n + j], expected_ptr_transposed[i * n + j], 1e-3)
-                << "Mismatch at (" << i << ", " << j << ")";
-        }
-    }
+     //    ASSERT
+     float *expected_ptr_transposed = (float *)malloc(m * n * sizeof(float));
+     transpose_matrix(expected_ptr, expected_ptr_transposed, m, n);
+     for (int i = 0; i < m; ++i)
+     {
+         for (int j = 0; j < n; ++j)
+         {
+             EXPECT_NEAR(actual_ptr[i * n + j], expected_ptr_transposed[i * n + j], 1e-3)
+                 << "Mismatch at (" << i << ", " << j << ")";
+         }
+     }
 
-    // Clean up
-    delete[] my_result_ptr;
-    free(B_ptr_transposed);
-}
-
+     // Clean up
+     delete[] actual_ptr;
+     free(B_ptr_transposed);
+ }
