@@ -46,6 +46,19 @@ target_link_libraries(
   ${TORCH_LIBRARIES}
 )
 
+
+add_executable(
+  main
+  src/Main.c
+)
+target_link_libraries(
+  main
+  custard-flow
+  ${TORCH_LIBRARIES}
+  m
+)
+
+
 # Enable intrinsics (SSE/AVX) if needed
 if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(custard-flow PRIVATE -march=native)

@@ -1,0 +1,8 @@
+unrolled
+initialising matrices ....
+Naive .. 
+Time spent on matmul: 12.806547 seconds
+Time spent on matmul back: 16.820770 seconds
+executing simd matmul now ...
+Time spent on simd matmul: 1.126971 seconds
+result agrees with naive matmul

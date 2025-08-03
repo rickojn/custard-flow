@@ -93,7 +93,7 @@ void print_column_major_matrix(const float *A, size_t rows, size_t cols){
     }
 }
 
-int main(){
+int mainx(){
     float matrix [6] = {1,4,2,5,3,6}; 
     float transposed_matrix [6] = {};
     
@@ -103,7 +103,7 @@ int main(){
     print_row_major_matrix(&transposed_matrix[0],2,3);
 }
 
-int mainx() {
+int main() {
     /*
     1111  1234
     2222  1234
@@ -122,7 +122,7 @@ int mainx() {
         float A[] = {1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4}; // row major
         float B[] = {1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4}; // column major
         float C[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-        naive_matmul(A, B, C, 4, 4, 4, 4, 4, 4);
+        naive_matmul(A, B, C, 4, 4, 4);
     
         for (size_t i = 0; i < 4; i++)
         {
@@ -234,7 +234,7 @@ int mainx() {
     {
         printf("Naive .. \n");
         start = clock();
-        naive_matmul(LA, LB, ref_C, M, N, K, K, K, N);
+        naive_matmul(LA, LB, ref_C, M, N, K);
         end = clock();
         time_spent = (double)(end - start) / CLOCKS_PER_SEC;
         printf("Time spent on matmul: %f seconds\n", time_spent);        

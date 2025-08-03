@@ -221,13 +221,14 @@ ab ab    ab ab   ab ab    ab ab
 
 
 
-void simd_kernel(const float * tile_A, const float * tile_B, float * C, size_t M, size_t N, size_t K, size_t tile_m, size_t tile_n, size_t offset_tile_C){
+void simd_kernel_unrolled(const float * tile_A, const float * tile_B, float * C, size_t M, size_t N, size_t K, size_t tile_m, size_t tile_n, size_t offset_tile_C){
     __m256 reg_array_tile_C[8] = {}; // 8 256 bit regs for 8x8 floats of C
     __m256 reg_col_tile_strip_A; // 256 bit reg for 8 float row slice of 8 x K row strip of A
     __m256 reg_row_tile_strip_B_element; // 256 bit reg for broadcast of an element from K x 8 col strip of B
 
 
     for (size_t idx_k = 0; idx_k < K; idx_k++){
+        // Load the 8 floats from the idx_kth column of the 8 row strip of A
         reg_col_tile_strip_A = _mm256_loadu_ps(&tile_A[idx_k * M]);
         
         reg_row_tile_strip_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N]);
@@ -268,6 +269,73 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * C, size_t M
     }
 }
 
+void simd_kernel_rolled(const float * tile_A, const float * tile_B, float * C, 
+    size_t M, size_t N, size_t K, 
+    size_t tile_m, size_t tile_n, 
+    size_t offset_tile_C, size_t offset_tile_A, size_t offset_tile_B){
+
+    __m256 reg_array_tile_C[8] = {}; // 8 256 bit regs for 8x8 floats of C
+    __m256 reg_col_tile_strip_A; // 256 bit reg for 8 float row slice of 8 x K row strip of A
+    __m256 reg_row_tile_strip_B_element; // 256 bit reg for broadcast of an element from K x 8 col strip of B
+
+        // Create a mask for the first tile_m elements
+    // int mask_arr[8] = {0,0,0,0,0,0,0,0};
+    // for (size_t i = 0; i < tile_m; ++i) mask_arr[i] = -1; // -1 means load, 0 means zero
+    // __m256i mask = _mm256_loadu_si256((__m256i*)mask_arr);
+
+
+    for (size_t idx_k = 0; idx_k < K; idx_k++){
+        // Load the 8 floats from the idx_kth column of the 8 row strip of A
+        reg_col_tile_strip_A = _mm256_loadu_ps(&tile_A[idx_k * M]);
+
+        for (size_t idx_tile_B = 0; idx_tile_B < tile_n; idx_tile_B++){
+            reg_row_tile_strip_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + idx_tile_B]);
+            reg_array_tile_C[idx_tile_B] = _mm256_fmadd_ps(reg_col_tile_strip_A, reg_row_tile_strip_B_element, reg_array_tile_C[idx_tile_B]);
+        }
+        
+        
+    }   
+
+    for (size_t idx_col = 0; idx_col * M + offset_tile_C < M * N && idx_col < 8; idx_col++){
+        _mm256_storeu_ps(&C[idx_col * M + offset_tile_C], reg_array_tile_C[idx_col]);
+    }
+}
+
+void simd_kernel(const float * tile_A, const float * tile_B, float * C, 
+    size_t M, size_t N, size_t K, 
+    size_t tile_m, size_t tile_n, 
+    size_t offset_tile_C, size_t offset_tile_A, size_t offset_tile_B){
+
+    __m256 reg_array_tile_C[8] = {}; // 8 256 bit regs for 8x8 floats of C
+    __m256 reg_col_tile_strip_A; // 256 bit reg for 8 float row slice of 8 x K row strip of A
+    __m256 reg_row_tile_strip_B_element; // 256 bit reg for broadcast of an element from K x 8 col strip of B
+
+        // Create a mask for the first tile_m elements
+    int mask_arr[8] = {0,0,0,0,0,0,0,0};
+    for (size_t i = 0; i < tile_m; ++i) {
+        mask_arr[i] = -1; // -1 means load, 0 means zero
+    }
+     __m256i mask = _mm256_loadu_si256((__m256i*)mask_arr);
+
+
+    for (size_t idx_k = 0; idx_k < K; idx_k++){
+        // Load the 8 floats from the idx_kth column of the row strip of A
+        reg_col_tile_strip_A = _mm256_maskload_ps(&tile_A[idx_k * M], mask);
+
+        for (size_t idx_tile_B = 0; idx_tile_B < tile_n; idx_tile_B++){
+            reg_row_tile_strip_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + idx_tile_B]);
+            reg_array_tile_C[idx_tile_B] = _mm256_fmadd_ps(reg_col_tile_strip_A, reg_row_tile_strip_B_element, reg_array_tile_C[idx_tile_B]);
+        }
+        
+        
+    }   
+
+    for (size_t idx_col = 0; idx_col * M + offset_tile_C < M * N && idx_col < 8; idx_col++){
+        _mm256_storeu_ps(&C[idx_col * M + offset_tile_C], reg_array_tile_C[idx_col]);
+    }
+}
+
+
 void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, size_t K)
 {
     const size_t tile_m = 8;
@@ -278,7 +346,9 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
         for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
         {
             offset_C= idx_m + idx_n * M;
-            simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C);
+            // simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
+            simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
+            // simd_kernel_unrolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C);
         }
     }
 }

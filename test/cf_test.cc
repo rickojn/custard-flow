@@ -283,8 +283,8 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
  {
      // ARRANGE
      torch::manual_seed(42);
-     torch::Tensor A = torch::rand({1024, 1024});
-     torch::Tensor B = torch::rand({1024, 1024});
+     torch::Tensor A = torch::rand({256, 512});
+     torch::Tensor B = torch::rand({512, 1024});
      torch::Tensor expected = torch::mm(A, B); 
 
      float *A_ptr = A.data_ptr<float>(); // row-major
