@@ -309,6 +309,20 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * C,
     __m256 reg_array_tile_C[8] = {}; // 8 256 bit regs for 8x8 floats of C
     __m256 reg_col_tile_strip_A; // 256 bit reg for 8 float row slice of 8 x K row strip of A
     __m256 reg_row_tile_strip_B_element; // 256 bit reg for broadcast of an element from K x 8 col strip of B
+    
+    static int db_m = 0;
+    static int db_n = 0;
+    if ((M - offset_tile_A) / 8 == 0 && (M - offset_tile_A) % 8 != 0)
+    {
+        db_m++;
+        printf("%zu col A floats, this will lead to incorrect results %d \n", M - offset_tile_A, db_m);
+    }
+
+    if ((N - offset_tile_B) / 8 == 0 && (N - offset_tile_B) % 8 != 0)
+    {
+        db_n++;
+        printf("%zu row B floats, this will lead to incorrect results %d \n", N - offset_tile_B, db_n);
+    }
 
         // Create a mask for the first tile_m elements
     int mask_arr[8] = {0,0,0,0,0,0,0,0};
