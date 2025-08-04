@@ -23,13 +23,13 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (791 ms)
-[----------] 1 test from MatrixMultiplicationTest (791 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (780 ms)
+[----------] 1 test from MatrixMultiplicationTest (780 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
-[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (1 ms)
-[----------] 1 test from MatrixMultiplicationBackwardsTest (1 ms total)
+[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (0 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (0 ms total)
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
@@ -38,8 +38,25 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 
 [----------] 1 test from LossBackwardTest
 [ RUN      ] LossBackwardTest.BasicFunctionality
-[       OK ] LossBackwardTest.BasicFunctionality (1 ms)
-[----------] 1 test from LossBackwardTest (1 ms total)
+[       OK ] LossBackwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from LossBackwardTest (0 ms total)
 
 [----------] 1 test from SIMDMatrixMultiplicationTest
 [ RUN      ] SIMDMatrixMultiplicationTest.CompareWithLibTorch
+remainder_m = 0, remainder_n = 7
+/home/rickojn/coding/custard-flow/test/cf_test.cc:317: Failure
+The difference between actual_ptr[j * m + i] and expected_ptr_transposed[j * m + i] is 4.0751953125, which exceeds 1e-3, where
+actual_ptr[j * m + i] evaluates to 118.043212890625,
+expected_ptr_transposed[j * m + i] evaluates to 122.118408203125, and
+1e-3 evaluates to 0.001.
+Mismatch at (0, 1008)
+[  FAILED  ] SIMDMatrixMultiplicationTest.CompareWithLibTorch (91 ms)
+[----------] 1 test from SIMDMatrixMultiplicationTest (91 ms total)
+
+[----------] Global test environment tear-down
+[==========] 9 tests from 9 test suites ran. (874 ms total)
+[  PASSED  ] 8 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] SIMDMatrixMultiplicationTest.CompareWithLibTorch
+
+ 1 FAILED TEST

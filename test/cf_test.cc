@@ -313,8 +313,13 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
      {
          for (int j = 0; j < n; ++j)
          {
-             EXPECT_NEAR(actual_ptr[i * n + j], expected_ptr_transposed[i * n + j], 1e-3)
+             // For column-major layout, use [j * m + i]
+             EXPECT_NEAR(actual_ptr[j * m + i], expected_ptr_transposed[j * m + i], 1e-3)
                  << "Mismatch at (" << i << ", " << j << ")";
+             if (std::abs(actual_ptr[j * m + i] - expected_ptr_transposed[j * m + i]) > 1e-3) {
+                 i = m; // break outer loop
+                 break; // break inner loop
+             }
          }
      }
 
