@@ -364,7 +364,7 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
         for (size_t idx_m = 0; idx_m < M - remainder_m; idx_m += tile_m)
         {
             size_t idx_n = 0;
-            for ( idx_n < N - remainder_n; idx_n += tile_n;)
+            for ( ; idx_n < N - remainder_n; idx_n += tile_n)
             {
                 offset_C = idx_m + idx_n * M;
                 // simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
