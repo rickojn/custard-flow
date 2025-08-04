@@ -310,20 +310,7 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * C,
     __m256 reg_col_tile_strip_A; // 256 bit reg for 8 float row slice of 8 x K row strip of A
     __m256 reg_row_tile_strip_B_element; // 256 bit reg for broadcast of an element from K x 8 col strip of B
     
-    static int db_m = 0;
-    static int db_n = 0;
-    if ((M - offset_tile_A) / 8 == 0 && (M - offset_tile_A) % 8 != 0)
-    {
-        db_m++;
-        printf("%zu col A floats, this will lead to incorrect results %d \n", M - offset_tile_A, db_m);
-    }
-
-    if ((N - offset_tile_B) / 8 == 0 && (N - offset_tile_B) % 8 != 0)
-    {
-        db_n++;
-        printf("%zu row B floats, this will lead to incorrect results %d \n", N - offset_tile_B, db_n);
-    }
-
+    
         // Create a mask for the first tile_m elements
     int mask_arr[8] = {0,0,0,0,0,0,0,0};
     for (size_t i = 0; i < tile_m; ++i) {
@@ -349,24 +336,45 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * C,
     }
 }
 
-
 void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, size_t K)
 {
     const size_t tile_m = 8;
     const size_t tile_n = 8;
+    const size_t remainder_m = M % tile_m;
+    const size_t remainder_n = N % tile_n;
     size_t offset_C = 0;
-    for (size_t idx_m = 0; idx_m < M; idx_m += tile_m)
+
+    if (remainder_m == 0 && remainder_n == 0)
     {
-        for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
+
+        for (size_t idx_m = 0; idx_m < M; idx_m += tile_m)
         {
-            offset_C= idx_m + idx_n * M;
-            // simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
-            simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
-            // simd_kernel_unrolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C);
+            for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
+            {
+                offset_C = idx_m + idx_n * M;
+                // simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
+                // simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
+                simd_kernel_unrolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C);
+            }
+        }
+    }
+    else
+    {
+        printf("remainder_m = %zu, remainder_n = %zu\n", remainder_m, remainder_n);
+        for (size_t idx_m = 0; idx_m < M - remainder_m; idx_m += tile_m)
+        {
+            size_t idx_n = 0;
+            for ( idx_n < N - remainder_n; idx_n += tile_n;)
+            {
+                offset_C = idx_m + idx_n * M;
+                // simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
+                // simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
+                simd_kernel_unrolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C);
+            }
+            simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, remainder_n, offset_C, idx_m, remainder_n);
         }
     }
 }
-
 
      /*
      C = A * B

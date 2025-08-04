@@ -23,13 +23,13 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (43 ms)
-[----------] 1 test from MatrixMultiplicationTest (43 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (791 ms)
+[----------] 1 test from MatrixMultiplicationTest (791 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
-[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (0 ms)
-[----------] 1 test from MatrixMultiplicationBackwardsTest (0 ms total)
+[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (1 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (1 ms total)
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
@@ -38,174 +38,8 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 
 [----------] 1 test from LossBackwardTest
 [ RUN      ] LossBackwardTest.BasicFunctionality
-[       OK ] LossBackwardTest.BasicFunctionality (0 ms)
-[----------] 1 test from LossBackwardTest (0 ms total)
+[       OK ] LossBackwardTest.BasicFunctionality (1 ms)
+[----------] 1 test from LossBackwardTest (1 ms total)
 
 [----------] 1 test from SIMDMatrixMultiplicationTest
 [ RUN      ] SIMDMatrixMultiplicationTest.CompareWithLibTorch
-7 row B floats, this will lead to incorrect results 1 
-7 row B floats, this will lead to incorrect results 2 
-7 row B floats, this will lead to incorrect results 3 
-7 row B floats, this will lead to incorrect results 4 
-7 row B floats, this will lead to incorrect results 5 
-7 row B floats, this will lead to incorrect results 6 
-7 row B floats, this will lead to incorrect results 7 
-7 row B floats, this will lead to incorrect results 8 
-7 row B floats, this will lead to incorrect results 9 
-7 row B floats, this will lead to incorrect results 10 
-7 row B floats, this will lead to incorrect results 11 
-7 row B floats, this will lead to incorrect results 12 
-7 row B floats, this will lead to incorrect results 13 
-7 row B floats, this will lead to incorrect results 14 
-7 row B floats, this will lead to incorrect results 15 
-7 row B floats, this will lead to incorrect results 16 
-7 row B floats, this will lead to incorrect results 17 
-7 row B floats, this will lead to incorrect results 18 
-7 row B floats, this will lead to incorrect results 19 
-7 row B floats, this will lead to incorrect results 20 
-7 row B floats, this will lead to incorrect results 21 
-7 row B floats, this will lead to incorrect results 22 
-7 row B floats, this will lead to incorrect results 23 
-7 row B floats, this will lead to incorrect results 24 
-7 row B floats, this will lead to incorrect results 25 
-7 row B floats, this will lead to incorrect results 26 
-7 row B floats, this will lead to incorrect results 27 
-7 row B floats, this will lead to incorrect results 28 
-7 row B floats, this will lead to incorrect results 29 
-7 row B floats, this will lead to incorrect results 30 
-7 row B floats, this will lead to incorrect results 31 
-5 col A floats, this will lead to incorrect results 1 
-5 col A floats, this will lead to incorrect results 2 
-5 col A floats, this will lead to incorrect results 3 
-5 col A floats, this will lead to incorrect results 4 
-5 col A floats, this will lead to incorrect results 5 
-5 col A floats, this will lead to incorrect results 6 
-5 col A floats, this will lead to incorrect results 7 
-5 col A floats, this will lead to incorrect results 8 
-5 col A floats, this will lead to incorrect results 9 
-5 col A floats, this will lead to incorrect results 10 
-5 col A floats, this will lead to incorrect results 11 
-5 col A floats, this will lead to incorrect results 12 
-5 col A floats, this will lead to incorrect results 13 
-5 col A floats, this will lead to incorrect results 14 
-5 col A floats, this will lead to incorrect results 15 
-5 col A floats, this will lead to incorrect results 16 
-5 col A floats, this will lead to incorrect results 17 
-5 col A floats, this will lead to incorrect results 18 
-5 col A floats, this will lead to incorrect results 19 
-5 col A floats, this will lead to incorrect results 20 
-5 col A floats, this will lead to incorrect results 21 
-5 col A floats, this will lead to incorrect results 22 
-5 col A floats, this will lead to incorrect results 23 
-5 col A floats, this will lead to incorrect results 24 
-5 col A floats, this will lead to incorrect results 25 
-5 col A floats, this will lead to incorrect results 26 
-5 col A floats, this will lead to incorrect results 27 
-5 col A floats, this will lead to incorrect results 28 
-5 col A floats, this will lead to incorrect results 29 
-5 col A floats, this will lead to incorrect results 30 
-5 col A floats, this will lead to incorrect results 31 
-5 col A floats, this will lead to incorrect results 32 
-5 col A floats, this will lead to incorrect results 33 
-5 col A floats, this will lead to incorrect results 34 
-5 col A floats, this will lead to incorrect results 35 
-5 col A floats, this will lead to incorrect results 36 
-5 col A floats, this will lead to incorrect results 37 
-5 col A floats, this will lead to incorrect results 38 
-5 col A floats, this will lead to incorrect results 39 
-5 col A floats, this will lead to incorrect results 40 
-5 col A floats, this will lead to incorrect results 41 
-5 col A floats, this will lead to incorrect results 42 
-5 col A floats, this will lead to incorrect results 43 
-5 col A floats, this will lead to incorrect results 44 
-5 col A floats, this will lead to incorrect results 45 
-5 col A floats, this will lead to incorrect results 46 
-5 col A floats, this will lead to incorrect results 47 
-5 col A floats, this will lead to incorrect results 48 
-5 col A floats, this will lead to incorrect results 49 
-5 col A floats, this will lead to incorrect results 50 
-5 col A floats, this will lead to incorrect results 51 
-5 col A floats, this will lead to incorrect results 52 
-5 col A floats, this will lead to incorrect results 53 
-5 col A floats, this will lead to incorrect results 54 
-5 col A floats, this will lead to incorrect results 55 
-5 col A floats, this will lead to incorrect results 56 
-5 col A floats, this will lead to incorrect results 57 
-5 col A floats, this will lead to incorrect results 58 
-5 col A floats, this will lead to incorrect results 59 
-5 col A floats, this will lead to incorrect results 60 
-5 col A floats, this will lead to incorrect results 61 
-5 col A floats, this will lead to incorrect results 62 
-5 col A floats, this will lead to incorrect results 63 
-5 col A floats, this will lead to incorrect results 64 
-5 col A floats, this will lead to incorrect results 65 
-5 col A floats, this will lead to incorrect results 66 
-5 col A floats, this will lead to incorrect results 67 
-5 col A floats, this will lead to incorrect results 68 
-5 col A floats, this will lead to incorrect results 69 
-5 col A floats, this will lead to incorrect results 70 
-5 col A floats, this will lead to incorrect results 71 
-5 col A floats, this will lead to incorrect results 72 
-5 col A floats, this will lead to incorrect results 73 
-5 col A floats, this will lead to incorrect results 74 
-5 col A floats, this will lead to incorrect results 75 
-5 col A floats, this will lead to incorrect results 76 
-5 col A floats, this will lead to incorrect results 77 
-5 col A floats, this will lead to incorrect results 78 
-5 col A floats, this will lead to incorrect results 79 
-5 col A floats, this will lead to incorrect results 80 
-5 col A floats, this will lead to incorrect results 81 
-5 col A floats, this will lead to incorrect results 82 
-5 col A floats, this will lead to incorrect results 83 
-5 col A floats, this will lead to incorrect results 84 
-5 col A floats, this will lead to incorrect results 85 
-5 col A floats, this will lead to incorrect results 86 
-5 col A floats, this will lead to incorrect results 87 
-5 col A floats, this will lead to incorrect results 88 
-5 col A floats, this will lead to incorrect results 89 
-5 col A floats, this will lead to incorrect results 90 
-5 col A floats, this will lead to incorrect results 91 
-5 col A floats, this will lead to incorrect results 92 
-5 col A floats, this will lead to incorrect results 93 
-5 col A floats, this will lead to incorrect results 94 
-5 col A floats, this will lead to incorrect results 95 
-5 col A floats, this will lead to incorrect results 96 
-5 col A floats, this will lead to incorrect results 97 
-5 col A floats, this will lead to incorrect results 98 
-5 col A floats, this will lead to incorrect results 99 
-5 col A floats, this will lead to incorrect results 100 
-5 col A floats, this will lead to incorrect results 101 
-5 col A floats, this will lead to incorrect results 102 
-5 col A floats, this will lead to incorrect results 103 
-5 col A floats, this will lead to incorrect results 104 
-5 col A floats, this will lead to incorrect results 105 
-5 col A floats, this will lead to incorrect results 106 
-5 col A floats, this will lead to incorrect results 107 
-5 col A floats, this will lead to incorrect results 108 
-5 col A floats, this will lead to incorrect results 109 
-5 col A floats, this will lead to incorrect results 110 
-5 col A floats, this will lead to incorrect results 111 
-5 col A floats, this will lead to incorrect results 112 
-5 col A floats, this will lead to incorrect results 113 
-5 col A floats, this will lead to incorrect results 114 
-5 col A floats, this will lead to incorrect results 115 
-5 col A floats, this will lead to incorrect results 116 
-5 col A floats, this will lead to incorrect results 117 
-5 col A floats, this will lead to incorrect results 118 
-5 col A floats, this will lead to incorrect results 119 
-5 col A floats, this will lead to incorrect results 120 
-5 col A floats, this will lead to incorrect results 121 
-5 col A floats, this will lead to incorrect results 122 
-5 col A floats, this will lead to incorrect results 123 
-5 col A floats, this will lead to incorrect results 124 
-5 col A floats, this will lead to incorrect results 125 
-5 col A floats, this will lead to incorrect results 126 
-5 col A floats, this will lead to incorrect results 127 
-5 col A floats, this will lead to incorrect results 128 
-7 row B floats, this will lead to incorrect results 32 
-[       OK ] SIMDMatrixMultiplicationTest.CompareWithLibTorch (104 ms)
-[----------] 1 test from SIMDMatrixMultiplicationTest (105 ms total)
-
-[----------] Global test environment tear-down
-[==========] 9 tests from 9 test suites ran. (151 ms total)
-[  PASSED  ] 9 tests.
