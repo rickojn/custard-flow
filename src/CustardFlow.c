@@ -279,9 +279,11 @@ void simd_kernel_rolled(const float * tile_A, const float * tile_B, float * C,
     __m256 reg_row_tile_strip_B_element; // 256 bit reg for broadcast of an element from K x 8 col strip of B
 
         // Create a mask for the first tile_m elements
-    // int mask_arr[8] = {0,0,0,0,0,0,0,0};
-    // for (size_t i = 0; i < tile_m; ++i) mask_arr[i] = -1; // -1 means load, 0 means zero
-    // __m256i mask = _mm256_loadu_si256((__m256i*)mask_arr);
+    int mask_arr[8] = {0,0,0,0,0,0,0,0};
+    for (size_t i = 0; i < tile_m; ++i) {
+        mask_arr[i] = -1; // -1 means load, 0 means zero
+    }
+    __m256i mask = _mm256_loadu_si256((__m256i*)mask_arr);
 
 
     for (size_t idx_k = 0; idx_k < K; idx_k++){
@@ -361,7 +363,8 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
     else
     {
         printf("remainder_m = %zu, remainder_n = %zu\n", remainder_m, remainder_n);
-        for (size_t idx_m = 0; idx_m < M - remainder_m; idx_m += tile_m)
+        size_t idx_m = 0;
+        for (; idx_m < M - remainder_m; idx_m += tile_m)
         {
             size_t idx_n = 0;
             for ( ; idx_n < N - remainder_n; idx_n += tile_n)
@@ -374,6 +377,9 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
             offset_C = idx_m + idx_n * M;
             simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, remainder_n, offset_C, idx_m, remainder_n);
         }
+        offset_C = idx_m * M;
+        // next line messes up C[0][256]
+        simd_kernel_rolled(&A[idx_m], &B[0], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, N - 1);
     }
 }
 
