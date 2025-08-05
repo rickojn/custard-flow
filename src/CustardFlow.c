@@ -288,7 +288,7 @@ void simd_kernel_rolled(const float * tile_A, const float * tile_B, float * C,
 
     for (size_t idx_k = 0; idx_k < K; idx_k++){
         // Load the 8 floats from the idx_kth column of the 8 row strip of A
-        reg_col_tile_strip_A = _mm256_loadu_ps(&tile_A[idx_k * M]);
+        reg_col_tile_strip_A = _mm256_maskload_ps(&tile_A[idx_k * M], mask);
 
         for (size_t idx_tile_B = 0; idx_tile_B < tile_n; idx_tile_B++){
             reg_row_tile_strip_B_element = _mm256_broadcast_ss(&tile_B[idx_k * N + idx_tile_B]);
@@ -379,7 +379,7 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
         }
         offset_C = idx_m * M;
         // next line messes up C[0][256]
-        simd_kernel_rolled(&A[idx_m], &B[0], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, N - 1);
+        simd_kernel_rolled(&A[idx_m], &B[0], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, N - tile_n);
     }
 }
 

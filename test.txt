@@ -23,8 +23,8 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (794 ms)
-[----------] 1 test from MatrixMultiplicationTest (794 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (779 ms)
+[----------] 1 test from MatrixMultiplicationTest (779 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
@@ -50,11 +50,11 @@ actual_ptr[j * m + i] evaluates to 130.47599792480469,
 expected_ptr_transposed[j * m + i] evaluates to 117.35165405273438, and
 1e-3 evaluates to 0.001.
 Mismatch at (0, 256)
-[  FAILED  ] SIMDMatrixMultiplicationTest.CompareWithLibTorch (85 ms)
-[----------] 1 test from SIMDMatrixMultiplicationTest (85 ms total)
+[  FAILED  ] SIMDMatrixMultiplicationTest.CompareWithLibTorch (87 ms)
+[----------] 1 test from SIMDMatrixMultiplicationTest (87 ms total)
 
 [----------] Global test environment tear-down
-[==========] 9 tests from 9 test suites ran. (882 ms total)
+[==========] 9 tests from 9 test suites ran. (869 ms total)
 [  PASSED  ] 8 tests.
 [  FAILED  ] 1 test, listed below:
 [  FAILED  ] SIMDMatrixMultiplicationTest.CompareWithLibTorch
