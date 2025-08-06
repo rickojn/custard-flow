@@ -1,5 +1,5 @@
 Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src/googletest/src/gtest_main.cc
-[==========] Running 9 tests from 9 test suites.
+[==========] Running 13 tests from 9 test suites.
 [----------] Global test environment set-up.
 [----------] 1 test from MinTest
 [ RUN      ] MinTest.BasicFunctionality
@@ -23,8 +23,8 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (779 ms)
-[----------] 1 test from MatrixMultiplicationTest (779 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (44 ms)
+[----------] 1 test from MatrixMultiplicationTest (44 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
@@ -41,22 +41,24 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 [       OK ] LossBackwardTest.BasicFunctionality (0 ms)
 [----------] 1 test from LossBackwardTest (0 ms total)
 
-[----------] 1 test from SIMDMatrixMultiplicationTest
-[ RUN      ] SIMDMatrixMultiplicationTest.CompareWithLibTorch
+[----------] 5 tests from VariousSizes/SIMDMatrixMultiplicationTest
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
+remainder_m = 1, remainder_n = 1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3
+remainder_m = 3, remainder_n = 3
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1
+remainder_m = 0, remainder_n = 1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
 remainder_m = 1, remainder_n = 0
-/home/rickojn/coding/custard-flow/test/cf_test.cc:317: Failure
-The difference between actual_ptr[j * m + i] and expected_ptr_transposed[j * m + i] is 13.124343872070312, which exceeds 1e-3, where
-actual_ptr[j * m + i] evaluates to 130.47599792480469,
-expected_ptr_transposed[j * m + i] evaluates to 117.35165405273438, and
-1e-3 evaluates to 0.001.
-Mismatch at (0, 256)
-[  FAILED  ] SIMDMatrixMultiplicationTest.CompareWithLibTorch (87 ms)
-[----------] 1 test from SIMDMatrixMultiplicationTest (87 ms total)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (99 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
+remainder_m = 1, remainder_n = 7
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (92 ms)
+[----------] 5 tests from VariousSizes/SIMDMatrixMultiplicationTest (192 ms total)
 
 [----------] Global test environment tear-down
-[==========] 9 tests from 9 test suites ran. (869 ms total)
-[  PASSED  ] 8 tests.
-[  FAILED  ] 1 test, listed below:
-[  FAILED  ] SIMDMatrixMultiplicationTest.CompareWithLibTorch
-
- 1 FAILED TEST
+[==========] 13 tests from 9 test suites ran. (240 ms total)
+[  PASSED  ] 13 tests.

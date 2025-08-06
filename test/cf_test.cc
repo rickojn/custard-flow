@@ -323,7 +323,7 @@ protected:
                 // actual is column-major: [j*m + i]
                 EXPECT_NEAR(actual[j * m + i], exp_t[j * m + i], 1e-3)
                     << "Failed for dims m="<<m<<", k="<<k<<", n="<<n
-                    << " at ("<<i<<","<<j<<")";
+                    << " at ("<<i<<","<<j<<") offset: " << j * m + i;
                     if (std::abs(actual[j * m + i] - exp_t[j * m + i]) > 1e-3) {
                             i = m; // break outer loop
                             break; // break inner loop
@@ -349,9 +349,9 @@ INSTANTIATE_TEST_SUITE_P(
     VariousSizes,
     SIMDMatrixMultiplicationTest,
     ::testing::Values(
-        // MatMulDims{1, 1, 1},
-        // MatMulDims{3, 3, 3},
-        // MatMulDims{8, 8, 1},
+        MatMulDims{1, 1, 1},
+        MatMulDims{3, 3, 3},
+        MatMulDims{8, 8, 1},
         MatMulDims{257, 512, 1024},
         MatMulDims{257, 512, 1023}
     ),
