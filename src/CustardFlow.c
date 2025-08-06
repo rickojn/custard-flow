@@ -299,7 +299,7 @@ void simd_kernel_rolled(const float * tile_A, const float * tile_B, float * C,
     }   
 
     for (size_t idx_col = 0; idx_col * M + offset_tile_C < M * N && idx_col < 8; idx_col++){
-        _mm256_storeu_ps(&C[idx_col * M + offset_tile_C], reg_array_tile_C[idx_col]);
+        _mm256_maskstore_ps(&C[idx_col * M + offset_tile_C], mask, reg_array_tile_C[idx_col]);
     }
 }
 
@@ -377,9 +377,13 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
             offset_C = idx_m + idx_n * M;
             simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, remainder_n, offset_C, idx_m, remainder_n);
         }
-        offset_C = idx_m * M;
-        // next line messes up C[0][256]
-        simd_kernel_rolled(&A[idx_m], &B[0], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, N - tile_n);
+        for (size_t idx_n = 0; idx_n < N - remainder_n; idx_n += tile_n)
+        {
+            offset_C = idx_m + idx_n * M;
+            // simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, idx_n);
+            // simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, idx_n);
+            simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, tile_n);
+        }
     }
 }
 
