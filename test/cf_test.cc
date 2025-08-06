@@ -279,51 +279,88 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
     }
  }
 
- TEST(SIMDMatrixMultiplicationTest, CompareWithLibTorch)
- {
-     // ARRANGE
-     torch::manual_seed(42);
-     torch::Tensor A = torch::rand({257, 512});
-     torch::Tensor B = torch::rand({512, 1024});
-     torch::Tensor expected = torch::mm(A, B); 
+ // 1) Define a struct to hold your dimensions:
+struct MatMulDims {
+    int m, k, n;
+};
 
-     float *A_ptr = A.data_ptr<float>(); // row-major
-     float *A_ptr_transposed = (float *)malloc(A.size(0) * A.size(1) * sizeof(float));
-     transpose_matrix(A_ptr, A_ptr_transposed, A.size(0), A.size(1));
+// 2) Create a fixture that derives from TestWithParam, templated on MatMulDims:
+class SIMDMatrixMultiplicationTest
+  : public ::testing::TestWithParam<MatMulDims> {
+protected:
+    void run_compare_with_libtorch() {
+        auto dims = GetParam();
+        int m = dims.m, k = dims.k, n = dims.n;
 
-     float *B_ptr = B.data_ptr<float>();
-     float *B_ptr_transposed = (float *)malloc(B.size(0) * B.size(1) * sizeof(float));
-     transpose_matrix(B_ptr, B_ptr_transposed, B.size(0), B.size(1));
-     float *expected_ptr = expected.data_ptr<float>(); // row-major
+        // seed and random tensors
+        torch::manual_seed(42);
+        auto A = torch::rand({m, k});
+        auto B = torch::rand({k, n});
+        auto expected = torch::mm(A, B);
 
-     int m = A.size(0);
-     int k = A.size(1);
-     int n = B.size(1);
+        // get raw pointers
+        float* A_ptr = A.data_ptr<float>();
+        float* A_ptr_t = (float*)malloc(m * k * sizeof(float));
+        transpose_matrix(A_ptr, A_ptr_t, m, k);
 
-     float *actual_ptr = new float[m * n];
-     std::fill(actual_ptr, actual_ptr + m * n, 0.0f);
+        float* B_ptr = B.data_ptr<float>();
+        float* B_ptr_t = (float*)malloc(k * n * sizeof(float));
+        transpose_matrix(B_ptr, B_ptr_t, k, n);
 
-     // ACT
-     simd_matmul(A_ptr_transposed, B_ptr, actual_ptr, m, n, k);
+        float* actual = new float[m * n];
+        std::fill(actual, actual + m * n, 0.0f);
 
-     //    ASSERT
-     float *expected_ptr_transposed = (float *)malloc(m * n * sizeof(float));
-     transpose_matrix(expected_ptr, expected_ptr_transposed, m, n);
-     for (int i = 0; i < m; ++i)
-     {
-         for (int j = 0; j < n; ++j)
-         {
-             // For column-major layout, use [j * m + i]
-             EXPECT_NEAR(actual_ptr[j * m + i], expected_ptr_transposed[j * m + i], 1e-3)
-                 << "Mismatch at (" << i << ", " << j << ")";
-             if (std::abs(actual_ptr[j * m + i] - expected_ptr_transposed[j * m + i]) > 1e-3) {
-                 i = m; // break outer loop
-                 break; // break inner loop
-             }
-         }
-     }
+        // call your SIMD matmul (note argument order may vary)
+        simd_matmul(A_ptr_t, B_ptr, actual, m, n, k);
 
-     // Clean up
-     delete[] actual_ptr;
-     free(B_ptr_transposed);
- }
+        // transpose expected to col-major for comparison
+        float* exp_t = (float*)malloc(m * n * sizeof(float));
+        transpose_matrix(expected.data_ptr<float>(), exp_t, m, n);
+
+        // compare
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                // actual is column-major: [j*m + i]
+                EXPECT_NEAR(actual[j * m + i], exp_t[j * m + i], 1e-3)
+                    << "Failed for dims m="<<m<<", k="<<k<<", n="<<n
+                    << " at ("<<i<<","<<j<<")";
+                    if (std::abs(actual[j * m + i] - exp_t[j * m + i]) > 1e-3) {
+                            i = m; // break outer loop
+                            break; // break inner loop
+                        }
+            }
+        }
+
+        // cleanup
+        delete[] actual;
+        free(A_ptr_t);
+        free(B_ptr_t);
+        free(exp_t);
+    }
+};
+
+// 3) Define the parameterized test using TEST_P:
+TEST_P(SIMDMatrixMultiplicationTest, CompareWithLibTorch) {
+    run_compare_with_libtorch();
+}
+
+// 4) Instantiate the suite with the size tuples you want to cover:
+INSTANTIATE_TEST_SUITE_P(
+    VariousSizes,
+    SIMDMatrixMultiplicationTest,
+    ::testing::Values(
+        // MatMulDims{1, 1, 1},
+        // MatMulDims{3, 3, 3},
+        // MatMulDims{8, 8, 1},
+        MatMulDims{257, 512, 1024},
+        MatMulDims{257, 512, 1023}
+    ),
+    [](auto const& info) {
+        auto dims = info.param;
+        return "m" + std::to_string(dims.m)
+             + "_k" + std::to_string(dims.k)
+             + "_n" + std::to_string(dims.n);
+    }
+);
+
+ 
