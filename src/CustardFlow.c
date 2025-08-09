@@ -438,6 +438,41 @@ void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_nu
     }
 }
 
+void simd_matmul_backwards(const float * grads_C, const float * B, const float * A, float * grads_B, float * grads_A, size_t M, size_t N, size_t K)
+{
+    // grads_B = A-transpose * grads_C
+    // simd_matmul wants A and C in col major and B in row major
+    // A, B and C are all M x N row major
+    // A col major is A-transpose row major so we can just use A as is
+    // grads_C is M x N row major so we need to transpose it to get it in col major
+    float * grads_C_transposed = (float *)malloc(M * N * sizeof(float));
+    transpose_matrix(grads_C, grads_C_transposed, M, N);
+    // After computation we will transpose grads_B to get it in col major
+
+    simd_matmul(grads_C_transposed, B, grads_B, M, N, K);
+
+    float * grads_B_col_major = grads_B;
+    grads_B = (float *)malloc(K * N * sizeof(float));
+    transpose_matrix(grads_B_col_major, grads_B, K, N);
+
+    
+    
+    
+    
+    
+    // grads_A = grads_C * B-transpose
+    for (size_t idx_m = 0; idx_m < M; idx_m++)
+    {
+        for (size_t idx_k = 0; idx_k < K; idx_k++)
+        {
+            for (size_t idx_n = 0; idx_n < N; idx_n++)
+            {
+                grads_A[idx_m * K + idx_k] += grads_C[idx_m * N + idx_n] * B[idx_k + idx_n * K];
+            }
+        }
+    }
+}
+
 float cross_entropy_forward(const float *logits, const long *targets, float *log_probs, size_t batch_size, size_t num_classes)
 {
     float loss = 0.0f;
