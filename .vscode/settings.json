@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "cstring": "c",
+        "variant": "c",
+        "__string": "c",
+        "memory": "c"
+    }
+}

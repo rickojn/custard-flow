@@ -3,6 +3,7 @@
 #include <time.h>
 #include <immintrin.h>
 #include <math.h>
+#include <string.h>
 
 
 
@@ -451,9 +452,10 @@ void simd_matmul_backwards(const float * grads_C, const float * B, const float *
 
     simd_matmul(grads_C_transposed, B, grads_B, M, N, K);
 
-    float * grads_B_col_major = grads_B;
-    grads_B = (float *)malloc(K * N * sizeof(float));
-    transpose_matrix(grads_B_col_major, grads_B, K, N);
+    float * grads_B_copy =(float*) malloc(K * N * sizeof(float));
+    memcpy(grads_B_copy, grads_B, K * N * sizeof(float));
+    // grads_B is K x N col major so we need to transpose it to get it];
+    transpose_matrix(grads_B_copy, grads_B, K, N);
 
     
     
