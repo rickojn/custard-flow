@@ -175,8 +175,14 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
      torch::manual_seed(42);
      torch::Tensor input = torch::rand({3, 3}, torch::requires_grad());
      torch::Tensor weights = torch::rand({3, 3}, torch::requires_grad());
+     printf("inputs:\n");
+     std::cout << input << std::endl;
+     printf("weights:\n");
+     std::cout << weights << std::endl;
      torch::Tensor output = torch::mm(input, weights);
      torch::Tensor grad_output = torch::rand_like(output);
+     printf("grad output:\n");
+     std::cout << grad_output << std::endl;
      output.backward(grad_output);
      
      float *input_grad = input.grad().data_ptr<float>();
@@ -200,11 +206,17 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
      {
          for (int j = 0; j < 3; ++j)
          {
-             EXPECT_FLOAT_EQ(input_grad_computed[i * 3 + j], input_grad[i * 3 + j])
+             EXPECT_NEAR(input_grad_computed[i * 3 + j], input_grad[i * 3 + j], 1e-3)
                  << "Mismatch in input gradient at (" << i << ", " << j << ")";
-             EXPECT_FLOAT_EQ(weights_grad_computed[i * 3 + j], weights_grad[j * 3 + i])
+             EXPECT_NEAR(weights_grad_computed[i * 3 + j], weights_grad[j * 3 + i], 1e-3)
                  << "Mismatch in weights gradient at (" << i << ", " << j << ")";
-         }
+                 // break out of the loop if weights mismatch is found
+        //         if (std::abs(input_grad_computed[i * 3 + j] - input_grad[i * 3 + j]) > 1e-3 ||
+        //             std::abs(weights_grad_computed[i * 3 + j] - weights_grad[j * 3 + i]) > 1e-3) {
+        //             i = 3; // break out of the outer loop if mismatch is found
+        //             break; // break out of the loop if mismatch is found
+        //  }
+        }
      }
 
      

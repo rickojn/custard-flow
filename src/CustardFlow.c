@@ -443,14 +443,15 @@ void simd_matmul_backwards(const float * grads_C, const float * B, const float *
 {
     // grads_B = A-transpose * grads_C
     // simd_matmul wants A and C in col major and B in row major
-    // A, B and C are all M x N row major
-    // A col major is A-transpose row major so we can just use A as is
-    // grads_C is M x N row major so we need to transpose it to get it in col major
     float * grads_C_transposed = (float *)malloc(M * N * sizeof(float));
     transpose_matrix(grads_C, grads_C_transposed, M, N);
-    // After computation we will transpose grads_B to get it in col major
 
-    simd_matmul(grads_C_transposed, B, grads_B, M, N, K);
+    float * A_transposed = (float *)malloc(K * N * sizeof(float));
+    transpose_matrix(A, A_transposed, M, K);
+    
+    
+
+    simd_matmul(A_transposed, grads_C, grads_B, M, N, K);
 
     float * grads_B_copy =(float*) malloc(K * N * sizeof(float));
     memcpy(grads_B_copy, grads_B, K * N * sizeof(float));

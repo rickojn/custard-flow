@@ -23,84 +23,105 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (773 ms)
-[----------] 1 test from MatrixMultiplicationTest (773 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (777 ms)
+[----------] 1 test from MatrixMultiplicationTest (778 ms total)
 
 [----------] 2 tests from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
-[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (0 ms)
+inputs:
+ 0.8823  0.9150  0.3829
+ 0.9593  0.3904  0.6009
+ 0.2566  0.7936  0.9408
+[ CPUFloatType{3,3} ]
+weights:
+ 0.1332  0.9346  0.5936
+ 0.8694  0.5677  0.7411
+ 0.4294  0.8854  0.5739
+[ CPUFloatType{3,3} ]
+grad output:
+ 0.2666  0.6274  0.2696
+ 0.4414  0.2969  0.8317
+ 0.1053  0.2695  0.3588
+[ CPUFloatType{3,3} ]
+[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (1 ms)
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
+inputs:
+ 0.8823  0.9150  0.3829
+ 0.9593  0.3904  0.6009
+ 0.2566  0.7936  0.9408
+[ CPUFloatType{3,3} ]
+weights:
+ 0.1332  0.9346  0.5936
+ 0.8694  0.5677  0.7411
+ 0.4294  0.8854  0.5739
+[ CPUFloatType{3,3} ]
+grad output:
+ 0.2666  0.6274  0.2696
+ 0.4414  0.2969  0.8317
+ 0.1053  0.2695  0.3588
+[ CPUFloatType{3,3} ]
 remainder_m = 3, remainder_n = 3
-/home/rickojn/coding/custard-flow/test/cf_test.cc:205: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j]
-    Which is: 0.78196537
-  weights_grad[j * 3 + i]
-    Which is: 0.68561888
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+The difference between weights_grad_computed[i * 3 + j] and weights_grad[j * 3 + i] is 0.0062527656555175781, which exceeds 1e-3, where
+weights_grad_computed[i * 3 + j] evaluates to 0.67936611175537109,
+weights_grad[j * 3 + i] evaluates to 0.68561887741088867, and
+1e-3 evaluates to 0.001.
 Mismatch in weights gradient at (0, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:205: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j]
-    Which is: 0.82995665
-  weights_grad[j * 3 + i]
-    Which is: 0.49983367
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+The difference between weights_grad_computed[i * 3 + j] and weights_grad[j * 3 + i] is 0.42860898375511169, which exceeds 1e-3, where
+weights_grad_computed[i * 3 + j] evaluates to 0.92844265699386597,
+weights_grad[j * 3 + i] evaluates to 0.49983367323875427, and
+1e-3 evaluates to 0.001.
 Mismatch in weights gradient at (0, 1)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:205: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j]
-    Which is: 0.47887969
-  weights_grad[j * 3 + i]
-    Which is: 0.4663544
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+The difference between weights_grad_computed[i * 3 + j] and weights_grad[j * 3 + i] is 0.6699051558971405, which exceeds 1e-3, where
+weights_grad_computed[i * 3 + j] evaluates to 1.1362595558166504,
+weights_grad[j * 3 + i] evaluates to 0.46635439991950989, and
+1e-3 evaluates to 0.001.
 Mismatch in weights gradient at (0, 2)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:205: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j]
-    Which is: 0.78780079
-  weights_grad[j * 3 + i]
-    Which is: 0.9075619
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+The difference between weights_grad_computed[i * 3 + j] and weights_grad[j * 3 + i] is 0.41621732711791992, which exceeds 1e-3, where
+weights_grad_computed[i * 3 + j] evaluates to 0.49134457111358643,
+weights_grad[j * 3 + i] evaluates to 0.90756189823150635, and
+1e-3 evaluates to 0.001.
 Mismatch in weights gradient at (1, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:205: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j]
-    Which is: 1.1686472
-  weights_grad[j * 3 + i]
-    Which is: 0.90393287
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+The difference between weights_grad_computed[i * 3 + j] and weights_grad[j * 3 + i] is 0.024146914482116699, which exceeds 1e-3, where
+weights_grad_computed[i * 3 + j] evaluates to 0.87978595495223999,
+weights_grad[j * 3 + i] evaluates to 0.90393286943435669, and
+1e-3 evaluates to 0.001.
 Mismatch in weights gradient at (1, 1)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:205: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j]
-    Which is: 0.51047152
-  weights_grad[j * 3 + i]
-    Which is: 0.67217892
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+The difference between weights_grad_computed[i * 3 + j] and weights_grad[j * 3 + i] is 0.1268191933631897, which exceeds 1e-3, where
+weights_grad_computed[i * 3 + j] evaluates to 0.79899811744689941,
+weights_grad[j * 3 + i] evaluates to 0.67217892408370972, and
+1e-3 evaluates to 0.001.
 Mismatch in weights gradient at (1, 2)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:205: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j]
-    Which is: 0.82478392
-  weights_grad[j * 3 + i]
-    Which is: 1.1277897
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+The difference between weights_grad_computed[i * 3 + j] and weights_grad[j * 3 + i] is 0.61003100872039795, which exceeds 1e-3, where
+weights_grad_computed[i * 3 + j] evaluates to 0.51775872707366943,
+weights_grad[j * 3 + i] evaluates to 1.1277897357940674, and
+1e-3 evaluates to 0.001.
 Mismatch in weights gradient at (2, 0)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:205: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j]
-    Which is: 0.92973793
-  weights_grad[j * 3 + i]
-    Which is: 0.85621268
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+The difference between weights_grad_computed[i * 3 + j] and weights_grad[j * 3 + i] is 0.20604479312896729, which exceeds 1e-3, where
+weights_grad_computed[i * 3 + j] evaluates to 0.65016788244247437,
+weights_grad[j * 3 + i] evaluates to 0.85621267557144165, and
+1e-3 evaluates to 0.001.
 Mismatch in weights gradient at (2, 1)
-/home/rickojn/coding/custard-flow/test/cf_test.cc:205: Failure
-Expected equality of these values:
-  weights_grad_computed[i * 3 + j]
-    Which is: 0.48976913
-  weights_grad[j * 3 + i]
-    Which is: 0.94054878
+/home/rickojn/coding/custard-flow/test/cf_test.cc:211: Failure
+The difference between weights_grad_computed[i * 3 + j] and weights_grad[j * 3 + i] is 0.1262519359588623, which exceeds 1e-3, where
+weights_grad_computed[i * 3 + j] evaluates to 1.0668007135391235,
+weights_grad[j * 3 + i] evaluates to 0.94054877758026123, and
+1e-3 evaluates to 0.001.
 Mismatch in weights gradient at (2, 2)
 [  FAILED  ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (0 ms)
-[----------] 2 tests from MatrixMultiplicationBackwardsTest (1 ms total)
+[----------] 2 tests from MatrixMultiplicationBackwardsTest (2 ms total)
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
 [       OK ] CrossEntropyLossTest.BasicFunctionality (0 ms)
-[----------] 1 test from CrossEntropyLossTest (1 ms total)
+[----------] 1 test from CrossEntropyLossTest (0 ms total)
 
 [----------] 1 test from LossBackwardTest
 [ RUN      ] LossBackwardTest.BasicFunctionality
@@ -119,14 +140,14 @@ remainder_m = 0, remainder_n = 1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
 remainder_m = 1, remainder_n = 0
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (98 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (99 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
 remainder_m = 1, remainder_n = 7
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (89 ms)
 [----------] 5 tests from VariousSizes/SIMDMatrixMultiplicationTest (188 ms total)
 
 [----------] Global test environment tear-down
-[==========] 14 tests from 9 test suites ran. (965 ms total)
+[==========] 14 tests from 9 test suites ran. (970 ms total)
 [  PASSED  ] 13 tests.
 [  FAILED  ] 1 test, listed below:
 [  FAILED  ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
