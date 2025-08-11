@@ -442,26 +442,8 @@ void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_nu
 void simd_matmul_backwards(const float * grads_C, const float * B, const float * A, float * grads_B, float * grads_A, size_t M, size_t N, size_t K)
 {
     // grads_B = A-transpose * grads_C
-    // simd_matmul wants A and C in col major and B in row major
-    float * grads_C_transposed = (float *)malloc(M * N * sizeof(float));
-    transpose_matrix(grads_C, grads_C_transposed, M, N);
-
-    float * A_transposed = (float *)malloc(K * N * sizeof(float));
-    transpose_matrix(A, A_transposed, M, K);
-    
-    
-
     simd_matmul(A, grads_C, grads_B, M, N, K);
 
-    float * grads_B_copy =(float*) malloc(K * N * sizeof(float));
-    // memcpy(grads_B_copy, grads_B, K * N * sizeof(float));
-    // grads_B is K x N col major so we need to transpose it to get it];
-    // transpose_matrix(grads_B_copy, grads_B, K, N);
-
-    
-    
-    
-    
     
     // grads_A = grads_C * B-transpose
     for (size_t idx_m = 0; idx_m < M; idx_m++)
