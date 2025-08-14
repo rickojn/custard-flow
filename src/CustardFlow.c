@@ -448,27 +448,13 @@ void simd_matmul_backwards(const float * grads_C, const float * B, const float *
     
     // grads_A = grads_C * B-transpose
     // m x k = m x n * n x k
-    // transpose B to get B-transpose
-    float * B_transpose = (float *)malloc(K * N * sizeof(float));
-    transpose_matrix(B, B_transpose, K, N);
     float * grads_C_transpose = (float *)malloc(M * N * sizeof(float));
     transpose_matrix(grads_C, grads_C_transpose, M, N);
     simd_matmul(grads_C_transpose, B, grads_A, M, N, K);
 
     float * grads_A_col_major = (float *)malloc(M * K * sizeof(float));
     memcpy(grads_A_col_major, grads_A, M * K * sizeof(float));
-    transpose_matrix(grads_A_col_major, grads_A, M, K);
-
-    // for (size_t idx_m = 0; idx_m < M; idx_m++)
-    // {
-    //     for (size_t idx_k = 0; idx_k < K; idx_k++)
-    //     {
-    //         for (size_t idx_n = 0; idx_n < N; idx_n++)
-    //         {
-    //             grads_A[idx_m * K + idx_k] += grads_C[idx_m * N + idx_n] * B[idx_k + idx_n * K];
-    //         }
-    //     }
-    // }
+    transpose_matrix(grads_A_col_major, grads_A, M, K);    
 }
 
 float cross_entropy_forward(const float *logits, const long *targets, float *log_probs, size_t batch_size, size_t num_classes)
