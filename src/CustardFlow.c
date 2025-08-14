@@ -455,6 +455,10 @@ void simd_matmul_backwards(const float * grads_C, const float * B, const float *
     transpose_matrix(grads_C, grads_C_transpose, M, N);
     simd_matmul(grads_C_transpose, B, grads_A, M, N, K);
 
+    float * grads_A_col_major = (float *)malloc(M * K * sizeof(float));
+    memcpy(grads_A_col_major, grads_A, M * K * sizeof(float));
+    transpose_matrix(grads_A_col_major, grads_A, M, K);
+
     // for (size_t idx_m = 0; idx_m < M; idx_m++)
     // {
     //     for (size_t idx_k = 0; idx_k < K; idx_k++)

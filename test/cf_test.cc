@@ -206,7 +206,7 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
      {
          for (int j = 0; j < 3; ++j)
          {
-             EXPECT_NEAR(input_grad_computed[i * 3 + j], input_grad[j * 3 + i], 1e-3)
+             EXPECT_NEAR(input_grad_computed[i * 3 + j], input_grad[i * 3 + j], 1e-3)
                  << "Mismatch in input gradient at (" << i << ", " << j << ")";
              EXPECT_NEAR(weights_grad_computed[i * 3 + j], weights_grad[j * 3 + i], 1e-3)
                  << "Mismatch in weights gradient at (" << i << ", " << j << ")";
