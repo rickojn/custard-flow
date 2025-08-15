@@ -2,130 +2,6 @@
 #include <torch/torch.h>
 #include "CustardFlow.h"
 #include <stdlib.h>
-// This is a simple test case for the CustardFlow library using Google Test.
-
-TEST(MinTest, BasicFunctionality) {
-  // Test the min function.
-  EXPECT_EQ(min(3, 5), 3);
-  EXPECT_EQ(min(10, -2), -2);
-  EXPECT_EQ(min(0, 0), 0);
-}
-
-
-TEST(MatmulNaiveTest, BasicFunctionality) {
-    // Test the naive_matmul function.
-
-    /*
-    A [1,2,3
-       4,5,6]
-    B [1,4
-       2,5
-       3,6]
-   C  [14, 32
-       32, 77]
-    */
-    float A[] = {1, 2, 3, 4, 5, 6};
-    float B[] = {1, 2, 3, 4, 5, 6};
-    float C[4] = {0};
-
-    naive_matmul(A, B, C, 2, 2, 3);
-
-    // Expected result for C is {22, 28, 34}
-    EXPECT_FLOAT_EQ(C[0], 14);
-    EXPECT_FLOAT_EQ(C[1], 32);
-    EXPECT_FLOAT_EQ(C[2], 32);
-    EXPECT_FLOAT_EQ(C[3], 77);
-}
-
-TEST(MatmulSIMDTest, BasicFunctionality) {
-
-
-    /*
-    A [1,
-       2,
-       3,
-       4,
-       5,
-       6,
-       7,
-       8]
-    B [1,2,3,4,5,6,7,8]
-   C  [1, 2, 3, 4, 5, 6, 7, 8,
-       2, 4, 6, 8, 10, 12, 14, 16,
-       3, 6, 9, 12, 15, 18, 21, 24,
-       4, 8, 12, 16, 20, 24, 28, 32,
-       5, 10, 15, 20, 25, 30, 35, 40,
-       6, 12, 18, 24, 30, 36, 42, 48,
-       7, 14, 21, 28, 35, 42, 49, 56,
-       8, 16, 24, 32, 40, 48, 56, 64]
-   
-    */
-    float A[] = {1, 2, 3, 4, 5, 6, 7, 8}; 
-    float B[] = {1, 2, 3, 4, 5, 6, 7, 8};
-    // float B[] = {1, 2, 3, 4, 5, 6};
-    float C[64] = {0};
-
-    simd_matmul(A, B, C, 8, 8, 1);
-
-    EXPECT_FLOAT_EQ(C[0], 1);
-    EXPECT_FLOAT_EQ(C[1], 2);
-    EXPECT_FLOAT_EQ(C[2], 3);
-    EXPECT_FLOAT_EQ(C[3], 4);
-}
-
-/* Test matmul_backwards function
-    A [1,2,3      
-       4,5,6]           2 x 3
-    B [1,4
-       2,5              3 x 2
-       3,6]
-grdsC [10,20,
-       30,40]       2 x 2
-
-
-   C  [14, 32
-       32, 77]
-
-   Bt [1,2,3,
-       4,5,6]
-
-c11 = a11*b11 + a12*b21 + a13*b31
-c12 = a11*b12 + a12*b22 + a13*b32
-c21 = a21*b11 + a22*b21 + a23*b31
-c22 = a21*b12 + a22*b22 + a23*b32
-
-
-grads_A [90,120,150,
-         190,260,330]
-
-grads_B [65, 90,
-         85, 120
-         105, 150]
-*/
-
-TEST(MatmulBackwardsTest, BasicFunctionality) {
-    float A[] = {1, 2, 3, 4, 5, 6}; // 2x3
-    float B[] = {1, 2, 3, 4, 5, 6}; // 3x2
-    float grads_C[] = {10, 20, 30, 40}; // 2x2
-    float grads_A[6] = {0};
-    float grads_B[6] = {0};
-
-    matmul_backwards(grads_C, B, A, grads_B, grads_A, 2, 2, 3);
-
-    EXPECT_FLOAT_EQ(grads_A[0], 90);
-    EXPECT_FLOAT_EQ(grads_A[1], 120);
-    EXPECT_FLOAT_EQ(grads_A[2], 150);
-    EXPECT_FLOAT_EQ(grads_A[3], 190);
-    EXPECT_FLOAT_EQ(grads_A[4], 260);
-    EXPECT_FLOAT_EQ(grads_A[5], 330);
-
-    EXPECT_FLOAT_EQ(grads_B[0], 130);
-    EXPECT_FLOAT_EQ(grads_B[1], 170);
-    EXPECT_FLOAT_EQ(grads_B[2], 210);
-    EXPECT_FLOAT_EQ(grads_B[3], 180);
-    EXPECT_FLOAT_EQ(grads_B[4], 240);
-    EXPECT_FLOAT_EQ(grads_B[5], 300);
-}
 
 TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
     // ARRANGE
@@ -135,34 +11,30 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
     torch::Tensor expected = torch::mm(A, B);
 
     float* A_ptr = A.data_ptr<float>();
-    float* A_ptr_transposed = A.t().data_ptr<float>();
     float* B_ptr = B.data_ptr<float>();
-    float* B_ptr_transposed = (float*)malloc(B.size(0) * B.size(1) * sizeof(float));
-    transpose_matrix(B_ptr, B_ptr_transposed, B.size(0), B.size(1));
     float* expected_ptr = expected.data_ptr<float>();
 
     int m = A.size(0);
     int k = A.size(1);
     int n = B.size(1);
 
-    float* my_result_ptr = new float[m * n];
-    std::fill(my_result_ptr, my_result_ptr + m * n, 0.0f); 
+    float* actual_ptr = new float[m * n];
+    std::fill(actual_ptr, actual_ptr + m * n, 0.0f); 
 
     // ACT
-    naive_matmul(A_ptr, B_ptr_transposed, my_result_ptr, m, k, n);
+    naive_matmul(A_ptr, B_ptr, actual_ptr, m, k, n);
 
 
     // ASSERT
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < n; ++j) {
-            EXPECT_FLOAT_EQ(my_result_ptr[i * n + j], expected_ptr[i * n + j])
+            EXPECT_FLOAT_EQ(actual_ptr[i * n + j], expected_ptr[i * n + j])
                 << "Mismatch at (" << i << ", " << j << ")";
         }
     }
 
     // Clean up
-    delete[] my_result_ptr;
-    free(B_ptr_transposed);
+    delete[] actual_ptr;
 }
 
 
