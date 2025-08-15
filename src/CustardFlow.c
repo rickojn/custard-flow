@@ -11,6 +11,15 @@ int min(int a, int b){
     return a < b ? a : b;
 }
 
+void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_num_rows, size_t src_num_cols){
+    for (size_t idx_row = 0; idx_row < src_num_rows; idx_row++){
+        for (size_t idx_col = 0; idx_col < src_num_cols; idx_col++){
+            dest_matrix[idx_col * src_num_rows + idx_row] = src_matrix[idx_row * src_num_cols + idx_col];
+        }
+    }
+}
+
+
 void naive_matmul(const float* A, const float *B, float * C, size_t m, size_t n, size_t k){
     // transpose B to col-major
     float* B_transposed = (float*)malloc(k * n * sizeof(float));
@@ -20,10 +29,6 @@ void naive_matmul(const float* A, const float *B, float * C, size_t m, size_t n,
             for (size_t idx_k = 0; idx_k < k; idx_k++){            
                 // C[idx_m][idx_n] = A[idx_m][idx_k] * B[idx_k][idx_n]
                 C[idx_m * n + idx_n] += A[idx_m * k + idx_k] * B_transposed[idx_k + idx_n * k];
-                float db_1 = A[idx_m * k + idx_k];
-                float db_2 = B[idx_k + idx_n * k];
-                float db_3 = C[idx_m * n + idx_n];
-                int db_rando = idx_k;
             }
         }
     }
@@ -431,13 +436,6 @@ void matmul_backwards(const float * grads_C, const float * B, const float * A, f
 }
 
 
-void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_num_rows, size_t src_num_cols){
-    for (size_t idx_row = 0; idx_row < src_num_rows; idx_row++){
-        for (size_t idx_col = 0; idx_col < src_num_cols; idx_col++){
-            dest_matrix[idx_col * src_num_rows + idx_row] = src_matrix[idx_row * src_num_cols + idx_col];
-        }
-    }
-}
 
 void simd_matmul_backwards(const float * grads_C, const float * B, const float * A, float * grads_B, float * grads_A, size_t M, size_t N, size_t K)
 {
