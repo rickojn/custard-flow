@@ -177,42 +177,37 @@ class SIMDMatrixMultiplicationTest
   : public ::testing::TestWithParam<MatMulDims> {
 protected:
     void run_compare_with_libtorch() {
+        // ARRANGE
         auto dims = GetParam();
         int m = dims.m, k = dims.k, n = dims.n;
 
-        // seed and random tensors
         torch::manual_seed(42);
         auto A = torch::rand({m, k});
         auto B = torch::rand({k, n});
         auto expected = torch::mm(A, B);
 
-        // get raw pointers
+
         float* A_ptr = A.data_ptr<float>();
-        float* A_ptr_t = (float*)malloc(m * k * sizeof(float));
-        transpose_matrix(A_ptr, A_ptr_t, m, k);
 
         float* B_ptr = B.data_ptr<float>();
-        float* B_ptr_t = (float*)malloc(k * n * sizeof(float));
-        transpose_matrix(B_ptr, B_ptr_t, k, n);
+
+        float* expected_ptr = expected.data_ptr<float>();
 
         float* actual = new float[m * n];
         std::fill(actual, actual + m * n, 0.0f);
 
-        // call your SIMD matmul (note argument order may vary)
-        simd_matmul(A_ptr_t, B_ptr, actual, m, n, k);
+        // ACT
+        simd_matmul(A_ptr, B_ptr, actual, m, n, k);
 
-        // transpose expected to col-major for comparison
-        float* exp_t = (float*)malloc(m * n * sizeof(float));
-        transpose_matrix(expected.data_ptr<float>(), exp_t, m, n);
 
         // compare
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 // actual is column-major: [j*m + i]
-                EXPECT_NEAR(actual[j * m + i], exp_t[j * m + i], 1e-3)
+                EXPECT_NEAR(actual[j * m + i], expected_ptr[j * m + i], 1e-3)
                     << "Failed for dims m="<<m<<", k="<<k<<", n="<<n
                     << " at ("<<i<<","<<j<<") offset: " << j * m + i;
-                    if (std::abs(actual[j * m + i] - exp_t[j * m + i]) > 1e-3) {
+                    if (std::abs(actual[j * m + i] - expected_ptr[j * m + i]) > 1e-3) {
                             i = m; // break outer loop
                             break; // break inner loop
                         }
@@ -221,9 +216,6 @@ protected:
 
         // cleanup
         delete[] actual;
-        free(A_ptr_t);
-        free(B_ptr_t);
-        free(exp_t);
     }
 };
 

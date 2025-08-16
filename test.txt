@@ -3,8 +3,8 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (776 ms)
-[----------] 1 test from MatrixMultiplicationTest (776 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (47 ms)
+[----------] 1 test from MatrixMultiplicationTest (47 ms total)
 
 [----------] 2 tests from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
@@ -47,8 +47,8 @@ remainder_m = 3, remainder_n = 3
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
-[       OK ] CrossEntropyLossTest.BasicFunctionality (0 ms)
-[----------] 1 test from CrossEntropyLossTest (0 ms total)
+[       OK ] CrossEntropyLossTest.BasicFunctionality (1 ms)
+[----------] 1 test from CrossEntropyLossTest (1 ms total)
 
 [----------] 1 test from LossBackwardTest
 [ RUN      ] LossBackwardTest.BasicFunctionality
@@ -61,18 +61,49 @@ remainder_m = 1, remainder_n = 1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3
 remainder_m = 3, remainder_n = 3
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3 (0 ms)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:207: Failure
+The difference between actual[j * m + i] and expected_ptr[j * m + i] is 0.015713930130004883, which exceeds 1e-3, where
+actual[j * m + i] evaluates to 1.0617038011550903,
+expected_ptr[j * m + i] evaluates to 1.0774177312850952, and
+1e-3 evaluates to 0.001.
+Failed for dims m=3, k=3, n=3 at (0,0) offset: 0
+[  FAILED  ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3, where GetParam() = 12-byte object <03-00 00-00 03-00 00-00 03-00 00-00> (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1
 remainder_m = 0, remainder_n = 1
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1 (0 ms)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:207: Failure
+The difference between actual[j * m + i] and expected_ptr[j * m + i] is 0.78475093841552734, which exceeds 1e-3, where
+actual[j * m + i] evaluates to 3.2415845394134521,
+expected_ptr[j * m + i] evaluates to 2.4568336009979248, and
+1e-3 evaluates to 0.001.
+Failed for dims m=8, k=8, n=1 at (0,0) offset: 0
+[  FAILED  ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1, where GetParam() = 12-byte object <08-00 00-00 08-00 00-00 01-00 00-00> (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
 remainder_m = 1, remainder_n = 0
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (97 ms)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:207: Failure
+The difference between actual[j * m + i] and expected_ptr[j * m + i] is 11.368995666503906, which exceeds 1e-3, where
+actual[j * m + i] evaluates to 132.40771484375,
+expected_ptr[j * m + i] evaluates to 121.03871917724609, and
+1e-3 evaluates to 0.001.
+Failed for dims m=257, k=512, n=1024 at (0,0) offset: 0
+[  FAILED  ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024, where GetParam() = 12-byte object <01-01 00-00 00-02 00-00 00-04 00-00> (87 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
 remainder_m = 1, remainder_n = 7
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (90 ms)
-[----------] 5 tests from VariousSizes/SIMDMatrixMultiplicationTest (188 ms total)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:207: Failure
+The difference between actual[j * m + i] and expected_ptr[j * m + i] is 6.8968658447265625, which exceeds 1e-3, where
+actual[j * m + i] evaluates to 121.36991882324219,
+expected_ptr[j * m + i] evaluates to 114.47305297851562, and
+1e-3 evaluates to 0.001.
+Failed for dims m=257, k=512, n=1023 at (0,0) offset: 0
+[  FAILED  ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023, where GetParam() = 12-byte object <01-01 00-00 00-02 00-00 FF-03 00-00> (70 ms)
+[----------] 5 tests from VariousSizes/SIMDMatrixMultiplicationTest (159 ms total)
 
 [----------] Global test environment tear-down
-[==========] 10 tests from 5 test suites ran. (968 ms total)
-[  PASSED  ] 10 tests.
+[==========] 10 tests from 5 test suites ran. (210 ms total)
+[  PASSED  ] 6 tests.
+[  FAILED  ] 4 tests, listed below:
+[  FAILED  ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3, where GetParam() = 12-byte object <03-00 00-00 03-00 00-00 03-00 00-00>
+[  FAILED  ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1, where GetParam() = 12-byte object <08-00 00-00 08-00 00-00 01-00 00-00>
+[  FAILED  ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024, where GetParam() = 12-byte object <01-01 00-00 00-02 00-00 00-04 00-00>
+[  FAILED  ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023, where GetParam() = 12-byte object <01-01 00-00 00-02 00-00 FF-03 00-00>
+
+ 4 FAILED TESTS
