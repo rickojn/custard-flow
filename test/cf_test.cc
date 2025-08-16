@@ -232,7 +232,12 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::Values(
         MatMulDims{1, 1, 1},
         MatMulDims{3, 3, 3},
-        MatMulDims{8, 8, 1}
+        MatMulDims{8, 8, 1},
+        MatMulDims{8,8,8},
+        MatMulDims{16, 16, 16},
+        MatMulDims{8, 16,8},
+        MatMulDims{8, 16, 1},
+        MatMulDims{8, 16, 2}
     //     MatMulDims{257, 512, 1024},
     //     MatMulDims{257, 512, 1023}
      ),

@@ -380,8 +380,6 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
             for ( ; idx_n < N - remainder_n; idx_n += tile_n)
             {
                 offset_C = idx_m + idx_n * M;
-                // simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
-                // simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
                 simd_kernel_unrolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, tile_m, tile_n, offset_C);
             }
             offset_C = idx_m + idx_n * M;
@@ -390,8 +388,6 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
         for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
         {
             offset_C = idx_m + idx_n * M;
-            // simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, idx_n);
-            // simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, idx_n);
             simd_kernel_rolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, remainder_m, tile_n, offset_C, idx_m, tile_n);
         }
     }
