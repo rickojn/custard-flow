@@ -346,6 +346,10 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * C,
 
 void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, size_t K)
 {
+    float * A_col_major = (float*)malloc(M * K * sizeof(float));
+    transpose_matrix(A, A_col_major, M, K);
+    float * C_col_major = (float*)malloc(M * N * sizeof(float));
+    memset(C_col_major, 0, M * N * sizeof(float));
     const size_t tile_m = 8;
     const size_t tile_n = 8;
     const size_t remainder_m = M % tile_m;
@@ -362,7 +366,7 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
                 offset_C = idx_m + idx_n * M;
                 // simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
                 // simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
-                simd_kernel_unrolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C);
+                simd_kernel_unrolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, tile_m, tile_n, offset_C);
             }
         }
     }
@@ -378,19 +382,23 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
                 offset_C = idx_m + idx_n * M;
                 // simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
                 // simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C, idx_m, idx_n);
-                simd_kernel_unrolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, tile_n, offset_C);
+                simd_kernel_unrolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, tile_m, tile_n, offset_C);
             }
             offset_C = idx_m + idx_n * M;
-            simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, tile_m, remainder_n, offset_C, idx_m, remainder_n);
+            simd_kernel_rolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, tile_m, remainder_n, offset_C, idx_m, remainder_n);
         }
         for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
         {
             offset_C = idx_m + idx_n * M;
             // simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, idx_n);
             // simd_kernel(&A[idx_m], &B[idx_n], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, idx_n);
-            simd_kernel_rolled(&A[idx_m], &B[idx_n], C, M, N, K, remainder_m, tile_n, offset_C, idx_m, tile_n);
+            simd_kernel_rolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, remainder_m, tile_n, offset_C, idx_m, tile_n);
         }
     }
+
+    transpose_matrix(C_col_major, C, M, N);
+    free(A_col_major);
+    free(C_col_major);
 }
 
      /*
