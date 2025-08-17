@@ -3,8 +3,8 @@ Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (787 ms)
-[----------] 1 test from MatrixMultiplicationTest (787 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (262 ms)
+[----------] 1 test from MatrixMultiplicationTest (262 ms total)
 
 [----------] 2 tests from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
@@ -23,12 +23,12 @@ grad output:
  0.4414  0.2969  0.8317
  0.1053  0.2695  0.3588
 [ CPUFloatType{3,3} ]
-[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (2 ms)
+[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (1 ms)
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
 /home/rickojn/coding/custard-flow/test/cf_test.cc:107: Skipped
 
 [  SKIPPED ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (0 ms)
-[----------] 2 tests from MatrixMultiplicationBackwardsTest (2 ms total)
+[----------] 2 tests from MatrixMultiplicationBackwardsTest (1 ms total)
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
@@ -62,16 +62,16 @@ remainder_m = 0, remainder_n = 1
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n2
 remainder_m = 0, remainder_n = 2
 /home/rickojn/coding/custard-flow/test/cf_test.cc:208: Failure
-The difference between actual[j * m + i] and expected_ptr[j * m + i] is 0.33745861053466797, which exceeds 1e-3, where
-actual[j * m + i] evaluates to 4.5780677795410156,
-expected_ptr[j * m + i] evaluates to 4.9155263900756836, and
+The difference between actual[i * n + j] and expected_ptr[i * n + j] is 2.7384748458862305, which exceeds 1e-3, where
+actual[i * n + j] evaluates to 6.4154443740844727,
+expected_ptr[i * n + j] evaluates to 3.6769695281982422, and
 1e-3 evaluates to 0.001.
-Failed for dims m=8, k=16, n=2 at (0,1) offset: 8
+Failed for dims m=8, k=16, n=2 at (0,1) offset: 1
 [  FAILED  ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n2, where GetParam() = 12-byte object <08-00 00-00 10-00 00-00 02-00 00-00> (0 ms)
-[----------] 8 tests from VariousSizes/SIMDMatrixMultiplicationTest (1 ms total)
+[----------] 8 tests from VariousSizes/SIMDMatrixMultiplicationTest (0 ms total)
 
 [----------] Global test environment tear-down
-[==========] 13 tests from 5 test suites ran. (793 ms total)
+[==========] 13 tests from 5 test suites ran. (265 ms total)
 [  PASSED  ] 11 tests.
 [  SKIPPED ] 1 test, listed below:
 [  SKIPPED ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards

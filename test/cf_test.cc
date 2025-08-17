@@ -205,10 +205,10 @@ protected:
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 // actual is column-major: [j*m + i]
-                EXPECT_NEAR(actual[j * m + i], expected_ptr[j * m + i], 1e-3)
+                EXPECT_NEAR(actual[i * n + j], expected_ptr[i * n + j], 1e-3)
                     << "Failed for dims m="<<m<<", k="<<k<<", n="<<n
-                    << " at ("<<i<<","<<j<<") offset: " << j * m + i;
-                    if (std::abs(actual[j * m + i] - expected_ptr[j * m + i]) > 1e-3) {
+                    << " at ("<<i<<","<<j<<") offset: " << i * n + j;
+                    if (std::abs(actual[i * n + j] - expected_ptr[i * n + j]) > 1e-3) {
                             i = m; // break outer loop
                             break; // break inner loop
                         }
