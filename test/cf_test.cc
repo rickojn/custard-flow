@@ -237,7 +237,8 @@ INSTANTIATE_TEST_SUITE_P(
         MatMulDims{16, 16, 16},
         MatMulDims{8, 16,8},
         MatMulDims{8, 15, 1},
-        MatMulDims{8, 16, 2}
+        MatMulDims{256, 512, 1024}
+        //MatMulDims{8, 16, 2}
     //     MatMulDims{257, 512, 1024},
     //     MatMulDims{257, 512, 1023}
      ),
