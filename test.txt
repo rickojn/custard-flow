@@ -1,10 +1,10 @@
 Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src/googletest/src/gtest_main.cc
-[==========] Running 13 tests from 5 test suites.
+[==========] Running 16 tests from 5 test suites.
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (778 ms)
-[----------] 1 test from MatrixMultiplicationTest (778 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (41 ms)
+[----------] 1 test from MatrixMultiplicationTest (41 ms total)
 
 [----------] 2 tests from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
@@ -40,7 +40,7 @@ grad output:
 [       OK ] LossBackwardTest.BasicFunctionality (0 ms)
 [----------] 1 test from LossBackwardTest (0 ms total)
 
-[----------] 8 tests from VariousSizes/SIMDMatrixMultiplicationTest
+[----------] 11 tests from VariousSizes/SIMDMatrixMultiplicationTest
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
 remainder_m = 1, remainder_n = 1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1 (0 ms)
@@ -60,21 +60,19 @@ remainder_m = 0, remainder_n = 1
 remainder_m = 0, remainder_n = 1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
-/home/rickojn/coding/custard-flow/test/cf_test.cc:208: Failure
-The difference between actual[i * n + j] and expected_ptr[i * n + j] is 4.847686767578125, which exceeds 1e-3, where
-actual[i * n + j] evaluates to 117.49484252929688,
-expected_ptr[i * n + j] evaluates to 122.342529296875, and
-1e-3 evaluates to 0.001.
-Failed for dims m=256, k=512, n=1024 at (0,1) offset: 1
-[  FAILED  ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024, where GetParam() = 12-byte object <00-01 00-00 00-02 00-00 00-04 00-00> (83 ms)
-[----------] 8 tests from VariousSizes/SIMDMatrixMultiplicationTest (83 ms total)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (88 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
+remainder_m = 1, remainder_n = 0
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (93 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
+remainder_m = 1, remainder_n = 7
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (91 ms)
+[----------] 11 tests from VariousSizes/SIMDMatrixMultiplicationTest (274 ms total)
 
 [----------] Global test environment tear-down
-[==========] 13 tests from 5 test suites ran. (865 ms total)
-[  PASSED  ] 11 tests.
+[==========] 16 tests from 5 test suites ran. (318 ms total)
+[  PASSED  ] 15 tests.
 [  SKIPPED ] 1 test, listed below:
 [  SKIPPED ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
-[  FAILED  ] 1 test, listed below:
-[  FAILED  ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024, where GetParam() = 12-byte object <00-01 00-00 00-02 00-00 00-04 00-00>
-
- 1 FAILED TEST

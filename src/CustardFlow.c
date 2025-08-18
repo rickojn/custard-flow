@@ -390,7 +390,7 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
         }
     }
 
-    transpose_matrix(C_col_major, C, M, N);
+    transpose_matrix(C_col_major, C, N, M); // since col to row major dimensions are swapped
     free(A_col_major);
     free(C_col_major);
 }
