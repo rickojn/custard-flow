@@ -415,26 +415,20 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
 
 
 void matmul_backwards(const float * grads_C, const float * B, const float * A, float * grads_B, float * grads_A, size_t M, size_t N, size_t K){
-    for (size_t idx_m = 0; idx_m < M; idx_m++){
-        for (size_t idx_n = 0; idx_n < N; idx_n++){
-            for (size_t idx_k = 0; idx_k < K; idx_k++){
-                // grads_B = A-transpose * grads_C
-                // grads_B[idx_k][idx_n] += A[idx_m][idx_k] * grads_C[idx_m][idx_n];
-                grads_B[idx_k + idx_n * K] += A[idx_m * K + idx_k] * grads_C[idx_m * N + idx_n];
-            }
-        }
-    }
+    
+    float * A_transpose = (float *)malloc(M * K * sizeof(float));
+    transpose_matrix(A, A_transpose, M, K);
+
+    naive_matmul(A_transpose, grads_C, grads_B, K, N, M); // grads_B = A-transpose * grads_C
 
 
-    for (size_t idx_m = 0; idx_m < M; idx_m++){
-        for (size_t idx_k = 0; idx_k < K; idx_k++){
-            for (size_t idx_n = 0; idx_n < N; idx_n++){
-                // grads_A = grads_C * B-transpose
-                // grads_A[idx_m][idx_k] += grads_C[idx_m][idx_n] * B[idx_k][idx_n];
-                grads_A[idx_m * K + idx_k] += grads_C[idx_m * N + idx_n] * B[idx_k + idx_n * K];
-            }
-        }
-    }
+    float * B_transpose = (float *)malloc(K * N * sizeof(float));
+    transpose_matrix(B, B_transpose, K, N);
+
+    naive_matmul(grads_C, B_transpose, grads_A, M, N, K); // grads_A = grads_C * B-transpose
+
+    free(A_transpose);
+    free(B_transpose);
 }
 
 
