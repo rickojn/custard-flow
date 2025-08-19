@@ -71,7 +71,7 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
      std::fill(weights_grad_computed, weights_grad_computed + 3 * 3, 0.0f);
 
      // ACT
-     matmul_backwards_func(grad_output_ptr, transposed_weights_ptr, input_ptr, weights_grad_computed, input_grad_computed, 3, 3, 3);
+     matmul_backwards_func(grad_output_ptr, weights_ptr, input_ptr, weights_grad_computed, input_grad_computed, 3, 3, 3);
 
      // ASSERT
      for (int i = 0; i < 3; ++i)
@@ -104,7 +104,6 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
  }
 
  TEST(MatrixMultiplicationBackwardsTest, SimdMatmulBackwards) {
-    GTEST_SKIP(); 
     mat_mul_backwards_test(simd_matmul_backwards, "simd_matmul_backwards");
  }
 
