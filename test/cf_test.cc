@@ -57,45 +57,42 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
      std::cout << grad_output << std::endl;
      output.backward(grad_output);
      
-     float *input_grad = input.grad().data_ptr<float>();
-     float *weights_grad = weights.grad().data_ptr<float>();
+     float *expected_input_grad = input.grad().data_ptr<float>();
+     float *expected_weights_grad = weights.grad().data_ptr<float>();
      float *input_ptr = input.data_ptr<float>();
      float *weights_ptr = weights.data_ptr<float>();
-     float *transposed_weights_ptr = (float *)malloc(weights.size(0) * weights.size(1) * sizeof(float));
-     transpose_matrix(weights_ptr, transposed_weights_ptr, weights.size(0), weights.size(1));
      float *grad_output_ptr = grad_output.data_ptr<float>();
      
-     float *input_grad_computed = new float[3 * 3];
-     float *weights_grad_computed = new float[3 * 3];
-     std::fill(input_grad_computed, input_grad_computed + 3 * 3, 0.0f);
-     std::fill(weights_grad_computed, weights_grad_computed + 3 * 3, 0.0f);
+     float *actual_input_grad = new float[3 * 3];
+     float *actual_weights_grad = new float[3 * 3];
+     std::fill(actual_input_grad, actual_input_grad + 3 * 3, 0.0f);
+     std::fill(actual_weights_grad, actual_weights_grad + 3 * 3, 0.0f);
 
      // ACT
-     matmul_backwards_func(grad_output_ptr, weights_ptr, input_ptr, weights_grad_computed, input_grad_computed, 3, 3, 3);
+     matmul_backwards_func(grad_output_ptr, weights_ptr, input_ptr, actual_weights_grad, actual_input_grad, 3, 3, 3);
 
      // ASSERT
      for (int i = 0; i < 3; ++i)
      {
          for (int j = 0; j < 3; ++j)
          {
-             EXPECT_NEAR(input_grad_computed[i * 3 + j], input_grad[i * 3 + j], 1e-3)
+             EXPECT_NEAR(actual_input_grad[i * 3 + j], expected_input_grad[i * 3 + j], 1e-3)
                  << "Mismatch in input gradient at (" << i << ", " << j << ")";
-             EXPECT_NEAR(weights_grad_computed[i * 3 + j], weights_grad[j * 3 + i], 1e-3)
+             EXPECT_NEAR(actual_weights_grad[i * 3 + j], expected_weights_grad[i * 3 + j], 1e-3)
                  << "Mismatch in weights gradient at (" << i << ", " << j << ")";
                  // break out of the loop if weights mismatch is found
-        //         if (std::abs(input_grad_computed[i * 3 + j] - input_grad[i * 3 + j]) > 1e-3 ||
-        //             std::abs(weights_grad_computed[i * 3 + j] - weights_grad[j * 3 + i]) > 1e-3) {
-        //             i = 3; // break out of the outer loop if mismatch is found
-        //             break; // break out of the loop if mismatch is found
-        //  }
+                if (std::abs(actual_input_grad[i * 3 + j] - expected_input_grad[i * 3 + j]) > 1e-3 ||
+                    std::abs(actual_weights_grad[i * 3 + j] - expected_weights_grad[i * 3 + j]) > 1e-3) {
+                    i = 3; // break out of the outer loop if mismatch is found
+                    break; // break out of the loop if mismatch is found
+         }
         }
      }
 
      
 
-     delete[] input_grad_computed;
-     delete[] weights_grad_computed;
-     free(transposed_weights_ptr);
+     delete[] actual_input_grad;
+     delete[] actual_weights_grad;
  }
 
 
