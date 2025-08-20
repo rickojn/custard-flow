@@ -512,3 +512,37 @@ void loss_backward(const float *logits, const long *targets, float *grad_logits,
     }
 }
 
+
+void layer_normalization_forward(const float *input, float *output, size_t batch_size, size_t num_features,
+float * gamma, float * beta)
+{
+    for (size_t idx_sample = 0; idx_sample < batch_size; idx_sample++)
+    {
+        float mean = 0.0f;
+        float variance = 0.0f;
+
+        // Calculate mean
+        for (size_t idx_feature = 0; idx_feature < num_features; idx_feature++)
+        {
+            mean += input[idx_sample * num_features + idx_feature];
+        }
+        mean /= num_features;
+
+        // Calculate variance
+        for (size_t idx_feature = 0; idx_feature < num_features; idx_feature++)
+        {
+            float diff = input[idx_sample * num_features + idx_feature] - mean;
+            variance += diff * diff;
+        }
+        variance /= num_features;
+
+        // Normalize and apply scale and shift
+        for (size_t idx_feature = 0; idx_feature < num_features; idx_feature++)
+        {
+            output[idx_sample * num_features + idx_feature] = gamma[idx_feature] * 
+                (input[idx_sample * num_features + idx_feature] - mean) / sqrtf(variance + 1e-5f) + beta[idx_feature];
+        }
+    }
+}
+
+

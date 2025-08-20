@@ -246,4 +246,33 @@ INSTANTIATE_TEST_SUITE_P(
     }
 );
 
+TEST(layer_norm_test, basic_functionality) {
+    // ARRANGE
+    torch::manual_seed(42);
+    int batch_size = 4;
+    int num_features = 5;
+
+    torch::Tensor input = torch::randn({batch_size, num_features}, torch::requires_grad());
+    torch::Tensor gamma = torch::randn({num_features}, torch::requires_grad());
+    torch::Tensor beta = torch::randn({num_features}, torch::requires_grad());
+    // torch layer norm
+    auto layer_norm = torch::nn::LayerNorm(torch::nn::LayerNormOptions({num_features}).elementwise_affine(true));
+
+    auto output = layer_norm->forward(input);
+
+    // ACT
+    float *input_ptr = input.data_ptr<float>();
+    float *output_ptr = output.data_ptr<float>();
+    float *gamma_ptr = layer_norm->weight.data_ptr<float>();
+    float *beta_ptr = layer_norm->bias.data_ptr<float>();
+    float *expected_output = new float[batch_size * num_features];
+    layer_normalization_forward(input_ptr, expected_output, batch_size, num_features, gamma_ptr, beta_ptr);
+    // ASSERT
+    for (int i = 0; i < batch_size; ++i) {
+        for (int j = 0; j < num_features; ++j) {
+            EXPECT_NEAR(output_ptr[i * num_features + j], expected_output[i * num_features + j], 1e-3)
+                << "Mismatch at (" << i << ", " << j << ")";}
+        }
+}
+
  

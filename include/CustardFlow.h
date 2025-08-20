@@ -28,6 +28,8 @@ void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_nu
 void simd_matmul_backwards(const float *grads_C, const float *B, const float *A, float *grads_B, float *grads_A, size_t M, size_t N, size_t K);
 float cross_entropy_forward(const float *logits, const long *targets, float * log_probs, size_t batch_size, size_t num_classes);
 void loss_backward(const float *logits, const long *targets, float *grad_logits, size_t batch_size, size_t num_classes);
+void layer_normalization_forward(const float *input, float *output, size_t batch_size, size_t num_features,
+float * gamma, float * beta);
 
 
 #ifdef __cplusplus
