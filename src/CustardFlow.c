@@ -545,4 +545,40 @@ float * gamma, float * beta)
     }
 }
 
+void layer_normalization_backward(const float *input, const float *grad_output, float *grad_input,
+    size_t batch_size, size_t num_features, float * gamma)
+{
+    for (size_t idx_sample = 0; idx_sample < batch_size; idx_sample++)
+    {
+        float mean = 0.0f;
+        float variance = 0.0f;
+
+        // Calculate mean
+        for (size_t idx_feature = 0; idx_feature < num_features; idx_feature++)
+        {
+            mean += input[idx_sample * num_features + idx_feature];
+        }
+        mean /= num_features;
+
+        // Calculate variance
+        for (size_t idx_feature = 0; idx_feature < num_features; idx_feature++)
+        {
+            float diff = input[idx_sample * num_features + idx_feature] - mean;
+            variance += diff * diff;
+        }
+        variance /= num_features;
+        float inv_stddev = 1.0f / sqrtf(variance + 1e-5f);
+
+        // Backpropagation
+        for (size_t idx_feature = 0; idx_feature < num_features; idx_feature++)
+        {
+            float x_hat = (input[idx_sample * num_features + idx_feature] - mean) * inv_stddev;
+            grad_input[idx_sample * num_features + idx_feature] = gamma[idx_feature] * inv_stddev *
+                (grad_output[idx_sample * num_features + idx_feature] - 
+                (1.0f / num_features) * (grad_output[idx_sample * num_features + idx_feature] +
+                x_hat * x_hat * grad_output[idx_sample * num_features + idx_feature]));
+        }
+    }
+}
+
 
