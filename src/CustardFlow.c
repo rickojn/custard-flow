@@ -545,6 +545,14 @@ float * gamma, float * beta)
     }
 }
 
+/*
+    y_k = gamma_k * (x_k - mean) / sqrt(variance + eps) + beta_k
+    dL/dx_k = gamma_k / sqrt(variance + eps) * 
+        (dL/dy_k - 1/N * sum_j(dL/dy_j) - (x_k - mean) / (variance + eps) * 1/N * sum_j(dL/dy_j * (x_j - mean)))
+    dL/dgamma_k = sum_j(dL/dy_j * (x_j - mean) / sqrt(variance + eps))
+    dL/dbeta_k = sum_j(dL/dy_j)
+*/
+
 void layer_normalization_backward(const float *input, const float *grad_output, float *grad_input,
     size_t batch_size, size_t num_features, float * gamma)
 {
