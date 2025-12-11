@@ -546,11 +546,29 @@ float * gamma, float * beta)
 }
 
 /*
-    y_k = gamma_k * (x_k - mean) / sqrt(variance + eps) + beta_k
-    dL/dx_k = gamma_k / sqrt(variance + eps) * 
-        (dL/dy_k - 1/N * sum_j(dL/dy_j) - (x_k - mean) / (variance + eps) * 1/N * sum_j(dL/dy_j * (x_j - mean)))
-    dL/dgamma_k = sum_j(dL/dy_j * (x_j - mean) / sqrt(variance + eps))
-    dL/dbeta_k = sum_j(dL/dy_j)
+    Layer Normalization (per sample)
+    K: number of features
+    B: batch size
+    x_k: input feature k
+    y_k: output feature k
+    gamma_k: scale parameter for feature k
+    beta_k: shift parameter for feature k
+
+    mean = 1/K * sum_j x_j
+    x_centered_k = x_k - mean
+    variance = 1/K * sum_j (x_centered_j)^2
+    x_hat_k = x_centered_k / sqrt(variance + eps)
+    y_k = gamma_k * x_hat_k + beta_k
+
+    Gradients:
+
+    dL/dgamma_k = 1 / B * sum_over_samples( dL/dy_k * x_hat_k )
+    dL/dbeta_k  = 1 / B * sum_over_samples( dL/dy_k )
+
+    dL/dx_k = gamma_k / sqrt(variance + eps) *
+        ( dL/dy_k
+          - 1/K * sum_j(dL/dy_j)
+          - x_hat_k * 1/K * sum_j(dL/dy_j * x_hat_j) )
 */
 
 void layer_normalization_backward(const float *input, const float *grad_output, float *grad_input,
