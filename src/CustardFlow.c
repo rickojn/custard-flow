@@ -565,10 +565,10 @@ float * gamma, float * beta)
     dL/dgamma_k = 1 / B * sum_over_samples( dL/dy_k * x_hat_k )
     dL/dbeta_k  = 1 / B * sum_over_samples( dL/dy_k )
 
-    dL/dx_k = gamma_k / sqrt(variance + eps) *
+    dL/dx_k = 1 / sqrt(variance + eps) *
         ( dL/dy_k
-          - 1/K * sum_j(dL/dy_j)
-          - x_hat_k * 1/K * sum_j(dL/dy_j * x_hat_j) )
+          - 1/K * sum_j(dL/dy_j * gamma_j)
+          - x_hat_k * 1/K * sum_j(gamma_j * dL/dy_j * x_hat_j) )
 */
 
 void layer_normalization_backward(const float *input, const float *grad_output, float *grad_input,
