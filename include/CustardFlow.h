@@ -30,6 +30,8 @@ float cross_entropy_forward(const float *logits, const long *targets, float * lo
 void loss_backward(const float *logits, const long *targets, float *grad_logits, size_t batch_size, size_t num_classes);
 void layer_normalization_forward(const float *input, float *output, size_t batch_size, size_t num_features,
 float * gamma, float * beta);
+void layer_normalization_backward(const float *inputs, const float *grad_outputs, float *grad_inputs, size_t size_batch, size_t num_features,
+float * gammas, float * grad_gammas, float * grad_betas);
 
 
 #ifdef __cplusplus

@@ -275,4 +275,48 @@ TEST(layer_norm_test, basic_functionality) {
         }
 }
 
+// Layer normalization backward test
+TEST(layer_norm_backward_test, basic_functionality) {
+    // ARRANGE
+    torch::manual_seed(42);
+    int batch_size = 4;
+    int num_features = 5; 
+    torch::Tensor input = torch::randn({batch_size, num_features}, torch::requires_grad());
+    torch::Tensor gamma = torch::randn({num_features}, torch::requires_grad());
+    torch::Tensor beta = torch::randn({num_features}, torch::requires_grad());
+    auto layer_norm = torch::nn::LayerNorm(torch::nn::LayerNormOptions({num_features}).elementwise_affine(true));
+    auto output = layer_norm->forward(input);
+    torch::Tensor grad_output = torch::randn_like(output);
+    output.backward(grad_output);
+    float *input_ptr = input.data_ptr<float>();
+    float *gamma_ptr = layer_norm->weight.data_ptr<float>();
+    float *beta_ptr = layer_norm->bias.data_ptr<float>();
+    float *grad_output_ptr = grad_output.data_ptr<float>();
+    float *expected_input_grad = input.grad().data_ptr<float>();
+    float *expected_gamma_grad = layer_norm->weight.grad().data_ptr<float>();
+    float *expected_beta_grad = layer_norm->bias.grad().data_ptr<float>();  
+    float *actual_input_grad = new float[batch_size * num_features];
+    float *actual_gamma_grad = new float[num_features];
+    float *actual_beta_grad = new float[num_features];
+    std::fill(actual_input_grad, actual_input_grad + batch_size * num_features, 0.0f);
+    std::fill(actual_gamma_grad, actual_gamma_grad + num_features, 0.0f);
+    std::fill(actual_beta_grad, actual_beta_grad + num_features, 0.0f);
+    // ACT
+    layer_normalization_backward(input_ptr, grad_output_ptr, actual_input_grad, batch_size, num_features,
+        gamma_ptr, actual_gamma_grad, actual_beta_grad);
+    // ASSERT
+    for (int i = 0; i < batch_size; ++i) {
+        for (int j = 0; j < num_features; ++j) {
+            EXPECT_NEAR(actual_input_grad[i * num_features + j], expected_input_grad[i * num_features + j], 1e-3)
+                << "Mismatch in input gradient at (" << i << ", " << j << ")";
+        }
+    }
+    for (int j = 0; j < num_features; ++j) {
+        EXPECT_NEAR(actual_gamma_grad[j], expected_gamma_grad[j], 1e-3)
+            << "Mismatch in gamma gradient at (" << j << ")";
+        EXPECT_NEAR(actual_beta_grad[j], expected_beta_grad[j], 1e-3)
+            << "Mismatch in beta gradient at (" << j << ")";
+    }   
+}
+
  
