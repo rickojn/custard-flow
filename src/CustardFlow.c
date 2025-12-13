@@ -4,6 +4,19 @@
 #include <immintrin.h>
 #include <math.h>
 #include <string.h>
+#include <stddef.h>
+
+#ifndef LN_EPS
+#define LN_EPS 1e-5f
+#endif
+
+
+
+
+
+#ifndef LN_EPS
+#define LN_EPS 1e-5f
+#endif
 
 
 
@@ -571,40 +584,68 @@ float * gamma, float * beta)
           - x_hat_k * 1/K * sum_j(gamma_j * dL/dy_j * x_hat_j) )
 */
 
-void layer_normalization_backward(const float *input, const float *grad_output, float *grad_input,
-    size_t batch_size, size_t num_features, float * gamma)
+
+void layer_normalization_backward(const float *input,
+                                  const float *grad_output,
+                                  float *grad_input,
+                                  size_t batch_size,
+                                  size_t num_features,
+                                  const float *gamma,
+                                  float *grad_gamma,
+                                  float *grad_beta)
 {
-    for (size_t idx_sample = 0; idx_sample < batch_size; idx_sample++)
+    // Initialize accumulators once (moved from the old second pass).
+    for (size_t f = 0; f < num_features; ++f) {
+        grad_gamma[f] = 0.0f;
+        grad_beta[f]  = 0.0f;
+    }
+
+    for (size_t n = 0; n < batch_size; ++n)
     {
+        const size_t row = n * num_features;
+
+        // Mean
         float mean = 0.0f;
-        float variance = 0.0f;
-
-        // Calculate mean
-        for (size_t idx_feature = 0; idx_feature < num_features; idx_feature++)
-        {
-            mean += input[idx_sample * num_features + idx_feature];
+        for (size_t f = 0; f < num_features; ++f) {
+            mean += input[row + f];
         }
-        mean /= num_features;
+        mean /= (float)num_features;
 
-        // Calculate variance
-        for (size_t idx_feature = 0; idx_feature < num_features; idx_feature++)
-        {
-            float diff = input[idx_sample * num_features + idx_feature] - mean;
+        // Variance
+        float variance = 0.0f;
+        for (size_t f = 0; f < num_features; ++f) {
+            float diff = input[row + f] - mean;
             variance += diff * diff;
         }
-        variance /= num_features;
-        float inv_stddev = 1.0f / sqrtf(variance + 1e-5f);
+        variance /= (float)num_features;
 
-        // Backpropagation
-        for (size_t idx_feature = 0; idx_feature < num_features; idx_feature++)
+        // Per-sample inv stddev (crucial: used for x_hat and grads)
+        const float inv_stddev = 1.0f / sqrtf(variance + LN_EPS);
+
+        // Backprop + accumulate gamma/beta grads in the same loop
+        for (size_t f = 0; f < num_features; ++f)
         {
-            float x_hat = (input[idx_sample * num_features + idx_feature] - mean) * inv_stddev;
-            grad_input[idx_sample * num_features + idx_feature] = gamma[idx_feature] * inv_stddev *
-                (grad_output[idx_sample * num_features + idx_feature] - 
-                (1.0f / num_features) * (grad_output[idx_sample * num_features + idx_feature] +
-                x_hat * x_hat * grad_output[idx_sample * num_features + idx_feature]));
+            const float x = input[row + f];
+            const float go = grad_output[row + f];
+            const float x_hat = (x - mean) * inv_stddev;
+
+            // Accumulate parameter grads (moved here).
+            grad_gamma[f] += go * x_hat;  // why: uses per-sample x_hat with correct inv_stddev
+            grad_beta[f]  += go;
+
+            // User-provided grad_input formula kept intact.
+            grad_input[row + f] = gamma[f] * inv_stddev *
+                (go - (1.0f / (float)num_features) *
+                (go + x_hat * x_hat * go));
+        }
+    }
+
+    // Preserve original averaging semantics (the previous code divided by batch_size).
+    if (batch_size > 0) {
+        const float inv_bs = 1.0f / (float)batch_size;
+        for (size_t f = 0; f < num_features; ++f) {
+            grad_gamma[f] *= inv_bs;
+            grad_beta[f]  *= inv_bs;
         }
     }
 }
-
-
