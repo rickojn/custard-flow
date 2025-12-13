@@ -595,26 +595,26 @@ void layer_normalization_backward(const float *input,
                                   float *grad_beta)
 {
     // Initialize accumulators once (moved from the old second pass).
-    for (size_t f = 0; f < num_features; ++f) {
-        grad_gamma[f] = 0.0f;
-        grad_beta[f]  = 0.0f;
+    for (size_t idx_feature = 0; idx_feature < num_features; ++idx_feature) {
+        grad_gamma[idx_feature] = 0.0f;
+        grad_beta[idx_feature]  = 0.0f;
     }
 
-    for (size_t n = 0; n < batch_size; ++n)
+    for (size_t idx_sample = 0; idx_sample < batch_size; ++idx_sample)
     {
-        const size_t row = n * num_features;
+        const size_t row = idx_sample * num_features;
 
         // Mean
         float mean = 0.0f;
-        for (size_t f = 0; f < num_features; ++f) {
-            mean += input[row + f];
+        for (size_t idx_feature = 0; idx_feature < num_features; ++idx_feature) {
+            mean += input[row + idx_feature];
         }
         mean /= (float)num_features;
 
         // Variance
         float variance = 0.0f;
-        for (size_t f = 0; f < num_features; ++f) {
-            float diff = input[row + f] - mean;
+        for (size_t idx_feature = 0; idx_feature < num_features; ++idx_feature) {
+            float diff = input[row + idx_feature] - mean;
             variance += diff * diff;
         }
         variance /= (float)num_features;
@@ -623,18 +623,18 @@ void layer_normalization_backward(const float *input,
         const float inv_stddev = 1.0f / sqrtf(variance + LN_EPS);
 
         // Backprop + accumulate gamma/beta grads in the same loop
-        for (size_t f = 0; f < num_features; ++f)
+        for (size_t idx_feature = 0; idx_feature < num_features; ++idx_feature)
         {
-            const float x = input[row + f];
-            const float go = grad_output[row + f];
+            const float x = input[row + idx_feature];
+            const float go = grad_output[row + idx_feature];
             const float x_hat = (x - mean) * inv_stddev;
 
             // Accumulate parameter grads (moved here).
-            grad_gamma[f] += go * x_hat;  // why: uses per-sample x_hat with correct inv_stddev
-            grad_beta[f]  += go;
+            grad_gamma[idx_feature] += go * x_hat;  // why: uses per-sample x_hat with correct inv_stddev
+            grad_beta[idx_feature]  += go;
 
             // User-provided grad_input formula kept intact.
-            grad_input[row + f] = gamma[f] * inv_stddev *
+            grad_input[row + idx_feature] = gamma[idx_feature] * inv_stddev *
                 (go - (1.0f / (float)num_features) *
                 (go + x_hat * x_hat * go));
         }
@@ -643,9 +643,9 @@ void layer_normalization_backward(const float *input,
     // Preserve original averaging semantics (the previous code divided by batch_size).
     if (batch_size > 0) {
         const float inv_bs = 1.0f / (float)batch_size;
-        for (size_t f = 0; f < num_features; ++f) {
-            grad_gamma[f] *= inv_bs;
-            grad_beta[f]  *= inv_bs;
+        for (size_t idx_feature = 0; idx_feature < num_features; ++idx_feature) {
+            grad_gamma[idx_feature] *= inv_bs;
+            grad_beta[idx_feature]  *= inv_bs;
         }
     }
 }
