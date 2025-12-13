@@ -1,0 +1,135 @@
+Running main() from /home/rickojn/coding/custard-flow/build/_deps/googletest-src/googletest/src/gtest_main.cc
+[==========] Running 18 tests from 7 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from MatrixMultiplicationTest
+[ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (782 ms)
+[----------] 1 test from MatrixMultiplicationTest (782 ms total)
+
+[----------] 2 tests from MatrixMultiplicationBackwardsTest
+[ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
+inputs:
+ 0.8823  0.9150  0.3829
+ 0.9593  0.3904  0.6009
+ 0.2566  0.7936  0.9408
+[ CPUFloatType{3,3} ]
+weights:
+ 0.1332  0.9346  0.5936
+ 0.8694  0.5677  0.7411
+ 0.4294  0.8854  0.5739
+[ CPUFloatType{3,3} ]
+grad output:
+ 0.2666  0.6274  0.2696
+ 0.4414  0.2969  0.8317
+ 0.1053  0.2695  0.3588
+[ CPUFloatType{3,3} ]
+[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (1 ms)
+[ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
+inputs:
+ 0.8823  0.9150  0.3829
+ 0.9593  0.3904  0.6009
+ 0.2566  0.7936  0.9408
+[ CPUFloatType{3,3} ]
+weights:
+ 0.1332  0.9346  0.5936
+ 0.8694  0.5677  0.7411
+ 0.4294  0.8854  0.5739
+[ CPUFloatType{3,3} ]
+grad output:
+ 0.2666  0.6274  0.2696
+ 0.4414  0.2969  0.8317
+ 0.1053  0.2695  0.3588
+[ CPUFloatType{3,3} ]
+remainder_m = 3, remainder_n = 3
+remainder_m = 3, remainder_n = 3
+[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (0 ms)
+[----------] 2 tests from MatrixMultiplicationBackwardsTest (2 ms total)
+
+[----------] 1 test from CrossEntropyLossTest
+[ RUN      ] CrossEntropyLossTest.BasicFunctionality
+[       OK ] CrossEntropyLossTest.BasicFunctionality (1 ms)
+[----------] 1 test from CrossEntropyLossTest (1 ms total)
+
+[----------] 1 test from LossBackwardTest
+[ RUN      ] LossBackwardTest.BasicFunctionality
+[       OK ] LossBackwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from LossBackwardTest (0 ms total)
+
+[----------] 1 test from layer_norm_test
+[ RUN      ] layer_norm_test.basic_functionality
+[       OK ] layer_norm_test.basic_functionality (0 ms)
+[----------] 1 test from layer_norm_test (0 ms total)
+
+[----------] 1 test from layer_norm_backward_test
+[ RUN      ] layer_norm_backward_test.basic_functionality
+/home/rickojn/coding/custard-flow/test/cf_test.cc:310: Failure
+The difference between actual_input_grad[i * num_features + j] and expected_input_grad[i * num_features + j] is 0.71282714605331421, which exceeds 1e-3, where
+actual_input_grad[i * num_features + j] evaluates to 1.2376613616943359,
+expected_input_grad[i * num_features + j] evaluates to 0.52483421564102173, and
+1e-3 evaluates to 0.001.
+Mismatch in input gradient at (0, 0)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:310: Failure
+The difference between actual_input_grad[i * num_features + j] and expected_input_grad[i * num_features + j] is 0.33929443359375, which exceeds 1e-3, where
+actual_input_grad[i * num_features + j] evaluates to 1.8912065029144287,
+expected_input_grad[i * num_features + j] evaluates to 1.5519120693206787, and
+1e-3 evaluates to 0.001.
+Mismatch in input gradient at (0, 1)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:310: Failure
+The difference between actual_input_grad[i * num_features + j] and expected_input_grad[i * num_features + j] is 0.67800790071487427, which exceeds 1e-3, where
+actual_input_grad[i * num_features + j] evaluates to 1.1222536563873291,
+expected_input_grad[i * num_features + j] evaluates to 0.44424575567245483, and
+1e-3 evaluates to 0.001.
+Mismatch in input gradient at (0, 2)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:310: Failure
+The difference between actual_input_grad[i * num_features + j] and expected_input_grad[i * num_features + j] is 1.3932650089263916, which exceeds 1e-3, where
+actual_input_grad[i * num_features + j] evaluates to -1.0538363456726074,
+expected_input_grad[i * num_features + j] evaluates to -2.447101354598999, and
+1e-3 evaluates to 0.001.
+Mismatch in input gradient at (0, 3)
+/home/rickojn/coding/custard-flow/test/cf_test.cc:310: Failure
+The difference between actual_input_grad[i * num_features + j] and expected_input_grad[i * num_features + j] is 0.057918136939406395, which exceeds 1e-3, where
+actual_input_grad[i * num_features + j] evaluates to -0.01597260870039463,
+expected_input_grad[i * num_features + j] evaluates to -0.073890745639801025, and
+1e-3 evaluates to 0.001.
+Mismatch in input gradient at (0, 4)
+[  FAILED  ] layer_norm_backward_test.basic_functionality (0 ms)
+[----------] 1 test from layer_norm_backward_test (0 ms total)
+
+[----------] 11 tests from VariousSizes/SIMDMatrixMultiplicationTest
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
+remainder_m = 1, remainder_n = 1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3
+remainder_m = 3, remainder_n = 3
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1
+remainder_m = 0, remainder_n = 1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
+remainder_m = 0, remainder_n = 1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (97 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
+remainder_m = 1, remainder_n = 0
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (90 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
+remainder_m = 1, remainder_n = 7
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (89 ms)
+[----------] 11 tests from VariousSizes/SIMDMatrixMultiplicationTest (277 ms total)
+
+[----------] Global test environment tear-down
+[==========] 18 tests from 7 test suites ran. (1066 ms total)
+[  PASSED  ] 17 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] layer_norm_backward_test.basic_functionality
+
+ 1 FAILED TEST

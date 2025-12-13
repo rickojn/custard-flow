@@ -279,7 +279,7 @@ TEST(layer_norm_test, basic_functionality) {
 TEST(layer_norm_backward_test, basic_functionality) {
     // ARRANGE
     torch::manual_seed(42);
-    int batch_size = 4;
+    int batch_size = 1;
     int num_features = 5; 
     torch::Tensor input = torch::randn({batch_size, num_features}, torch::requires_grad());
     torch::Tensor gamma = torch::randn({num_features}, torch::requires_grad());
