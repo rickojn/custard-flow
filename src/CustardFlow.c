@@ -639,12 +639,4 @@ void layer_normalization_backward(const float *inputs,
         }
     }
 
-    // Get average parameter gradients over the batch
-    if (size_batch > 0) {
-        const float inv_bs = 1.0f / (float)size_batch;
-        for (size_t idx_feature = 0; idx_feature < num_features; ++idx_feature) {
-            grad_gammas[idx_feature] *= inv_bs;
-            grad_betas[idx_feature]  *= inv_bs;
-        }
-    }
 }
