@@ -610,6 +610,9 @@ void layer_normalization_backward(const float *inputs,
             x_mean += inputs[offset_sample + idx_feature];
         }
         x_mean /= (float)num_features;
+        
+        // print mean
+        printf("Mean of sample %zu: %f\n", idx_sample, x_mean);
 
         // Variance
         float variance = 0.0f;
@@ -618,6 +621,9 @@ void layer_normalization_backward(const float *inputs,
             variance += diff * diff;
         }
         variance /= (float)num_features;
+
+        // print variance
+        printf("Variance of sample %zu: %f\n", idx_sample, variance);
 
         // Inverse standard deviation plus epsilon for numerical stability
         const float inv_stddev = 1.0f / sqrtf(variance + LN_EPS);

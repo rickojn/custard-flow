@@ -282,6 +282,19 @@ TEST(layer_norm_backward_test, basic_functionality) {
     int batch_size = 2;
     int num_features = 5; 
     torch::Tensor input = torch::randn({batch_size, num_features}, torch::requires_grad());
+    auto mean = input.mean(1, true);
+    //print torch mean
+    for (size_t i = 0; i < batch_size; i++)
+    {
+        std::cout << "Mean of torch sample " << i << ": " << mean[i].item<float>() << std::endl;
+    }
+    
+    auto variance = input.var(1, false, true);
+    //print torch variance
+    for (size_t i = 0; i < batch_size; i++)
+    {
+        std::cout << "Variance of torch sample " << i << ": " << variance[i].item<float>() << std::endl;
+    }
     torch::Tensor gamma = torch::randn({num_features}, torch::requires_grad());
     torch::Tensor beta = torch::randn({num_features}, torch::requires_grad());
     auto layer_norm = torch::nn::LayerNorm(torch::nn::LayerNormOptions({num_features}).elementwise_affine(true));
