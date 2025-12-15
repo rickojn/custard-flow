@@ -628,6 +628,21 @@ void layer_normalization_backward(const float *inputs,
         // Inverse standard deviation plus epsilon for numerical stability
         const float inv_stddev = 1.0f / sqrtf(variance + LN_EPS);
 
+        float mean_dl_dy_gamma = 0.0f;
+        float mean_dl_dy_gamma_xhat = 0.0f;
+
+        // Precompute sums for input gradient calculation
+        for (size_t idx_feature = 0; idx_feature < num_features; ++idx_feature)
+        {
+            const float x = inputs[offset_sample + idx_feature];
+            const float grad_output = grad_outputs[offset_sample + idx_feature];
+            const float x_hat = (x - x_mean) * inv_stddev;
+            mean_dl_dy_gamma += grad_output * gammas[idx_feature];
+            mean_dl_dy_gamma_xhat += grad_output * gammas[idx_feature] * x_hat;
+        }
+        mean_dl_dy_gamma /= (float)num_features;
+        mean_dl_dy_gamma_xhat /= (float)num_features;
+
         // Input gradients and accumulate parameter gradients
         for (size_t idx_feature = 0; idx_feature < num_features; ++idx_feature)
         {
@@ -635,9 +650,10 @@ void layer_normalization_backward(const float *inputs,
             const float grad_output = grad_outputs[offset_sample + idx_feature];
             const float x_hat = (x - x_mean) * inv_stddev;
             
-            grad_inputs[offset_sample + idx_feature] = gammas[idx_feature] * inv_stddev *
-                (grad_output - (1.0f / (float)num_features) *
-                (grad_output + x_hat * x_hat * grad_output));
+            grad_inputs[offset_sample + idx_feature] = inv_stddev * 
+                (grad_output * gammas[idx_feature]
+                 - mean_dl_dy_gamma
+                 - x_hat * mean_dl_dy_gamma_xhat);
 
             grad_gammas[idx_feature] += grad_output * x_hat;  
             grad_betas[idx_feature]  += grad_output;
