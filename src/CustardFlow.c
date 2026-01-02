@@ -20,11 +20,11 @@
 
 
 
-int min(int a, int b){
+int cf_min(int a, int b){
     return a < b ? a : b;
 }
 
-void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_num_rows, size_t src_num_cols){
+void cf_transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_num_rows, size_t src_num_cols){
     for (size_t idx_row = 0; idx_row < src_num_rows; idx_row++){
         for (size_t idx_col = 0; idx_col < src_num_cols; idx_col++){
             dest_matrix[idx_col * src_num_rows + idx_row] = src_matrix[idx_row * src_num_cols + idx_col];
@@ -33,10 +33,10 @@ void transpose_matrix(const float *src_matrix, float *dest_matrix, size_t src_nu
 }
 
 
-void naive_matmul(const float* A, const float *B, float * C, size_t m, size_t n, size_t k){
+void cf_naive_matmul(const float* A, const float *B, float * C, size_t m, size_t n, size_t k){
     // transpose B to col-major
     float* B_transposed = (float*)malloc(k * n * sizeof(float));
-    transpose_matrix(B, B_transposed, k, n);
+    cf_transpose_matrix(B, B_transposed, k, n);
     for (size_t idx_m = 0; idx_m < m; idx_m++ ){
         for (size_t idx_n = 0; idx_n < n; idx_n++){
             for (size_t idx_k = 0; idx_k < k; idx_k++){            
@@ -105,7 +105,7 @@ sum of outer products:
 
 */
 
-void outer_product_matmul(const float * a, const float * b, float * c, size_t m, size_t n, size_t k ){
+void cf_outer_product_matmul(const float * a, const float * b, float * c, size_t m, size_t n, size_t k ){
     for (size_t idx_k = 0; idx_k < k; idx_k++){
         for (size_t idx_m = 0; idx_m < m; idx_m++){
             for (size_t idx_n = 0; idx_n < n; idx_n++){
@@ -119,7 +119,7 @@ void outer_product_matmul(const float * a, const float * b, float * c, size_t m,
     }
 }
 
-void tiled_matmul(const float * A, const float * B, float * C, size_t m, size_t n, size_t k, size_t size_tile){
+void cf_tiled_matmul(const float * A, const float * B, float * C, size_t m, size_t n, size_t k, size_t size_tile){
     for (size_t tile_start_m = 0; tile_start_m < m; tile_start_m += size_tile){
         for (size_t tile_start_n = 0; tile_start_n < n; tile_start_n += size_tile){
             for (size_t tile_start_k = 0; tile_start_k < k; tile_start_k += size_tile){
@@ -172,7 +172,7 @@ have been evicted during the fetching of elements of B.
 */
 
 
-void l1_tiled_matmul(const float * A, const float * B, float * C, size_t m, size_t n, size_t k, size_t size_outer_tile, size_t size_inner_tile){
+void cf_l1_tiled_matmul(const float * A, const float * B, float * C, size_t m, size_t n, size_t k, size_t size_outer_tile, size_t size_inner_tile){
     for (size_t idx_m = 0; idx_m < m; idx_m += size_outer_tile){
         for (size_t idx_n = 0; idx_n < n; idx_n += size_outer_tile){
             for (size_t idx_k = 0; idx_k < k; idx_k += size_outer_tile){
@@ -240,7 +240,7 @@ ab ab    ab ab   ab ab    ab ab
 
 
 
-void simd_kernel_unrolled(const float * tile_A, const float * tile_B, float * C, size_t M, size_t N, size_t K, size_t tile_m, size_t tile_n, size_t offset_tile_C){
+void cf_simd_kernel_unrolled(const float * tile_A, const float * tile_B, float * C, size_t M, size_t N, size_t K, size_t tile_m, size_t tile_n, size_t offset_tile_C){
     __m256 reg_array_tile_C[8] = {}; // 8 256 bit regs for 8x8 floats of C
     __m256 reg_col_tile_strip_A; // 256 bit reg for 8 float row slice of 8 x K row strip of A
     __m256 reg_row_tile_strip_B_element; // 256 bit reg for broadcast of an element from K x 8 col strip of B
@@ -288,7 +288,7 @@ void simd_kernel_unrolled(const float * tile_A, const float * tile_B, float * C,
     }
 }
 
-void simd_kernel_rolled(const float * tile_A, const float * tile_B, float * C, 
+void cf_simd_kernel_rolled(const float * tile_A, const float * tile_B, float * C, 
     size_t M, size_t N, size_t K, 
     size_t tile_m, size_t tile_n, 
     size_t offset_tile_C, size_t offset_tile_A, size_t offset_tile_B){
@@ -322,7 +322,7 @@ void simd_kernel_rolled(const float * tile_A, const float * tile_B, float * C,
     }
 }
 
-void simd_kernel(const float * tile_A, const float * tile_B, float * C, 
+void cf_simd_kernel(const float * tile_A, const float * tile_B, float * C, 
     size_t M, size_t N, size_t K, 
     size_t tile_m, size_t tile_n, 
     size_t offset_tile_C, size_t offset_tile_A, size_t offset_tile_B){
@@ -357,10 +357,10 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * C,
     }
 }
 
-void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, size_t K)
+void cf_simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, size_t K)
 {
     float * A_col_major = (float*)malloc(M * K * sizeof(float));
-    transpose_matrix(A, A_col_major, M, K);
+    cf_transpose_matrix(A, A_col_major, M, K);
     float * C_col_major = (float*)malloc(M * N * sizeof(float));
     memset(C_col_major, 0, M * N * sizeof(float));
     const size_t tile_m = 8;
@@ -377,7 +377,7 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
             for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
             {
                 offset_C = idx_m + idx_n * M;
-                simd_kernel_unrolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, tile_m, tile_n, offset_C);
+                cf_simd_kernel_unrolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, tile_m, tile_n, offset_C);
             }
         }
     }
@@ -391,19 +391,19 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
             for ( ; idx_n < N - remainder_n; idx_n += tile_n)
             {
                 offset_C = idx_m + idx_n * M;
-                simd_kernel_unrolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, tile_m, tile_n, offset_C);
+                cf_simd_kernel_unrolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, tile_m, tile_n, offset_C);
             }
             offset_C = idx_m + idx_n * M;
-            simd_kernel_rolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, tile_m, remainder_n, offset_C, idx_m, remainder_n);
+            cf_simd_kernel_rolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, tile_m, remainder_n, offset_C, idx_m, remainder_n);
         }
         for (size_t idx_n = 0; idx_n < N; idx_n += tile_n)
         {
             offset_C = idx_m + idx_n * M;
-            simd_kernel_rolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, remainder_m, tile_n, offset_C, idx_m, tile_n);
+            cf_simd_kernel_rolled(&A_col_major[idx_m], &B[idx_n], C_col_major, M, N, K, remainder_m, tile_n, offset_C, idx_m, tile_n);
         }
     }
 
-    transpose_matrix(C_col_major, C, N, M); // since col to row major dimensions are swapped
+    cf_transpose_matrix(C_col_major, C, N, M); // since col to row major dimensions are swapped
     free(A_col_major);
     free(C_col_major);
 }
@@ -427,18 +427,18 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
      */
 
 
-void matmul_backwards(const float * grads_C, const float * B, const float * A, float * grads_B, float * grads_A, size_t M, size_t N, size_t K){
+void cf_matmul_backwards(const float * grads_C, const float * B, const float * A, float * grads_B, float * grads_A, size_t M, size_t N, size_t K){
     
     float * A_transpose = (float *)malloc(M * K * sizeof(float));
-    transpose_matrix(A, A_transpose, M, K);
+    cf_transpose_matrix(A, A_transpose, M, K);
 
-    naive_matmul(A_transpose, grads_C, grads_B, K, N, M); // grads_B = A-transpose * grads_C
+    cf_naive_matmul(A_transpose, grads_C, grads_B, K, N, M); // grads_B = A-transpose * grads_C
 
 
     float * B_transpose = (float *)malloc(K * N * sizeof(float));
-    transpose_matrix(B, B_transpose, K, N);
+    cf_transpose_matrix(B, B_transpose, K, N);
 
-    naive_matmul(grads_C, B_transpose, grads_A, M, N, K); // grads_A = grads_C * B-transpose
+    cf_naive_matmul(grads_C, B_transpose, grads_A, M, N, K); // grads_A = grads_C * B-transpose
 
     free(A_transpose);
     free(B_transpose);
@@ -446,25 +446,25 @@ void matmul_backwards(const float * grads_C, const float * B, const float * A, f
 
 
 
-void simd_matmul_backwards(const float * grads_C, const float * B, const float * A, float * grads_B, float * grads_A, size_t M, size_t N, size_t K)
+void cf_simd_matmul_backwards(const float * grads_C, const float * B, const float * A, float * grads_B, float * grads_A, size_t M, size_t N, size_t K)
 {
     // grads_B = A-transpose * grads_C
     float * A_transpose = (float *)malloc(M * K * sizeof(float));
-    transpose_matrix(A, A_transpose, M, K);
+    cf_transpose_matrix(A, A_transpose, M, K);
     // k x n = k x m * m x n
-    simd_matmul(A_transpose, grads_C, grads_B, M, N, K);
+    cf_simd_matmul(A_transpose, grads_C, grads_B, M, N, K);
 
     
     // grads_A = grads_C * B-transpose
     // m x k = m x n * n x k
     float * B_transpose = (float *)malloc(M * N * sizeof(float));
-    transpose_matrix(B, B_transpose, K, N);
-    simd_matmul(grads_C, B_transpose, grads_A, M, N, K);
+    cf_transpose_matrix(B, B_transpose, K, N);
+    cf_simd_matmul(grads_C, B_transpose, grads_A, M, N, K);
     free(A_transpose);
     free(B_transpose);
 }
 
-float cross_entropy_forward(const float *logits, const long *targets, float *log_probs, size_t batch_size, size_t num_classes)
+float cf_cross_entropy_forward(const float *logits, const long *targets, float *log_probs, size_t batch_size, size_t num_classes)
 {
     float loss = 0.0f;
     for (size_t idx_sample = 0; idx_sample < batch_size; idx_sample++)
@@ -498,7 +498,7 @@ float cross_entropy_forward(const float *logits, const long *targets, float *log
     return loss/batch_size;
 }
 
-void loss_backward(const float *logits, const long *targets, float *grad_logits, size_t size_batch, size_t num_classes)
+void cf_loss_backward(const float *logits, const long *targets, float *grad_logits, size_t size_batch, size_t num_classes)
 {
     for (size_t idx_sample = 0; idx_sample < size_batch; idx_sample++)
     {
@@ -526,7 +526,7 @@ void loss_backward(const float *logits, const long *targets, float *grad_logits,
 }
 
 
-void layer_normalization_forward(const float *input, float *output, size_t batch_size, size_t num_features,
+void cf_layer_normalization_forward(const float *input, float *output, size_t batch_size, size_t num_features,
 float * gamma, float * beta)
 {
     for (size_t idx_sample = 0; idx_sample < batch_size; idx_sample++)
@@ -585,7 +585,7 @@ float * gamma, float * beta)
 */
 
 
-void layer_normalization_backward(const float *inputs,
+void cf_layer_normalization_backward(const float *inputs,
                                   const float *grad_outputs,
                                   float *grad_inputs,
                                   size_t size_batch,

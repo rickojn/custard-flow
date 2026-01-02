@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <torch/torch.h>
-#include "CustardFlow.h"
+#include "../include/CustardFlow.h"
 #include <stdlib.h>
 
 TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
@@ -22,7 +22,7 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
     std::fill(actual_ptr, actual_ptr + m * n, 0.0f); 
 
     // ACT
-    naive_matmul(A_ptr, B_ptr, actual_ptr, m, k, n);
+    cf_naive_matmul(A_ptr, B_ptr, actual_ptr, m, k, n);
 
 
     // ASSERT
@@ -97,11 +97,11 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
 
 
 TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
-    mat_mul_backwards_test(matmul_backwards, "matmul_backwards");
+    mat_mul_backwards_test(cf_matmul_backwards, "matmul_backwards");
  }
 
  TEST(MatrixMultiplicationBackwardsTest, SimdMatmulBackwards) {
-    mat_mul_backwards_test(simd_matmul_backwards, "simd_matmul_backwards");
+    mat_mul_backwards_test(cf_simd_matmul_backwards, "simd_matmul_backwards");
  }
 
 
@@ -120,13 +120,13 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
 
     float *logits_ptr = logits.data_ptr<float>();
     float * transposed_logits_ptr = (float *)malloc(logits.size(0) * logits.size(1) * sizeof(float));
-    transpose_matrix(logits_ptr, transposed_logits_ptr, logits.size(0), logits.size(1));
+    cf_transpose_matrix(logits_ptr, transposed_logits_ptr, logits.size(0), logits.size(1));
     long *targets_ptr = targets.data_ptr<long>();
 
     float *log_probs = new float[batch_size * num_classes];
 
     // ACT
-    float loss_value = cross_entropy_forward(logits_ptr, targets_ptr, log_probs, batch_size, num_classes);
+    float loss_value = cf_cross_entropy_forward(logits_ptr, targets_ptr, log_probs, batch_size, num_classes);
 
     // ASSERT
     EXPECT_FLOAT_EQ(loss.item<float>(), loss_value);
@@ -153,7 +153,7 @@ TEST(MatrixMultiplicationBackwardsTest, MatmulBackwards) {
     float *grad_logits = logits.grad().data_ptr<float>();
 
     // ACT
-    loss_backward(logits_ptr, targets_ptr, grad_logits, batch_size, num_classes);
+    cf_loss_backward(logits_ptr, targets_ptr, grad_logits, batch_size, num_classes);
 
     // ASSERT
     for (int i = 0; i < batch_size; ++i) {
@@ -194,7 +194,7 @@ protected:
         std::fill(actual, actual + m * n, 0.0f);
 
         // ACT
-        simd_matmul(A_ptr, B_ptr, actual, m, n, k);
+        cf_simd_matmul(A_ptr, B_ptr, actual, m, n, k);
 
 
         // compare
@@ -266,7 +266,7 @@ TEST(layer_norm_test, basic_functionality) {
     float *gamma_ptr = layer_norm->weight.data_ptr<float>();
     float *beta_ptr = layer_norm->bias.data_ptr<float>();
     float *expected_output = new float[batch_size * num_features];
-    layer_normalization_forward(input_ptr, expected_output, batch_size, num_features, gamma_ptr, beta_ptr);
+    cf_layer_normalization_forward(input_ptr, expected_output, batch_size, num_features, gamma_ptr, beta_ptr);
     // ASSERT
     for (int i = 0; i < batch_size; ++i) {
         for (int j = 0; j < num_features; ++j) {
@@ -315,7 +315,7 @@ TEST(layer_norm_backward_test, basic_functionality) {
     std::fill(actual_gamma_grad, actual_gamma_grad + num_features, 0.0f);
     std::fill(actual_beta_grad, actual_beta_grad + num_features, 0.0f);
     // ACT
-    layer_normalization_backward(input_ptr, grad_output_ptr, actual_input_grad, batch_size, num_features,
+    cf_layer_normalization_backward(input_ptr, grad_output_ptr, actual_input_grad, batch_size, num_features,
         gamma_ptr, actual_gamma_grad, actual_beta_grad);
     // ASSERT
     for (int i = 0; i < batch_size; ++i) {
