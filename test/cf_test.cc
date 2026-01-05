@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <torch/torch.h>
-#include "CustardFlow.h"
+#include "../include/CustardFlow.h"
 #include <stdlib.h>
 
 TEST(MatrixMultiplicationTest, CompareWithLibTorch) {

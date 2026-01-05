@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include  "CustardFlow.h"
+#include  "../include/CustardFlow.h"
 
 #define M 10000
 #define N 288
