@@ -454,7 +454,10 @@ void simd_matmul_backwards(const float * grads_C, const float * B, const float *
     // k x n = k x m * m x n
     simd_matmul(A_transpose, grads_C, grads_B, M, N, K);
 
-    
+    if (grads_A == NULL){ // must be first layer where input grads are not needed
+        free(A_transpose);
+        return;
+    }
     // grads_A = grads_C * B-transpose
     // m x k = m x n * n x k
     float * B_transpose = (float *)malloc(M * N * sizeof(float));
