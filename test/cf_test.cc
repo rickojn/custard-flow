@@ -387,3 +387,30 @@ TEST(ReLUBackwardTest, BasicFunctionality) {
     }
     delete[] actual_input_grad;
 }
+
+// softmax forward test
+// (Note: softmax forward function needs to be implemented in CustardFlow.c for this test to work)
+TEST(SoftmaxForwardTest, BasicFunctionality) {
+    // ARRANGE
+    torch::manual_seed(42);
+    int batch_size = 4;
+    int num_classes = 5;    
+    torch::Tensor logits = torch::randn({batch_size, num_classes}, torch::requires_grad());
+    auto softmax = torch::nn::Softmax(/*dim=*/1);
+    auto output = softmax->forward(logits);
+    float *logits_ptr = logits.data_ptr<float>();
+    float *output_ptr = output.data_ptr<float>();
+    float *actual_output = new float[batch_size * num_classes];
+    // copy logits to actual_output
+    std::copy(logits_ptr, logits_ptr + batch_size * num_classes, actual_output);
+    // ACT
+    softmax_forward(actual_output, num_classes, batch_size);
+    // ASSERT
+    for (int i = 0; i < batch_size; ++i) {
+        for (int j = 0; j < num_classes; ++j) {
+            EXPECT_NEAR(output_ptr[i * num_classes + j], actual_output[i * num_classes + j], 1e-3)
+                << "Mismatch at (" << i << ", " << j << ")";
+        }
+    }
+    delete[] actual_output;
+}

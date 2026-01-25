@@ -1,0 +1,132 @@
+Running main() from /home/rickojn/coding/cf-mlp/custard-flow/build/_deps/googletest-src/googletest/src/gtest_main.cc
+[==========] Running 21 tests from 10 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from MatrixMultiplicationTest
+[ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (43 ms)
+[----------] 1 test from MatrixMultiplicationTest (43 ms total)
+
+[----------] 2 tests from MatrixMultiplicationBackwardsTest
+[ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
+inputs:
+ 0.8823  0.9150  0.3829
+ 0.9593  0.3904  0.6009
+ 0.2566  0.7936  0.9408
+[ CPUFloatType{3,3} ]
+weights:
+ 0.1332  0.9346  0.5936
+ 0.8694  0.5677  0.7411
+ 0.4294  0.8854  0.5739
+[ CPUFloatType{3,3} ]
+grad output:
+ 0.2666  0.6274  0.2696
+ 0.4414  0.2969  0.8317
+ 0.1053  0.2695  0.3588
+[ CPUFloatType{3,3} ]
+[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (1 ms)
+[ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
+inputs:
+ 0.8823  0.9150  0.3829
+ 0.9593  0.3904  0.6009
+ 0.2566  0.7936  0.9408
+[ CPUFloatType{3,3} ]
+weights:
+ 0.1332  0.9346  0.5936
+ 0.8694  0.5677  0.7411
+ 0.4294  0.8854  0.5739
+[ CPUFloatType{3,3} ]
+grad output:
+ 0.2666  0.6274  0.2696
+ 0.4414  0.2969  0.8317
+ 0.1053  0.2695  0.3588
+[ CPUFloatType{3,3} ]
+remainder_m = 3, remainder_n = 3
+remainder_m = 3, remainder_n = 3
+[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (0 ms)
+[----------] 2 tests from MatrixMultiplicationBackwardsTest (1 ms total)
+
+[----------] 1 test from CrossEntropyLossTest
+[ RUN      ] CrossEntropyLossTest.BasicFunctionality
+[       OK ] CrossEntropyLossTest.BasicFunctionality (0 ms)
+[----------] 1 test from CrossEntropyLossTest (0 ms total)
+
+[----------] 1 test from LossBackwardTest
+[ RUN      ] LossBackwardTest.BasicFunctionality
+[       OK ] LossBackwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from LossBackwardTest (0 ms total)
+
+[----------] 1 test from layer_norm_test
+[ RUN      ] layer_norm_test.basic_functionality
+[       OK ] layer_norm_test.basic_functionality (0 ms)
+[----------] 1 test from layer_norm_test (0 ms total)
+
+[----------] 1 test from layer_norm_backward_test
+[ RUN      ] layer_norm_backward_test.basic_functionality
+Mean of torch sample 0: 0.290253
+Mean of torch sample 1: 0.645795
+Mean of torch sample 2: -0.138662
+Mean of torch sample 3: 0.067247
+Variance of torch sample 0: 2.26461
+Variance of torch sample 1: 0.628273
+Variance of torch sample 2: 0.064853
+Variance of torch sample 3: 0.400222
+Mean of sample 0: 0.290253
+Variance of sample 0: 2.264611
+Mean of sample 1: 0.645795
+Variance of sample 1: 0.628273
+Mean of sample 2: -0.138662
+Variance of sample 2: 0.064853
+Mean of sample 3: 0.067247
+Variance of sample 3: 0.400222
+[       OK ] layer_norm_backward_test.basic_functionality (0 ms)
+[----------] 1 test from layer_norm_backward_test (0 ms total)
+
+[----------] 1 test from ReLUForwardTest
+[ RUN      ] ReLUForwardTest.BasicFunctionality
+[       OK ] ReLUForwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from ReLUForwardTest (0 ms total)
+
+[----------] 1 test from ReLUBackwardTest
+[ RUN      ] ReLUBackwardTest.BasicFunctionality
+[       OK ] ReLUBackwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from ReLUBackwardTest (0 ms total)
+
+[----------] 1 test from SoftmaxForwardTest
+[ RUN      ] SoftmaxForwardTest.BasicFunctionality
+[       OK ] SoftmaxForwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from SoftmaxForwardTest (0 ms total)
+
+[----------] 11 tests from VariousSizes/SIMDMatrixMultiplicationTest
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
+remainder_m = 1, remainder_n = 1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3
+remainder_m = 3, remainder_n = 3
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1
+remainder_m = 0, remainder_n = 1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
+remainder_m = 0, remainder_n = 1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (89 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
+remainder_m = 1, remainder_n = 0
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (91 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
+remainder_m = 1, remainder_n = 7
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (85 ms)
+[----------] 11 tests from VariousSizes/SIMDMatrixMultiplicationTest (268 ms total)
+
+[----------] Global test environment tear-down
+[==========] 21 tests from 10 test suites ran. (316 ms total)
+[  PASSED  ] 21 tests.

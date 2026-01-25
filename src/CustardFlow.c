@@ -684,3 +684,25 @@ void relu_backward(const float *input, const float *grad_output, float *grad_inp
         }
     }
 }
+
+void softmax_forward(float *activations, size_t num_classes, size_t size_batch)
+{
+    for (size_t idx_sample = 0; idx_sample < size_batch; idx_sample++) {
+        float max_logit = activations[idx_sample * num_classes];
+        for (size_t idx_neuron = 1; idx_neuron < num_classes; idx_neuron++) {
+            if (activations[idx_sample * num_classes + idx_neuron] > max_logit) {
+                max_logit = activations[idx_sample * num_classes + idx_neuron];
+            }
+        }
+
+        float sum_exp = 0.0f;
+        for (size_t idx_neuron = 0; idx_neuron < num_classes; idx_neuron++) {
+            activations[idx_sample * num_classes + idx_neuron] = expf(activations[idx_sample * num_classes + idx_neuron] - max_logit);
+            sum_exp += activations[idx_sample * num_classes + idx_neuron];
+        }
+
+        for (size_t idx_neuron = 0; idx_neuron < num_classes; idx_neuron++) {
+            activations[idx_sample * num_classes + idx_neuron] /= sum_exp;
+        }
+    }
+}
