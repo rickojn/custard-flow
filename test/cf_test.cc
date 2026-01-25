@@ -332,4 +332,26 @@ TEST(layer_norm_backward_test, basic_functionality) {
     }   
 }
 
- 
+
+// relu forward test
+TEST(ReLUForwardTest, BasicFunctionality) {
+    // ARRANGE
+    torch::manual_seed(42);
+    int batch_size = 4;
+    int num_features = 5;
+    torch::Tensor input = torch::randn({batch_size, num_features}, torch::requires_grad());
+    auto relu = torch::nn::ReLU();
+    auto output = relu->forward(input);
+    float *input_ptr = input.data_ptr<float>();
+    float *output_ptr = output.data_ptr<float>();
+    float *actual_output = new float[batch_size * num_features];
+    // ACT
+    relu_forward(input_ptr, actual_output, num_features, batch_size);
+    // ASSERT
+    for (int i = 0; i < batch_size; ++i) {
+        for (int j = 0; j < num_features; ++j) {
+            EXPECT_FLOAT_EQ(output_ptr[i * num_features + j], actual_output[i * num_features + j])
+                << "Mismatch at (" << i << ", " << j << ")";
+        }
+    }
+}

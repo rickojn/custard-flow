@@ -32,6 +32,7 @@ void layer_normalization_forward(const float *input, float *output, size_t batch
 float * gamma, float * beta);
 void layer_normalization_backward(const float *inputs, const float *grad_outputs, float *grad_inputs, size_t size_batch, size_t num_features,
 float * gammas, float * grad_gammas, float * grad_betas);
+void relu_forward(const float *input, float *output, size_t num_features, size_t size_batch);
 
 
 #ifdef __cplusplus
