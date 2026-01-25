@@ -666,11 +666,11 @@ void layer_normalization_backward(const float *inputs,
 
 }
 
-void relu_forward(const float *input, float *output, size_t num_features, size_t size_batch)
+void relu_forward(float *activations, size_t num_features, size_t size_batch)
 {
     for (size_t idx_sample = 0; idx_sample < size_batch; idx_sample++) {
         for (size_t idx_feature = 0; idx_feature < num_features; idx_feature++) {
-            output[idx_sample * num_features + idx_feature] = fmaxf(0.0f, input[idx_sample * num_features + idx_feature]);
+            activations[idx_sample * num_features + idx_feature] = fmaxf(0.0f, activations[idx_sample * num_features + idx_feature]);
         }
     }
 }

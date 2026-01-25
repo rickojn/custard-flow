@@ -345,8 +345,10 @@ TEST(ReLUForwardTest, BasicFunctionality) {
     float *input_ptr = input.data_ptr<float>();
     float *output_ptr = output.data_ptr<float>();
     float *actual_output = new float[batch_size * num_features];
+    //copy input to actual_output
+    std::copy(input_ptr, input_ptr + batch_size * num_features, actual_output);
     // ACT
-    relu_forward(input_ptr, actual_output, num_features, batch_size);
+    relu_forward(actual_output, num_features, batch_size);
     // ASSERT
     for (int i = 0; i < batch_size; ++i) {
         for (int j = 0; j < num_features; ++j) {
