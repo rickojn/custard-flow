@@ -33,7 +33,7 @@ float * gamma, float * beta);
 void layer_normalization_backward(const float *inputs, const float *grad_outputs, float *grad_inputs, size_t size_batch, size_t num_features,
 float * gammas, float * grad_gammas, float * grad_betas);
 void relu_forward(float *activations, size_t num_features, size_t size_batch);
-void relu_backward(const float *input, float *gradients, size_t num_features, size_t size_batch);
+void relu_backward(const float *input, float *gradients, const unsigned char *labels, size_t num_features, size_t size_batch);
 void softmax_forward(float *activations, size_t num_classes, size_t size_batch);
 
 

@@ -377,7 +377,7 @@ TEST(ReLUBackwardTest, BasicFunctionality) {
     //copy grad_output to actual_grads
     std::copy(grad_output_ptr, grad_output_ptr + batch_size * num_features, actual_grads);
     // ACT
-        relu_backward(input_ptr, actual_grads, num_features, batch_size);
+        relu_backward(input_ptr, actual_grads, nullptr, num_features, batch_size);
     //  ASSERT
     for (int i = 0; i < batch_size; ++i) {
         for (int j = 0; j < num_features; ++j) {

@@ -675,7 +675,7 @@ void relu_forward(float *activations, size_t num_features, size_t size_batch)
     }
 }
 
-void relu_backward(const float *input, float *gradients, size_t num_features, size_t size_batch)
+void relu_backward(const float *input, float *gradients, const unsigned char *labels, size_t num_features, size_t size_batch)
 {
     for (size_t idx_sample = 0; idx_sample < size_batch; idx_sample++) {
         for (size_t idx_feature = 0; idx_feature < num_features; idx_feature++) {
