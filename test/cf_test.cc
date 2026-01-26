@@ -360,7 +360,6 @@ TEST(ReLUForwardTest, BasicFunctionality) {
 }
 
 //relu backward test
-// (Note: relu backward function needs to be implemented in CustardFlow.c for this test to work)
 TEST(ReLUBackwardTest, BasicFunctionality) {
     // ARRANGE
     torch::manual_seed(42);
@@ -374,22 +373,22 @@ TEST(ReLUBackwardTest, BasicFunctionality) {
     float *input_ptr = input.data_ptr<float>();
     float *grad_output_ptr = grad_output.data_ptr<float>();
     float *expected_input_grad = input.grad().data_ptr<float>();
-    float *actual_input_grad = new float[batch_size * num_features];
-    std::fill(actual_input_grad, actual_input_grad + batch_size * num_features, 0.0f);
+    float *actual_grads = new float[batch_size * num_features];
+    //copy grad_output to actual_grads
+    std::copy(grad_output_ptr, grad_output_ptr + batch_size * num_features, actual_grads);
     // ACT
-        relu_backward(input_ptr, grad_output_ptr, actual_input_grad, num_features, batch_size);
+        relu_backward(input_ptr, actual_grads, num_features, batch_size);
     //  ASSERT
     for (int i = 0; i < batch_size; ++i) {
         for (int j = 0; j < num_features; ++j) {
-            EXPECT_NEAR(actual_input_grad[i * num_features + j], expected_input_grad[i * num_features + j], 1e-3)
+            EXPECT_NEAR(actual_grads[i * num_features + j], expected_input_grad[i * num_features + j], 1e-3)
                 << "Mismatch in input gradient at (" << i << ", " << j << ")";
         }
     }
-    delete[] actual_input_grad;
+    delete[] actual_grads;
 }
 
 // softmax forward test
-// (Note: softmax forward function needs to be implemented in CustardFlow.c for this test to work)
 TEST(SoftmaxForwardTest, BasicFunctionality) {
     // ARRANGE
     torch::manual_seed(42);
