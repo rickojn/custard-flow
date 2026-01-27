@@ -413,3 +413,46 @@ TEST(SoftmaxForwardTest, BasicFunctionality) {
     }
     delete[] actual_output;
 }
+
+// loss softmax backward test
+TEST(SoftmaxCrossEntropyBackwardTest, MatchesPyTorch) {
+    torch::manual_seed(42);
+
+    const int batch_size = 4;
+    const int num_classes = 5;
+
+    auto logits = torch::randn({batch_size, num_classes},
+                               torch::TensorOptions().dtype(torch::kFloat32).requires_grad(true));
+
+    auto labels = torch::randint(0, num_classes, {batch_size},
+                                 torch::TensorOptions().dtype(torch::kInt64));
+
+    // PyTorch: CE on logits (internally logsoftmax + NLL)
+    auto loss = torch::nn::functional::cross_entropy(
+        logits, labels,
+        torch::nn::functional::CrossEntropyFuncOptions().reduction(torch::kMean)
+    );
+
+    loss.backward();
+
+    // Our side: compute probs then (p - onehot) / batch_size to match mean reduction
+    auto probs = torch::softmax(logits.detach(), /*dim=*/1).contiguous();
+
+    const float* probs_ptr = probs.data_ptr<float>();
+    const int64_t* labels_ptr = labels.data_ptr<int64_t>();
+
+    std::vector<float> actual(batch_size * num_classes);
+    loss_softmax_backward(probs_ptr, actual.data(), labels_ptr, num_classes, batch_size);
+
+    // divide by batch_size because PyTorch reduction=mean
+    for (auto& v : actual) v /= batch_size;
+
+    const float* expected = logits.grad().data_ptr<float>();
+
+    for (int i = 0; i < batch_size; ++i) {
+        for (int j = 0; j < num_classes; ++j) {
+            EXPECT_NEAR(actual[i * num_classes + j], expected[i * num_classes + j], 1e-4)
+                << "Mismatch at (" << i << ", " << j << ")";
+        }
+    }
+}

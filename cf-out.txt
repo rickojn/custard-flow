@@ -1,10 +1,10 @@
 Running main() from /home/rickojn/coding/cf-mlp/custard-flow/build/_deps/googletest-src/googletest/src/gtest_main.cc
-[==========] Running 21 tests from 10 test suites.
+[==========] Running 22 tests from 11 test suites.
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (778 ms)
-[----------] 1 test from MatrixMultiplicationTest (778 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (773 ms)
+[----------] 1 test from MatrixMultiplicationTest (773 ms total)
 
 [----------] 2 tests from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
@@ -47,7 +47,7 @@ remainder_m = 3, remainder_n = 3
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
-[       OK ] CrossEntropyLossTest.BasicFunctionality (0 ms)
+[       OK ] CrossEntropyLossTest.BasicFunctionality (1 ms)
 [----------] 1 test from CrossEntropyLossTest (1 ms total)
 
 [----------] 1 test from LossBackwardTest
@@ -78,8 +78,8 @@ Mean of sample 2: -0.138662
 Variance of sample 2: 0.064853
 Mean of sample 3: 0.067247
 Variance of sample 3: 0.400222
-[       OK ] layer_norm_backward_test.basic_functionality (0 ms)
-[----------] 1 test from layer_norm_backward_test (0 ms total)
+[       OK ] layer_norm_backward_test.basic_functionality (1 ms)
+[----------] 1 test from layer_norm_backward_test (1 ms total)
 
 [----------] 1 test from ReLUForwardTest
 [ RUN      ] ReLUForwardTest.BasicFunctionality
@@ -95,6 +95,11 @@ Variance of sample 3: 0.400222
 [ RUN      ] SoftmaxForwardTest.BasicFunctionality
 [       OK ] SoftmaxForwardTest.BasicFunctionality (0 ms)
 [----------] 1 test from SoftmaxForwardTest (0 ms total)
+
+[----------] 1 test from SoftmaxCrossEntropyBackwardTest
+[ RUN      ] SoftmaxCrossEntropyBackwardTest.MatchesPyTorch
+[       OK ] SoftmaxCrossEntropyBackwardTest.MatchesPyTorch (0 ms)
+[----------] 1 test from SoftmaxCrossEntropyBackwardTest (0 ms total)
 
 [----------] 11 tests from VariousSizes/SIMDMatrixMultiplicationTest
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
@@ -116,17 +121,17 @@ remainder_m = 0, remainder_n = 1
 remainder_m = 0, remainder_n = 1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (91 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (97 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
 remainder_m = 1, remainder_n = 0
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (88 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (91 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
 remainder_m = 1, remainder_n = 7
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (85 ms)
-[----------] 11 tests from VariousSizes/SIMDMatrixMultiplicationTest (266 ms total)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (97 ms)
+[----------] 11 tests from VariousSizes/SIMDMatrixMultiplicationTest (287 ms total)
 
 [----------] Global test environment tear-down
-[==========] 21 tests from 10 test suites ran. (1049 ms total)
-[  PASSED  ] 21 tests.
+[==========] 22 tests from 11 test suites ran. (1067 ms total)
+[  PASSED  ] 22 tests.

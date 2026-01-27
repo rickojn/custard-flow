@@ -706,3 +706,15 @@ void softmax_forward(float *activations, size_t num_classes, size_t size_batch)
         }
     }
 }
+
+void loss_softmax_backward(const float *probs, float *gradients_output, const long *labels, size_t num_neurons, size_t size_batch)
+{
+    for (size_t idx_sample = 0; idx_sample < size_batch; idx_sample++){
+        for (size_t idx_logit = 0; idx_logit < num_neurons; idx_logit++){
+            float label = idx_logit == labels[idx_sample] ? 1.0 : 0.0;
+            size_t offset_logit = idx_sample * num_neurons + idx_logit;
+            gradients_output[offset_logit] = probs[offset_logit] - label;
+        }
+    }    
+}
+

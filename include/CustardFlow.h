@@ -35,6 +35,7 @@ float * gammas, float * grad_gammas, float * grad_betas);
 void relu_forward(float *activations, size_t num_features, size_t size_batch);
 void relu_backward(const float *input, float *gradients, const unsigned char *labels, size_t num_features, size_t size_batch);
 void softmax_forward(float *activations, size_t num_classes, size_t size_batch);
+void loss_softmax_backward(const float *activations_output, float *gradients_output, const long *labels, size_t num_neurons, size_t size_batch);
 
 
 #ifdef __cplusplus
