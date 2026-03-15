@@ -383,7 +383,6 @@ void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, s
     }
     else
     {
-        printf("remainder_m = %zu, remainder_n = %zu\n", remainder_m, remainder_n);
         size_t idx_m = 0;
         for (; idx_m < M - remainder_m; idx_m += tile_m)
         {
