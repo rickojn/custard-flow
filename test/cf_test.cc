@@ -236,7 +236,8 @@ INSTANTIATE_TEST_SUITE_P(
         MatMulDims{256, 512, 1024},
         MatMulDims{8, 16, 32},
         MatMulDims{257, 512, 1024},
-        MatMulDims{257, 512, 1023}
+        MatMulDims{257, 512, 1023},
+        MatMulDims{16, 8, 784}
      ),
     [](auto const& info) {
         auto dims = info.param;
