@@ -44,9 +44,10 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
      std::string func_name)
  {
      // ARRANGE
+     int m = 784, n = 128, k = 16;
      torch::manual_seed(42);
-     torch::Tensor input = torch::rand({3, 3}, torch::requires_grad());
-     torch::Tensor weights = torch::rand({3, 3}, torch::requires_grad());
+     torch::Tensor input = torch::rand({m, k}, torch::requires_grad());
+     torch::Tensor weights = torch::rand({m, n}, torch::requires_grad());
      printf("inputs:\n");
      std::cout << input << std::endl;
      printf("weights:\n");
@@ -63,27 +64,27 @@ TEST(MatrixMultiplicationTest, CompareWithLibTorch) {
      float *weights_ptr = weights.data_ptr<float>();
      float *grad_output_ptr = grad_output.data_ptr<float>();
      
-     float *actual_input_grad = new float[3 * 3];
-     float *actual_weights_grad = new float[3 * 3];
-     std::fill(actual_input_grad, actual_input_grad + 3 * 3, 0.0f);
-     std::fill(actual_weights_grad, actual_weights_grad + 3 * 3, 0.0f);
+     float *actual_input_grad = new float[m * k];
+     float *actual_weights_grad = new float[m * n];
+     std::fill(actual_input_grad, actual_input_grad + m * k, 0.0f);
+     std::fill(actual_weights_grad, actual_weights_grad + m * n, 0.0f);
 
      // ACT
-     matmul_backwards_func(grad_output_ptr, weights_ptr, input_ptr, actual_weights_grad, actual_input_grad, 3, 3, 3);
+     matmul_backwards_func(grad_output_ptr, weights_ptr, input_ptr, actual_weights_grad, actual_input_grad, m, n, k);
 
      // ASSERT
-     for (int i = 0; i < 3; ++i)
+     for (int i = 0; i < k; ++i)
      {
-         for (int j = 0; j < 3; ++j)
+         for (int j = 0; j < n; ++j)
          {
-             EXPECT_NEAR(actual_input_grad[i * 3 + j], expected_input_grad[i * 3 + j], 1e-3)
+             EXPECT_NEAR(actual_input_grad[i * n + j], expected_input_grad[i * n + j], 1e-3)
                  << "Mismatch in input gradient at (" << i << ", " << j << ")";
-             EXPECT_NEAR(actual_weights_grad[i * 3 + j], expected_weights_grad[i * 3 + j], 1e-3)
+             EXPECT_NEAR(actual_weights_grad[i * n + j], expected_weights_grad[i * n + j], 1e-3)
                  << "Mismatch in weights gradient at (" << i << ", " << j << ")";
                  // break out of the loop if weights mismatch is found
-                if (std::abs(actual_input_grad[i * 3 + j] - expected_input_grad[i * 3 + j]) > 1e-3 ||
-                    std::abs(actual_weights_grad[i * 3 + j] - expected_weights_grad[i * 3 + j]) > 1e-3) {
-                    i = 3; // break out of the outer loop if mismatch is found
+                if (std::abs(actual_input_grad[i * n + j] - expected_input_grad[i * n + j]) > 1e-3 ||
+                    std::abs(actual_weights_grad[i * n + j] - expected_weights_grad[i * n + j]) > 1e-3) {
+                    i = k; // break out of the outer loop if mismatch is found
                     break; // break out of the loop if mismatch is found
          }
         }
