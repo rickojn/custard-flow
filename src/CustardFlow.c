@@ -445,26 +445,31 @@ void matmul_backwards(const float * grads_C, const float * B, const float * A, f
 
 
 
-void simd_matmul_backwards(const float * grads_C, const float * B, const float * A, float * grads_B, float * grads_A, size_t M, size_t N, size_t K)
+void simd_matmul_backwards(const float *grads_C, const float *B, const float *A,
+                           float *grads_B, float *grads_A,
+                           size_t M, size_t N, size_t K)
 {
-    // grads_B = A-transpose * grads_C
-    float * A_transpose = (float *)malloc(M * K * sizeof(float));
+    float *A_transpose = (float *)malloc(M * K * sizeof(float));
     transpose_matrix(A, A_transpose, M, K);
-    // k x n = k x m * m x n
-    simd_matmul(A_transpose, grads_C, grads_B, M, N, K);
 
-    if (grads_A == NULL){ // must be first layer where input grads are not needed
+    // grads_B = A^T * grads_C   => (K x M) * (M x N) = (K x N)
+    simd_matmul(A_transpose, grads_C, grads_B, K, N, M);
+
+    if (grads_A == NULL) {
         free(A_transpose);
         return;
     }
-    // grads_A = grads_C * B-transpose
-    // m x k = m x n * n x k
-    float * B_transpose = (float *)malloc(M * N * sizeof(float));
+
+    float *B_transpose = (float *)malloc(K * N * sizeof(float));
     transpose_matrix(B, B_transpose, K, N);
-    simd_matmul(grads_C, B_transpose, grads_A, M, N, K);
+
+    // grads_A = grads_C * B^T   => (M x N) * (N x K) = (M x K)
+    simd_matmul(grads_C, B_transpose, grads_A, M, K, N);
+
     free(A_transpose);
     free(B_transpose);
 }
+
 
 float cross_entropy_forward(const float *logits, const long *targets, float *log_probs, size_t batch_size, size_t num_classes)
 {
