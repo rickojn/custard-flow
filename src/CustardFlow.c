@@ -722,3 +722,18 @@ void loss_softmax_backward(const float *probs, float *gradients_output, const lo
     }    
 }
 
+/*
+Decoder Attention.
+
+Input - Sequence of length T of C-dimensional embeddings
+
+Each of these are multiplied by matrices Q, K and V of shape C x A to produce A-dimensional vectors q,k and v.
+For each element of the sequence:
+	Calculate attention score for that and previous elements by getting the dot product of that elements q vector with the the k vectors of that and prev elements
+	Devide each of the scores by sqrt of A.
+	Get attention weights by getting softmax of the scaled scores
+	Multiply vs for that element and prev by the attention weight.
+	For each element of the sequence so far the output is the sum of weighted value vectors of that and prev elements.
+
+*/
+
