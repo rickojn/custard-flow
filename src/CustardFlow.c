@@ -761,9 +761,11 @@ void attention_forward_no_cache(const float *input, const float *weights_query, 
                 for (size_t idx_prefix = 0; idx_prefix <= idx_embedding; idx_prefix++){
                     size_t offset_k = (idx_sequence * size_sequence + idx_prefix) * dim_model + idx_head * (dim_model / num_heads);
                     float attention_score = 0.0f;
+                    // attention score is dot product of q and k vectors of the head for the embedding and prefix embedding
                     for (size_t idx_dim = 0; idx_dim < dim_model / num_heads; idx_dim++){
                         attention_score += q[offset_q + idx_dim] * k[offset_k + idx_dim];
                     }
+                    //scale attention score by sqrt of dimension of head
                     attention_score /= sqrtf((float)(dim_model / num_heads));                   
                     attention_weights[idx_sequence * size_sequence * size_sequence + idx_embedding * size_sequence + idx_prefix] = attention_score;
                 }
@@ -771,8 +773,24 @@ void attention_forward_no_cache(const float *input, const float *weights_query, 
         }
     }
 
-    // compute attention weights
+    // compute attention weights by normalizing attention scores with softmax
     softmax_forward(attention_weights, size_sequence, size_batch * size_sequence);
+
+    // compute output as sum of weighted value vectors
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){
+        for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++){
+            for (size_t idx_head = 0; idx_head < num_heads; idx_head++){
+                size_t offset_v = (idx_sequence * size_sequence + idx_embedding) * dim_model + idx_head * (dim_model / num_heads);
+                for (size_t idx_prefix = 0; idx_prefix <= idx_embedding; idx_prefix++){
+                    size_t offset_attention_weight = idx_sequence * size_sequence * size_sequence + idx_embedding * size_sequence + idx_prefix;
+                    size_t offset_v_prefix = (idx_sequence * size_sequence + idx_prefix) * dim_model + idx_head * (dim_model / num_heads);
+                    for (size_t idx_dim = 0; idx_dim < dim_model / num_heads; idx_dim++){
+                        output[offset_v + idx_dim] += attention_weights[offset_attention_weight] * v[offset_v_prefix + idx_dim];
+                    }
+                }
+            }
+        }    
+    }
 
 
     // free q, k and v 
