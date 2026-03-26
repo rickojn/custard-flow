@@ -737,8 +737,46 @@ For each element of the sequence:
 
 */
 
-void attention_forward(const float *input, const float *weights_query, const float *weights_key, const float *weights_value, 
+void attention_forward_no_cache(const float *input, const float *weights_query, const float *weights_key, const float *weights_value, 
     float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
 {
-    // TODO
+    // allocate memory for q, k and v
+    float *q = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+    float *k = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+    float *v = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+
+    // allocate memory for attention weights
+    float *attention_weights = (float *)malloc(size_batch * size_sequence * size_sequence * sizeof(float));
+
+    // compute q, k and v
+    simd_matmul(input, weights_query, q, size_batch * size_sequence, dim_model, dim_model);
+    simd_matmul(input, weights_key, k, size_batch * size_sequence, dim_model, dim_model);
+    simd_matmul(input, weights_value, v, size_batch * size_sequence, dim_model, dim_model);
+
+    // compute attention scores
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){ // each sample is a sequence of embeddings
+        for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++){
+            for (size_t idx_head = 0; idx_head < num_heads; idx_head++){
+                size_t offset_q = (idx_sequence * size_sequence + idx_embedding) * dim_model + idx_head * (dim_model / num_heads);
+                for (size_t idx_prefix = 0; idx_prefix <= idx_embedding; idx_prefix++){
+                    size_t offset_k = (idx_sequence * size_sequence + idx_prefix) * dim_model + idx_head * (dim_model / num_heads);
+                    float attention_score = 0.0f;
+                    for (size_t idx_dim = 0; idx_dim < dim_model / num_heads; idx_dim++){
+                        attention_score += q[offset_q + idx_dim] * k[offset_k + idx_dim];
+                    }
+                    attention_score /= sqrtf((float)(dim_model / num_heads));                   
+                    attention_weights[idx_sequence * size_sequence * size_sequence + idx_embedding * size_sequence + idx_prefix] = attention_score;
+                }
+            }
+        }
+    }
+
+    // compute attention weights
+    softmax_forward(attention_weights, size_sequence, size_batch * size_sequence);
+
+
+    // free q, k and v 
+    free(q);
+    free(k);
+    free(v);
 }
