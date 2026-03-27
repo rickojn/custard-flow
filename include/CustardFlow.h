@@ -36,6 +36,8 @@ void relu_forward(float *activations, size_t num_features, size_t size_batch);
 void relu_backward(const float *input, float *gradients, const long *labels, size_t num_features, size_t size_batch);
 void softmax_forward(float *activations, size_t num_classes, size_t size_batch);
 void loss_softmax_backward(const float *activations_output, float *gradients_output, const long *labels, size_t num_neurons, size_t size_batch);
+void attention_forward_no_cache(const float *input, const float *weights_query, const float *weights_key, const float *weights_value, 
+    float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads);
 
 
 #ifdef __cplusplus

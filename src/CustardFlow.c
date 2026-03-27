@@ -778,7 +778,7 @@ void attention_forward_no_cache(const float *input, const float *weights_query, 
                     for (size_t idx_dim = 0; idx_dim < dim_model / num_heads; idx_dim++){
                         output[offset_v + idx_dim] += attention_weights[offset_attention_weight] * v[offset_v_prefix + idx_dim];
                     }
-
+                }
             }
         }
     }
