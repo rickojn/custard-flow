@@ -740,7 +740,15 @@ For each element of the sequence:
 void attention_forward_no_cache(const float *input, const float *weights_query, const float *weights_key, const float *weights_value, 
     float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
 {
+    /*
+    input: batch_size x sequence_length x model_dim
+    weights_query: model_dim x model_dim
+    weights_key: model_dim x model_dim
+    weights_value: model_dim x model_dim
+    output: batch_size x sequence_length x model_dim
+    */
     // allocate memory for q, k and v
+    // q, k and v: batch_size x sequence_length x model_dim
     float *q = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
     float *k = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
     float *v = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
