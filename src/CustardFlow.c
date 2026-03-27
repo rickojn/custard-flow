@@ -745,8 +745,8 @@ void attention_forward_no_cache(const float *input, const float *weights_query, 
     float *k = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
     float *v = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
 
-    // allocate memory for attention weights
-    float *attention_weights = (float *)malloc(size_batch * size_sequence * size_sequence * sizeof(float));
+    // allocate max memory for attention weights
+    float *attention_weights = (float *)malloc(size_sequence * sizeof(float));
 
     // compute q, k and v
     simd_matmul(input, weights_query, q, size_batch * size_sequence, dim_model, dim_model);
@@ -769,27 +769,18 @@ void attention_forward_no_cache(const float *input, const float *weights_query, 
                     attention_score /= sqrtf((float)(dim_model / num_heads));                   
                     attention_weights[idx_sequence * size_sequence * size_sequence + idx_embedding * size_sequence + idx_prefix] = attention_score;
                 }
-            }
-        }
-    }
-
-    // compute attention weights by normalizing attention scores with softmax
-    softmax_forward(attention_weights, size_sequence, size_batch * size_sequence);
-
-    // compute output as sum of weighted value vectors
-    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){
-        for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++){
-            for (size_t idx_head = 0; idx_head < num_heads; idx_head++){
+                softmax_forward(&attention_weights[idx_sequence * size_sequence * size_sequence + idx_embedding * size_sequence], idx_embedding + 1, 1);
+                // compute output as sum of weighted value vectors for the head for the embedding and prefix embedding
                 size_t offset_v = (idx_sequence * size_sequence + idx_embedding) * dim_model + idx_head * (dim_model / num_heads);
                 for (size_t idx_prefix = 0; idx_prefix <= idx_embedding; idx_prefix++){
-                    size_t offset_attention_weight = idx_sequence * size_sequence * size_sequence + idx_embedding * size_sequence + idx_prefix;
                     size_t offset_v_prefix = (idx_sequence * size_sequence + idx_prefix) * dim_model + idx_head * (dim_model / num_heads);
+                    size_t offset_attention_weight = idx_sequence * size_sequence * size_sequence + idx_embedding * size_sequence + idx_prefix;
                     for (size_t idx_dim = 0; idx_dim < dim_model / num_heads; idx_dim++){
                         output[offset_v + idx_dim] += attention_weights[offset_attention_weight] * v[offset_v_prefix + idx_dim];
                     }
-                }
+
             }
-        }    
+        }
     }
 
 
@@ -797,4 +788,6 @@ void attention_forward_no_cache(const float *input, const float *weights_query, 
     free(q);
     free(k);
     free(v);
+    // free attention weights
+    free(attention_weights);
 }
