@@ -451,3 +451,41 @@ TEST(SoftmaxCrossEntropyBackwardTest, MatchesPyTorch) {
         }
     }
 }
+
+// attention forward test without cache
+TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
+    // ARRANGE
+    torch::manual_seed(42);
+    int batch_size = 2;
+    int size_sequence = 3;
+    int dim_model = 4;
+    int num_heads = 1; // For simplicity, we can test with 1 head  
+    torch::Tensor input = torch::randn({batch_size, size_sequence, dim_model}, torch::requires_grad());
+    torch::Tensor weights_query = torch::randn({dim_model, dim_model}, torch::requires_grad());
+    torch::Tensor weights_key = torch::randn({dim_model, dim_model}, torch::requires_grad());
+    torch::Tensor weights_value = torch::randn({dim_model, dim_model}, torch::requires_grad());
+    torch::nn::MultiheadAttention mha(torch::nn::MultiheadAttentionOptions(dim_model, num_heads));
+    auto attention_output_tuple = mha->forward(input, input, input);
+    auto attention_output = std::get<0>(attention_output_tuple);
+
+
+    float *input_ptr = input.data_ptr<float>();
+    float *weights_query_ptr = weights_query.data_ptr<float>();
+    float *weights_key_ptr = weights_key.data_ptr<float>();
+    float *weights_value_ptr = weights_value.data_ptr<float>();
+    float *expected_output_ptr = attention_output.data_ptr<float>();
+    float *actual_output = new float[batch_size * size_sequence * dim_model];
+    // ACT
+    attention_forward_no_cache(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, actual_output, batch_size, size_sequence, dim_model, num_heads);
+    // ASSERT
+    for (int i = 0; i < batch_size; ++i) {
+        for (int j = 0; j < size_sequence; ++j) {
+            for (int k = 0; k < dim_model; ++k) {
+                int idx = i * size_sequence * dim_model + j * dim_model + k;
+                EXPECT_NEAR(actual_output[idx], expected_output_ptr[idx], 1e-3)
+                    << "Mismatch at (" << i << ", " << j << ", " << k << ")";
+            }
+        }
+    }
+    // delete[] actual_output;
+}
