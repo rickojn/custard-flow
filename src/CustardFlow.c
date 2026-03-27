@@ -775,9 +775,9 @@ void attention_forward_no_cache(const float *input, const float *weights_query, 
                     }
                     //scale attention score by sqrt of dimension of head
                     attention_score /= sqrtf((float)(dim_model / num_heads));                   
-                    attention_weights[idx_sequence * size_sequence * size_sequence + idx_embedding * size_sequence + idx_prefix] = attention_score;
+                    attention_weights[idx_prefix] = attention_score;
                 }
-                softmax_forward(&attention_weights[idx_sequence * size_sequence * size_sequence + idx_embedding * size_sequence], idx_embedding + 1, 1);
+                softmax_forward(attention_weights, idx_embedding + 1, 1);
                 // compute output as sum of weighted value vectors for the head for the embedding and prefix embedding
                 size_t offset_v = (idx_sequence * size_sequence + idx_embedding) * dim_model + idx_head * (dim_model / num_heads);
                 for (size_t idx_prefix = 0; idx_prefix <= idx_embedding; idx_prefix++){
