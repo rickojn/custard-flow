@@ -487,5 +487,5 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
             }
         }
     }
-    // delete[] actual_output;
+    delete[] actual_output;
 }
