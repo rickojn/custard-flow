@@ -740,6 +740,8 @@ For each element of the sequence:
 void attention_forward_no_cache(const float *input, const float *weights_query, const float *weights_key, const float *weights_value, 
     float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
 {
+    // zero output
+    memset(output, 0, size_batch * size_sequence * dim_model * sizeof(float));
     /*
     input: batch_size x sequence_length x model_dim
     weights_query: model_dim x model_dim

@@ -67,3 +67,6 @@ core.*
 # Other
 .DS_Store
 Thumbs.db
+/build/
+/build-debug/
+*.gpg
