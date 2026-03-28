@@ -450,12 +450,15 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     int size_sequence = 9;
     int dim_model = 128;
     int num_heads = 1; // For simplicity, we can test with 1 head  
-    torch::Tensor input = torch::randn({batch_size, size_sequence, dim_model}, torch::requires_grad());
+    torch::Tensor input = torch::randn({size_sequence, batch_size, dim_model}, torch::requires_grad());
     torch::Tensor weights_query = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_key = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_value = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::nn::MultiheadAttention mha(torch::nn::MultiheadAttentionOptions(dim_model, num_heads));
-    auto attention_output_tuple = mha->forward(input, input, input);
+    auto causal_mask = torch::ones({size_sequence, size_sequence}, torch::kBool).triu(1);
+    torch::Tensor key_padding_mask;
+    
+    auto attention_output_tuple = mha->forward(input, input, input, /*key_padding_mask=*/key_padding_mask, /*need_weights=*/false, /*attn_mask=*/causal_mask);
     auto attention_output = std::get<0>(attention_output_tuple);
 
 
