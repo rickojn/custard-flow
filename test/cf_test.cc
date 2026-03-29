@@ -449,7 +449,7 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     int batch_size = 16;
     int size_sequence = 9;
     int dim_model = 128;
-    int num_heads = 1; // For simplicity, we can test with 1 head  
+    int num_heads = 8; 
     torch::Tensor input = torch::randn({size_sequence, batch_size, dim_model}, torch::requires_grad());
     torch::Tensor weights_query = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_key = torch::randn({dim_model, dim_model}, torch::requires_grad());

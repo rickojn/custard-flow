@@ -1,54 +1,20 @@
-Running main() from /home/rickojn/coding/cf-mlp/custard-flow/build/_deps/googletest-src/googletest/src/gtest_main.cc
-[==========] Running 22 tests from 11 test suites.
+Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googletest-src/googletest/src/gtest_main.cc
+[==========] Running 23 tests from 12 test suites.
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (773 ms)
-[----------] 1 test from MatrixMultiplicationTest (773 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (771 ms)
+[----------] 1 test from MatrixMultiplicationTest (771 ms total)
 
-[----------] 2 tests from MatrixMultiplicationBackwardsTest
-[ RUN      ] MatrixMultiplicationBackwardsTest.MatmulBackwards
-inputs:
- 0.8823  0.9150  0.3829
- 0.9593  0.3904  0.6009
- 0.2566  0.7936  0.9408
-[ CPUFloatType{3,3} ]
-weights:
- 0.1332  0.9346  0.5936
- 0.8694  0.5677  0.7411
- 0.4294  0.8854  0.5739
-[ CPUFloatType{3,3} ]
-grad output:
- 0.2666  0.6274  0.2696
- 0.4414  0.2969  0.8317
- 0.1053  0.2695  0.3588
-[ CPUFloatType{3,3} ]
-[       OK ] MatrixMultiplicationBackwardsTest.MatmulBackwards (1 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
-inputs:
- 0.8823  0.9150  0.3829
- 0.9593  0.3904  0.6009
- 0.2566  0.7936  0.9408
-[ CPUFloatType{3,3} ]
-weights:
- 0.1332  0.9346  0.5936
- 0.8694  0.5677  0.7411
- 0.4294  0.8854  0.5739
-[ CPUFloatType{3,3} ]
-grad output:
- 0.2666  0.6274  0.2696
- 0.4414  0.2969  0.8317
- 0.1053  0.2695  0.3588
-[ CPUFloatType{3,3} ]
-remainder_m = 3, remainder_n = 3
-remainder_m = 3, remainder_n = 3
-[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (0 ms)
-[----------] 2 tests from MatrixMultiplicationBackwardsTest (1 ms total)
+[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (12 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (12 ms total)
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
-[       OK ] CrossEntropyLossTest.BasicFunctionality (1 ms)
-[----------] 1 test from CrossEntropyLossTest (1 ms total)
+[       OK ] CrossEntropyLossTest.BasicFunctionality (0 ms)
+[----------] 1 test from CrossEntropyLossTest (0 ms total)
 
 [----------] 1 test from LossBackwardTest
 [ RUN      ] LossBackwardTest.BasicFunctionality
@@ -62,14 +28,6 @@ remainder_m = 3, remainder_n = 3
 
 [----------] 1 test from layer_norm_backward_test
 [ RUN      ] layer_norm_backward_test.basic_functionality
-Mean of torch sample 0: 0.290253
-Mean of torch sample 1: 0.645795
-Mean of torch sample 2: -0.138662
-Mean of torch sample 3: 0.067247
-Variance of torch sample 0: 2.26461
-Variance of torch sample 1: 0.628273
-Variance of torch sample 2: 0.064853
-Variance of torch sample 3: 0.400222
 Mean of sample 0: 0.290253
 Variance of sample 0: 2.264611
 Mean of sample 1: 0.645795
@@ -78,8 +36,8 @@ Mean of sample 2: -0.138662
 Variance of sample 2: 0.064853
 Mean of sample 3: 0.067247
 Variance of sample 3: 0.400222
-[       OK ] layer_norm_backward_test.basic_functionality (1 ms)
-[----------] 1 test from layer_norm_backward_test (1 ms total)
+[       OK ] layer_norm_backward_test.basic_functionality (0 ms)
+[----------] 1 test from layer_norm_backward_test (0 ms total)
 
 [----------] 1 test from ReLUForwardTest
 [ RUN      ] ReLUForwardTest.BasicFunctionality
@@ -101,15 +59,17 @@ Variance of sample 3: 0.400222
 [       OK ] SoftmaxCrossEntropyBackwardTest.MatchesPyTorch (0 ms)
 [----------] 1 test from SoftmaxCrossEntropyBackwardTest (0 ms total)
 
-[----------] 11 tests from VariousSizes/SIMDMatrixMultiplicationTest
+[----------] 1 test from AttentionForwardNoCacheTest
+[ RUN      ] AttentionForwardNoCacheTest.BasicFunctionality
+[       OK ] AttentionForwardNoCacheTest.BasicFunctionality (9 ms)
+[----------] 1 test from AttentionForwardNoCacheTest (9 ms total)
+
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
-remainder_m = 1, remainder_n = 1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3
-remainder_m = 3, remainder_n = 3
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1
-remainder_m = 0, remainder_n = 1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8 (0 ms)
@@ -118,20 +78,19 @@ remainder_m = 0, remainder_n = 1
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
-remainder_m = 0, remainder_n = 1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (97 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (90 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
-remainder_m = 1, remainder_n = 0
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (91 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (90 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
-remainder_m = 1, remainder_n = 7
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (97 ms)
-[----------] 11 tests from VariousSizes/SIMDMatrixMultiplicationTest (287 ms total)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (88 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (1 ms)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (271 ms total)
 
 [----------] Global test environment tear-down
-[==========] 22 tests from 11 test suites ran. (1067 ms total)
-[  PASSED  ] 22 tests.
+[==========] 23 tests from 12 test suites ran. (1068 ms total)
+[  PASSED  ] 23 tests.
