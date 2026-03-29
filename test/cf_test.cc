@@ -454,28 +454,28 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     torch::Tensor weights_query = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_key = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_value = torch::randn({dim_model, dim_model}, torch::requires_grad());
-    // print the dot product of input and weights_value for the first sequence element and first head to verify correctness
-    auto v = torch::mm(input.view({size_sequence * batch_size, dim_model}), weights_value);
-    // print the first element of v to verify correctness
-    std::cout << "First element of v: " << v[0][0].item<float>() << std::endl;
-
+    
     // transpose weights for libtorch multihead attention
     auto weights_query_t = weights_query.transpose(0, 1);
     auto weights_key_t = weights_key.transpose(0, 1);
     auto weights_value_t = weights_value.transpose(0, 1);
 
     torch::nn::MultiheadAttention mha(torch::nn::MultiheadAttentionOptions(dim_model, num_heads));
-    mha->in_proj_weight = torch::cat({weights_query_t, weights_key_t, weights_value_t}, 0);
-    mha->in_proj_bias = torch::zeros({3 * dim_model});
-    mha->out_proj->weight = torch::eye(dim_model);
-    mha->out_proj->bias = torch::zeros({dim_model});
-    auto causal_mask = torch::ones({size_sequence, size_sequence}, torch::kBool).triu(1);
+    torch::NoGradGuard no_grad;
+    mha->in_proj_weight.copy_(torch::cat({weights_query_t, weights_key_t, weights_value_t}, 0));
+    mha->in_proj_bias.zero_();
+    mha->out_proj->weight.copy_(torch::eye(dim_model));
+    mha->out_proj->bias.zero_();
+    mha->eval();
+    auto causal_mask = torch::zeros({size_sequence, size_sequence}, torch::kFloat);
+    causal_mask = causal_mask.masked_fill(
+        torch::ones({size_sequence, size_sequence}, torch::kBool).triu(1),
+        -1e9);
     torch::Tensor key_padding_mask;
+
     
     auto attention_output_tuple = mha->forward(input, input, input, /*key_padding_mask=*/key_padding_mask, /*need_weights=*/true, /*attn_mask=*/causal_mask);
     auto attention_output = std::get<0>(attention_output_tuple);
-
-
 
     float *input_ptr = input.data_ptr<float>();
     float *weights_query_ptr = weights_query.data_ptr<float>();
