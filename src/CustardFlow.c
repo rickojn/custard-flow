@@ -763,7 +763,7 @@ void attention_forward_no_cache(const float *input, const float *weights_query, 
     simd_matmul(input, weights_key, k, size_batch * size_sequence, dim_model, dim_model);
     simd_matmul(input, weights_value, v, size_batch * size_sequence, dim_model, dim_model);
 
-    // compute attention scores
+    // compute attention for each element of the sequence
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){ // each sample is a sequence of embeddings
         for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++){
             for (size_t idx_head = 0; idx_head < num_heads; idx_head++){
@@ -784,7 +784,7 @@ void attention_forward_no_cache(const float *input, const float *weights_query, 
                 size_t offset_v = (idx_sequence * size_sequence + idx_embedding) * dim_model + idx_head * (dim_model / num_heads);
                 for (size_t idx_prefix = 0; idx_prefix <= idx_embedding; idx_prefix++){
                     size_t offset_v_prefix = (idx_sequence * size_sequence + idx_prefix) * dim_model + idx_head * (dim_model / num_heads);
-                    size_t offset_attention_weight = idx_sequence * size_sequence * size_sequence + idx_embedding * size_sequence + idx_prefix;
+                    size_t offset_attention_weight = idx_prefix;
                     for (size_t idx_dim = 0; idx_dim < dim_model / num_heads; idx_dim++){
                         output[offset_v + idx_dim] += attention_weights[offset_attention_weight] * v[offset_v_prefix + idx_dim];
                     }

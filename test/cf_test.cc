@@ -459,8 +459,13 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     // print the first element of v to verify correctness
     std::cout << "First element of v: " << v[0][0].item<float>() << std::endl;
 
+    // transpose weights for libtorch multihead attention
+    auto weights_query_t = weights_query.transpose(0, 1);
+    auto weights_key_t = weights_key.transpose(0, 1);
+    auto weights_value_t = weights_value.transpose(0, 1);
+
     torch::nn::MultiheadAttention mha(torch::nn::MultiheadAttentionOptions(dim_model, num_heads));
-    mha->in_proj_weight = torch::cat({weights_query, weights_key, weights_value}, 0);
+    mha->in_proj_weight = torch::cat({weights_query_t, weights_key_t, weights_value_t}, 0);
     mha->in_proj_bias = torch::zeros({3 * dim_model});
     mha->out_proj->weight = torch::eye(dim_model);
     mha->out_proj->bias = torch::zeros({dim_model});
@@ -478,6 +483,7 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     float *weights_value_ptr = weights_value.data_ptr<float>();
     float *expected_output_ptr = attention_output.data_ptr<float>();
     float *actual_output = new float[batch_size * size_sequence * dim_model];
+    
     // ACT
     attention_forward_no_cache(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, actual_output, batch_size, size_sequence, dim_model, num_heads);
     // ASSERT
@@ -490,6 +496,7 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
                 int idx = i * size_sequence * dim_model + j * dim_model + k;
                 EXPECT_NEAR(actual_output[idx], expected_output_ptr[idx], 1e-3)
                     << "Mismatch at (" << i << ", " << j << ", " << k << ")";
+                    // manual torch computation produces a pass
             }
         }
     }
