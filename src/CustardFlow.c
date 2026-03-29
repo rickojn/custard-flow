@@ -737,7 +737,8 @@ For each element of the sequence:
 
 */
 
-void attention_forward_no_cache(const float *input, const float *weights_query, const float *weights_key, const float *weights_value, 
+void attention_forward_no_cache(const float *input, const float *weights_query, const float *weights_key, 
+    const float *weights_value, const float *weights_output, 
     float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
 {
     // zero output
@@ -792,6 +793,12 @@ void attention_forward_no_cache(const float *input, const float *weights_query, 
             }
         }
     }
+
+    // aggregate heads by multiplying with weights_output
+    float *output_aggregated = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+    simd_matmul(output, weights_output, output_aggregated, size_batch * size_sequence, dim_model, dim_model);
+    memcpy(output, output_aggregated, size_batch * size_sequence * dim_model * sizeof(float));
+    free(output_aggregated);
 
 
     // free q, k and v 

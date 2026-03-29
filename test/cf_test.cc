@@ -454,17 +454,19 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     torch::Tensor weights_query = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_key = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_value = torch::randn({dim_model, dim_model}, torch::requires_grad());
+    torch::Tensor weights_output = torch::randn({dim_model, dim_model}, torch::requires_grad());
     
     // transpose weights for libtorch multihead attention
     auto weights_query_t = weights_query.transpose(0, 1);
     auto weights_key_t = weights_key.transpose(0, 1);
     auto weights_value_t = weights_value.transpose(0, 1);
+    auto weights_output_t = weights_output.transpose(0, 1);
 
     torch::nn::MultiheadAttention mha(torch::nn::MultiheadAttentionOptions(dim_model, num_heads));
     torch::NoGradGuard no_grad;
     mha->in_proj_weight.copy_(torch::cat({weights_query_t, weights_key_t, weights_value_t}, 0));
     mha->in_proj_bias.zero_();
-    mha->out_proj->weight.copy_(torch::eye(dim_model));
+    mha->out_proj->weight.copy_(weights_output_t);
     mha->out_proj->bias.zero_();
     mha->eval();
     auto causal_mask = torch::zeros({size_sequence, size_sequence}, torch::kFloat);
@@ -481,11 +483,13 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     float *weights_query_ptr = weights_query.data_ptr<float>();
     float *weights_key_ptr = weights_key.data_ptr<float>();
     float *weights_value_ptr = weights_value.data_ptr<float>();
+    float *weights_output_ptr = weights_output.data_ptr<float>();
     float *expected_output_ptr = attention_output.data_ptr<float>();
     float *actual_output = new float[batch_size * size_sequence * dim_model];
     
     // ACT
-    attention_forward_no_cache(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, actual_output, batch_size, size_sequence, dim_model, num_heads);
+    attention_forward_no_cache(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
+        actual_output, batch_size, size_sequence, dim_model, num_heads);
     // ASSERT
     // for (int i = 0; i < batch_size; ++i) {
     for (int i = 0; i < 1; ++i) {
@@ -496,7 +500,6 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
                 int idx = i * size_sequence * dim_model + j * dim_model + k;
                 EXPECT_NEAR(actual_output[idx], expected_output_ptr[idx], 1e-3)
                     << "Mismatch at (" << i << ", " << j << ", " << k << ")";
-                    // manual torch computation produces a pass
             }
         }
     }
