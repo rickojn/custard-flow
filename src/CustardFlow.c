@@ -808,3 +808,76 @@ void attention_forward(const float *input, const float *weights_query, const flo
     // free attention weights
     free(attention_weights);
 }
+
+void attention_forward_mask(const float *input, const float *weights_query, const float *weights_key, const float *weights_value, 
+    const float *weights_output, float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
+{
+    // zero output
+    memset(output, 0, size_batch * size_sequence * dim_model * sizeof(float));
+    /*
+    B: batch size
+    T: sequence length
+    C: model dimension
+    input: B x T x C
+    weights_query: C x C
+    weights_key: C x C
+    weights_value: C x C
+    attention_weights: B x T x T
+    output: B x T x C
+    */
+    // allocate memory for q, k and v
+    // q, k and v: B x T x C
+    float *q = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+    float *k = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+    float *v = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+
+    // allocate memory for attention weights
+    float *attention_weights = (float *)malloc(size_batch * size_sequence * size_sequence * sizeof(float));
+
+    // compute q, k and v
+    simd_matmul(input, weights_query, q, size_batch * size_sequence, dim_model, dim_model);
+    simd_matmul(input, weights_key, k, size_batch * size_sequence, dim_model, dim_model);
+    simd_matmul(input, weights_value, v, size_batch * size_sequence, dim_model, dim_model);
+
+    /*
+    For each sequence we want a T x T attention score matrix, each row is the attention scores for the embedding at 
+    that position to all the embeddings in the sequence including itself. This will be obtained by doing B matrix 
+    multiplications between q and k transpose chopped up into 2 x B smaller matrices of shapes T x C and C x T. 
+    e.g T = 4 C = 6
+q1    x x x x x x
+q2    x x x x x x
+q3    x x x x x x
+q4    x x x x x x
+            @   
+                kkkk
+                1234
+
+                xxxx
+                xxxx
+                xxxx
+                xxxx
+                xxxx
+                xxxx
+            =
+                kkkk
+                1234
+            q1  xxxx
+            q2  xxxx
+            q3  xxxx
+            q4  xxxx
+
+    */
+
+    // allocate memory for one B dimension of k transpose
+    float *k_transpose = (float *)malloc(dim_model * size_sequence * sizeof(float));
+
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
+    {
+        transpose_matrix(&k[idx_sequence * size_sequence * dim_model], k_transpose, size_sequence, dim_model);
+        simd_matmul(&q[idx_sequence * size_sequence * dim_model], k_transpose, 
+                    &attention_weights[idx_sequence * size_sequence * size_sequence], 
+                    size_sequence, size_sequence, dim_model);
+    }
+}
+
+
