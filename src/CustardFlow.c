@@ -737,7 +737,7 @@ For each element of the sequence:
 
 */
 
-void attention_forward_no_cache(const float *input, const float *weights_query, const float *weights_key, 
+void attention_forward(const float *input, const float *weights_query, const float *weights_key, 
     const float *weights_value, const float *weights_output, 
     float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
 {

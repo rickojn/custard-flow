@@ -488,7 +488,7 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     float *actual_output = new float[batch_size * size_sequence * dim_model];
     
     // ACT
-    attention_forward_no_cache(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
+    attention_forward(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
         actual_output, batch_size, size_sequence, dim_model, num_heads);
     // ASSERT
     // for (int i = 0; i < batch_size; ++i) {
