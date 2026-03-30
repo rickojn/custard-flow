@@ -505,3 +505,43 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     }
     delete[] actual_output;
 }
+
+void attention_forward_mask(const float *input, const float *weights_query, const float *weights_key, const float *weights_value, 
+    const float *weights_output, float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
+{
+    // zero output
+    memset(output, 0, size_batch * size_sequence * dim_model * sizeof(float));
+    /*
+    B: batch size
+    T: sequence length
+    C: model dimension
+    input: B x T x C
+    weights_query: C x C
+    weights_key: C x C
+    weights_value: C x C
+    attention_weights: B x T x T
+    output: B x T x C
+    */
+    // allocate memory for q, k and v
+    // q, k and v: B x T x C
+    float *q = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+    float *k = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+    float *v = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+
+    // allocate memory for attention weights
+    float *attention_weights = (float *)malloc(size_batch * size_sequence * size_sequence * sizeof(float));
+
+    // compute q, k and v
+    simd_matmul(input, weights_query, q, size_batch * size_sequence, dim_model, dim_model);
+    simd_matmul(input, weights_key, k, size_batch * size_sequence, dim_model, dim_model);
+    simd_matmul(input, weights_value, v, size_batch * size_sequence, dim_model, dim_model);
+
+    /*
+    For each sequence we want a T x T attention score matrix each row is the attention scores for the embedding at 
+    that position to all the embeddings in the sequence including itself. This will be obtained by doing B matrix 
+    multiplications between q and k transpose chopped up into 2 x B smaller matrices. 
+    */
+
+}
+
+    
