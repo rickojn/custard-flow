@@ -871,6 +871,7 @@ q4    x x x x x x
     // allocate memory for one B dimension of k transpose
     float *k_transpose = (float *)malloc(dim_model * size_sequence * sizeof(float));
 
+    // populate attention weights tensor with attention scores by multiplying q with k transpose for each sequence in the batch
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
         transpose_matrix(&k[idx_sequence * size_sequence * dim_model], k_transpose, size_sequence, dim_model);
@@ -878,6 +879,31 @@ q4    x x x x x x
                     &attention_weights[idx_sequence * size_sequence * size_sequence], 
                     size_sequence, size_sequence, dim_model);
     }
+
+    // apply causal mask to attention weights
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
+    {
+        for (size_t idx_row = 0; idx_row < size_sequence; idx_row++)
+        {
+            for (size_t idx_col = 0; idx_col < size_sequence; idx_col++)
+            {
+                if (idx_col > idx_row)
+                {
+                    attention_weights[idx_sequence * size_sequence * size_sequence + idx_row * size_sequence + idx_col] = -INFINITY; // causal mask
+                }
+            }
+        }
+    }
+
+    // apply softmax to attention weights
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
+    {
+        for (size_t idx_row = 0; idx_row < size_sequence; idx_row++)
+        {            
+            softmax_forward(&attention_weights[idx_sequence * size_sequence * size_sequence + idx_row * size_sequence], size_sequence, 1);
+        } 
+    }
+
 }
 
 
