@@ -904,6 +904,18 @@ q4    x x x x x x
         } 
     }
 
+    // weighted sum of attention values
+
+    float *v_transpose = (float *)malloc(dim_model * size_sequence * dim_model * sizeof(float));
+    transpose_matrix(v, v_transpose, size_batch * size_sequence, dim_model);
+
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
+    {
+        simd_matmul(&attention_weights[idx_sequence * size_sequence * size_sequence], &v_transpose[idx_sequence * size_sequence * dim_model], 
+                    &output[idx_sequence * size_sequence * dim_model], 
+                    size_sequence, dim_model, size_sequence);
+    }
+
 }
 
 
