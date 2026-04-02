@@ -493,10 +493,9 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     // ASSERT
     // for (int i = 0; i < batch_size; ++i) {
     for (int i = 0; i < 1; ++i) {
-        // for (int j = 0; j < size_sequence; ++j) {
-        for (int j = 0; j < 1; ++j) {
-            // for (int k = 0; k < dim_model; ++k) {
-            for (int k = 0; k < 1; ++k) {
+        for (int j = 0; j < size_sequence; ++j) {
+        // for (int j = 0; j < 1; ++j) {
+            for (int k = 0; k < dim_model; ++k) {
                 int idx = i * size_sequence * dim_model + j * dim_model + k;
                 EXPECT_NEAR(actual_output[idx], expected_output_ptr[idx], 1e-3)
                     << "Mismatch at (" << i << ", " << j << ", " << k << ")";
