@@ -916,6 +916,13 @@ q4    x x x x x x
                     size_sequence, dim_model, size_sequence);
     }
 
+    // aggregate heads by multiplying with weights_output
+    float *output_aggregated = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+    simd_matmul(output, weights_output, output_aggregated, size_batch * size_sequence, dim_model, dim_model);
+    memcpy(output, output_aggregated, size_batch * size_sequence * dim_model * sizeof(float));
+    free(output_aggregated);
+
+
 }
 
 
