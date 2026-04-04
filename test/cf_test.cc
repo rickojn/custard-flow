@@ -446,15 +446,15 @@ TEST(SoftmaxCrossEntropyBackwardTest, MatchesPyTorch) {
 TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     // ARRANGE
     torch::manual_seed(42);
-    int batch_size = 16;
+    int batch_size = 2; // passes if batch_size=1 but fails for batch_size=2, need to investigate
     int size_sequence = 9;
     int dim_model = 128;
-    int num_heads = 8; 
+    int num_heads = 1; 
     torch::Tensor input = torch::randn({size_sequence, batch_size, dim_model}, torch::requires_grad());
     // torch::Tensor weights_query = torch::randn({dim_model, dim_model}, torch::requires_grad());
     // set weights to ones to make it easier to debug
-    torch::Tensor weights_query = torch::ones({dim_model, dim_model}, torch::requires_grad());
-    torch::Tensor weights_key = torch::ones({dim_model, dim_model}, torch::requires_grad());
+    torch::Tensor weights_query = torch::randn({dim_model, dim_model}, torch::requires_grad());
+    torch::Tensor weights_key = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_value = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_output = torch::randn({dim_model, dim_model}, torch::requires_grad());
     
@@ -493,12 +493,12 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     attention_forward(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
         actual_output, batch_size, size_sequence, dim_model, num_heads);
     // ASSERT
-    // for (int i = 0; i < batch_size; ++i) {
-    for (int i = 0; i < 1; ++i) {
-        // for (int j = 0; j < size_sequence; ++j) {
-        for (int j = 0; j < 2; ++j) {
-            // for (int k = 0; k < dim_model; ++k) {
-            for (int k = 0; k < 1; ++k) {
+    for (int i = 0; i < batch_size; ++i) {
+    // for (int i = 0; i < 1; ++i) {
+        for (int j = 0; j < size_sequence; ++j) {
+        // for (int j = 0; j < 2; ++j) {
+            for (int k = 0; k < dim_model; ++k) {
+            // for (int k = 0; k < 1; ++k) {
                 int idx = i * size_sequence * dim_model + j * dim_model + k;
                 EXPECT_NEAR(actual_output[idx], expected_output_ptr[idx], 1e-3)
                     << "Mismatch at (" << i << ", " << j << ", " << k << ")";

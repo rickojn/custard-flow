@@ -760,11 +760,13 @@ void attention_forward(const float *input, const float *weights_query, const flo
     float *attention_weights = (float *)malloc(size_sequence * sizeof(float));
 
     // compute q, k and v
-    simd_matmul(input, weights_query, q, size_batch * size_sequence, dim_model, dim_model);
-    simd_matmul(input, weights_key, k, size_batch * size_sequence, dim_model, dim_model);
-    simd_matmul(input, weights_value, v, size_batch * size_sequence, dim_model, dim_model);
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){ // each sample is a sequence of embeddings
+        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_query, &q[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
+        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_key, &k[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
+        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_value, &v[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
+    }
 
-    // compute attention for each element of the sequence
+    // compute attention 
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){ // each sample is a sequence of embeddings
         for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++){
             for (size_t idx_head = 0; idx_head < num_heads; idx_head++){
