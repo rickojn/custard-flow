@@ -761,6 +761,10 @@ void attention_forward(const float *input, const float *weights_query, const flo
         simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_value, &values[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
     }
 
+    // log first query, key and value elements for debugging
+    printf("first element of first query vector: %f\n", queries[0]);
+    printf("first element of first key vector: %f\n", keys[0]);
+    printf("first element of first value vector: %f\n", values[0]);    
     // compute attention 
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){ // each seqence of embeddings
         for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++){ // each embedding in the sequence
@@ -806,8 +810,9 @@ void attention_forward(const float *input, const float *weights_query, const flo
     free(attention_weights);
 }
 
-void attention_forward_mask(const float *input, const float *weights_query, const float *weights_key, const float *weights_value, 
-    const float *weights_output, float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
+void attention_forward_mask(const float *input, const float *weights_query, const float *weights_key,
+    const float *weights_value, const float *weights_output, 
+    float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
 {
     // zero output
     memset(output, 0, size_batch * size_sequence * dim_model * sizeof(float));
@@ -824,17 +829,24 @@ void attention_forward_mask(const float *input, const float *weights_query, cons
     */
     // allocate memory for q, k and v
     // q, k and v: B x T x C
-    float *q = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
-    float *k = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
-    float *v = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+    float *queries = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+    float *keys = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+    float *values = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
 
     // allocate memory for attention weights
     float *attention_weights = (float *)malloc(size_batch * size_sequence * size_sequence * sizeof(float));
 
     // compute q, k and v
-    simd_matmul(input, weights_query, q, size_batch * size_sequence, dim_model, dim_model);
-    simd_matmul(input, weights_key, k, size_batch * size_sequence, dim_model, dim_model);
-    simd_matmul(input, weights_value, v, size_batch * size_sequence, dim_model, dim_model);
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){ // each sample is a sequence of embeddings
+        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_query, &queries[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
+        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_key, &keys[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
+        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_value, &values[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
+    }
+
+        // log first query, key and value elements for debugging
+    printf("first element of first query vector: %f\n", queries[0]);
+    printf("first element of first key vector: %f\n", keys[0]);
+    printf("first element of first value vector: %f\n", values[0]);    
 
     /*
     For each sequence we want a T x T attention score matrix, each row is the attention scores for the embedding at 
@@ -871,8 +883,8 @@ q4    x x x x x x
     // populate attention weights tensor with attention scores by multiplying q with k transpose for each sequence in the batch
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
-        transpose_matrix(&k[idx_sequence * size_sequence * dim_model], k_transpose, size_sequence, dim_model);
-        simd_matmul(&q[idx_sequence * size_sequence * dim_model], k_transpose, 
+        transpose_matrix(&keys[idx_sequence * size_sequence * dim_model], k_transpose, size_sequence, dim_model);
+        simd_matmul(&queries[idx_sequence * size_sequence * dim_model], k_transpose, 
                     &attention_weights[idx_sequence * size_sequence * size_sequence], 
                     size_sequence, size_sequence, dim_model);
     }
@@ -904,7 +916,7 @@ q4    x x x x x x
     // weighted sum of attention values
 
     float *v_transpose = (float *)malloc(dim_model * size_sequence * dim_model * sizeof(float));
-    transpose_matrix(v, v_transpose, size_batch * size_sequence, dim_model);
+    transpose_matrix(values, v_transpose, size_batch * size_sequence, dim_model);
 
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {

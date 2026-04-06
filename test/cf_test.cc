@@ -535,4 +535,86 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     delete[] actual_output;
 }
 
+// using the cf attention_foward as a reference for expected output, test the attention_forward_mask implementation.
+
+
+TEST(AttentionForwardMaskTest, BasicFunctionality) {
+    // ARRANGE
+    int batch_size = 1; 
+    int size_sequence = 9;
+    int dim_model = 128;
+    int num_heads = 8; 
+    // use torch to generate randomly populated input and weight tensors
+    torch::manual_seed(42);
+    torch::Tensor input = torch::randn({batch_size, size_sequence, dim_model}, torch::requires_grad());
+    torch::Tensor weights_query = torch::randn({dim_model, dim_model}, torch::requires_grad());
+    torch::Tensor weights_key = torch::randn({dim_model, dim_model}, torch::requires_grad());
+    torch::Tensor weights_value = torch::randn({dim_model, dim_model}, torch::requires_grad());
+    torch::Tensor weights_output = torch::randn({dim_model, dim_model}, torch::requires_grad());
+
+    float *input_ptr = input.data_ptr<float>();
+    float *weights_query_ptr = weights_query.data_ptr<float>();
+    float *weights_key_ptr = weights_key.data_ptr<float>();
+    float *weights_value_ptr = weights_value.data_ptr<float>();
+    float *weights_output_ptr = weights_output.data_ptr<float>();
+
+    // allocate memory for actual and expected output tensors, and compute expected output using attention_forward as reference
+    float *actual_output_ptr = new float[batch_size * size_sequence * dim_model];
+    float *expected_output_ptr = new float[batch_size * size_sequence * dim_model];
+    
+    attention_forward(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
+        expected_output_ptr, batch_size, size_sequence, dim_model, num_heads);
+        
+    // ACT
+    attention_forward_mask(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
+        actual_output_ptr, batch_size, size_sequence, dim_model, num_heads);
+
+    // ASSERT
+
+    float max_abs_diff = 0.0f;
+    float max_rel_diff = 0.0f;
+    float sum_abs_diff = 0.0f;
+    float sum_rel_diff = 0.0f;
+    for (int i = 0; i < batch_size; ++i)
+    {
+        for (int i = 0; i < 1; ++i) 
+        // for (int j = 0; j < size_sequence; ++j)
+        {
+            for (int j = 0; j < 1; ++j) 
+            // for (int k = 0; k < dim_model; ++k)
+            
+            for (int k = 0; k < 1; ++k) {
+                int idx = i * size_sequence * dim_model + j * dim_model + k;
+                float actual = actual_output_ptr[idx];
+                float expected = expected_output_ptr[idx];
+                float abs_diff = fabsf(actual - expected);
+                float rel_diff = abs_diff / (fabsf(expected) + 1e-6f);
+                max_abs_diff = std::max(max_abs_diff, abs_diff);
+                max_rel_diff = std::max(max_rel_diff, rel_diff);
+                sum_abs_diff += abs_diff;
+                sum_rel_diff += rel_diff;
+
+                const float atol = 2e-3f;
+                const float rtol = 1e-3f; // maybe 2e-3f if needed
+
+                EXPECT_TRUE(abs_diff <= atol + rtol * fabsf(expected))
+                    << "Mismatch at (" << i << ", " << j << ", " << k << "): "
+                    << "actual=" << actual
+                    << ", expected=" << expected
+                    << ", abs_diff=" << abs_diff
+                    << ", rel_diff=" << rel_diff;
+            }
+        }
+    }
+    std::cout << "Max absolute difference: " << max_abs_diff << std::endl;
+    std::cout << "Max relative difference: " << max_rel_diff << std::endl;
+    std::cout << "Mean absolute difference: " << sum_abs_diff / (batch_size * size_sequence * dim_model) << std::endl;
+    std::cout << "Mean relative difference: " << sum_rel_diff / (batch_size * size_sequence * dim_model) << std::endl;
+
+    //cleanup
+
+    delete[] actual_output_ptr;
+    delete[] expected_output_ptr;
+}
+
     

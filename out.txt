@@ -1,20 +1,20 @@
 Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googletest-src/googletest/src/gtest_main.cc
-[==========] Running 23 tests from 12 test suites.
+[==========] Running 24 tests from 13 test suites.
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (41 ms)
-[----------] 1 test from MatrixMultiplicationTest (41 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (784 ms)
+[----------] 1 test from MatrixMultiplicationTest (785 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
-[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (13 ms)
-[----------] 1 test from MatrixMultiplicationBackwardsTest (13 ms total)
+[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (15 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (15 ms total)
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
 [       OK ] CrossEntropyLossTest.BasicFunctionality (0 ms)
-[----------] 1 test from CrossEntropyLossTest (0 ms total)
+[----------] 1 test from CrossEntropyLossTest (1 ms total)
 
 [----------] 1 test from LossBackwardTest
 [ RUN      ] LossBackwardTest.BasicFunctionality
@@ -53,12 +53,35 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 
 [----------] 1 test from AttentionForwardNoCacheTest
 [ RUN      ] AttentionForwardNoCacheTest.BasicFunctionality
+first element of first query vector: -17.191320
+first element of first key vector: -15.747334
+first element of first value vector: -5.636585
 Max absolute difference: 0.00124359
 Max relative difference: 0.00564132
 Mean absolute difference: 2.1231e-05
 Mean relative difference: 1.34398e-06
-[       OK ] AttentionForwardNoCacheTest.BasicFunctionality (15 ms)
-[----------] 1 test from AttentionForwardNoCacheTest (15 ms total)
+[       OK ] AttentionForwardNoCacheTest.BasicFunctionality (18 ms)
+[----------] 1 test from AttentionForwardNoCacheTest (18 ms total)
+
+[----------] 1 test from AttentionForwardMaskTest
+[ RUN      ] AttentionForwardMaskTest.BasicFunctionality
+first element of first query vector: -0.964318
+first element of first key vector: 0.402774
+first element of first value vector: -5.245646
+first element of first query vector: -0.964318
+first element of first key vector: 0.402774
+first element of first value vector: -5.245646
+/home/rickojn/coding/custard-flow/test/cf_test.cc:600: Failure
+Value of: abs_diff <= atol + rtol * fabsf(expected)
+  Actual: false
+Expected: true
+Mismatch at (0, 0, 0): actual=66.357490539550781, expected=-16.883649826049805, abs_diff=83.241142272949219, rel_diff=4.9302806854248047
+Max absolute difference: 83.2411
+Max relative difference: 4.93028
+Mean absolute difference: 0.0722579
+Mean relative difference: 0.00427976
+[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality (1 ms)
+[----------] 1 test from AttentionForwardMaskTest (1 ms total)
 
 [----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
@@ -76,17 +99,21 @@ Mean relative difference: 1.34398e-06
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (95 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (108 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (108 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (119 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (112 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (92 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (1 ms)
-[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (318 ms total)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (322 ms total)
 
 [----------] Global test environment tear-down
-[==========] 23 tests from 12 test suites ran. (391 ms total)
+[==========] 24 tests from 13 test suites ran. (1148 ms total)
 [  PASSED  ] 23 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality
+
+ 1 FAILED TEST
