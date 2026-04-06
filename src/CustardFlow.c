@@ -843,10 +843,6 @@ void attention_forward_mask(const float *input, const float *weights_query, cons
         simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_value, &values[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
     }
 
-        // log first query, key and value elements for debugging
-    printf("first element of first query vector: %f\n", queries[0]);
-    printf("first element of first key vector: %f\n", keys[0]);
-    printf("first element of first value vector: %f\n", values[0]);    
 
     /*
     For each sequence we want a T x T attention score matrix, each row is the attention scores for the embedding at 
@@ -878,13 +874,13 @@ q4    x x x x x x
     */
 
     // allocate memory for one B dimension of k transpose
-    float *k_transpose = (float *)malloc(dim_model * size_sequence * sizeof(float));
+    float *keys_transpose = (float *)malloc(dim_model * size_sequence * sizeof(float));
 
     // populate attention weights tensor with attention scores by multiplying q with k transpose for each sequence in the batch
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
-        transpose_matrix(&keys[idx_sequence * size_sequence * dim_model], k_transpose, size_sequence, dim_model);
-        simd_matmul(&queries[idx_sequence * size_sequence * dim_model], k_transpose, 
+        transpose_matrix(&keys[idx_sequence * size_sequence * dim_model], keys_transpose, size_sequence, dim_model);
+        simd_matmul(&queries[idx_sequence * size_sequence * dim_model], keys_transpose, 
                     &attention_weights[idx_sequence * size_sequence * size_sequence], 
                     size_sequence, size_sequence, dim_model);
     }
