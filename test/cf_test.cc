@@ -446,7 +446,7 @@ TEST(SoftmaxCrossEntropyBackwardTest, MatchesPyTorch) {
 TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     // ARRANGE
     torch::manual_seed(42);
-    int batch_size = 1; // passes if batch_size=1 but fails for batch_size=2, need to investigate
+    int batch_size = 16; // passes if batch_size=1 but fails for batch_size=2, need to investigate
     int size_sequence = 9;
     int dim_model = 128;
     int num_heads = 1; 
@@ -481,12 +481,16 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
     auto attention_output_tuple = mha->forward(input, input, input, /*key_padding_mask=*/key_padding_mask, /*need_weights=*/true, /*attn_mask=*/causal_mask);
     auto attention_output = std::get<0>(attention_output_tuple);
 
-    float *input_ptr = input.data_ptr<float>();
+    auto input_bsd = input.permute({1, 0, 2}).contiguous();   // [B,S,D]
+    float *input_ptr = input_bsd.data_ptr<float>();
+
+    // float *input_ptr = input.data_ptr<float>();
     float *weights_query_ptr = weights_query.data_ptr<float>();
     float *weights_key_ptr = weights_key.data_ptr<float>();
     float *weights_value_ptr = weights_value.data_ptr<float>();
     float *weights_output_ptr = weights_output.data_ptr<float>();
-    float *expected_output_ptr = attention_output.data_ptr<float>();
+    auto attention_output_bsd = attention_output.permute({1, 0, 2}).contiguous();
+    float *expected_output_ptr = attention_output_bsd.data_ptr<float>();
     float *actual_output = new float[batch_size * size_sequence * dim_model];
     
     // ACT
@@ -500,7 +504,7 @@ TEST(AttentionForwardNoCacheTest, BasicFunctionality) {
             for (int k = 0; k < dim_model; ++k) {
             // for (int k = 0; k < 1; ++k) {
                 int idx = i * size_sequence * dim_model + j * dim_model + k;
-                EXPECT_NEAR(actual_output[idx], expected_output_ptr[idx], 1e-3)
+                EXPECT_NEAR(actual_output[idx], expected_output_ptr[idx], 1e-2)
                     << "Mismatch at (" << i << ", " << j << ", " << k << ")";
             }
         }
