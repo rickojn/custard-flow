@@ -3,13 +3,13 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (51 ms)
-[----------] 1 test from MatrixMultiplicationTest (52 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (41 ms)
+[----------] 1 test from MatrixMultiplicationTest (41 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
-[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (12 ms)
-[----------] 1 test from MatrixMultiplicationBackwardsTest (12 ms total)
+[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (13 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (13 ms total)
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
@@ -53,12 +53,12 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 
 [----------] 1 test from AttentionForwardNoCacheTest
 [ RUN      ] AttentionForwardNoCacheTest.BasicFunctionality
-Max absolute difference: 0.00523376
-Max relative difference: 0.0105688
-Mean absolute difference: 3.51313e-05
-Mean relative difference: 2.14135e-06
-[       OK ] AttentionForwardNoCacheTest.BasicFunctionality (13 ms)
-[----------] 1 test from AttentionForwardNoCacheTest (14 ms total)
+Max absolute difference: 0.00124359
+Max relative difference: 0.00564132
+Mean absolute difference: 2.1231e-05
+Mean relative difference: 1.34398e-06
+[       OK ] AttentionForwardNoCacheTest.BasicFunctionality (15 ms)
+[----------] 1 test from AttentionForwardNoCacheTest (15 ms total)
 
 [----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
@@ -76,17 +76,17 @@ Mean relative difference: 2.14135e-06
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (93 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (95 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (90 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (108 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (84 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (112 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (1 ms)
-[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (270 ms total)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (318 ms total)
 
 [----------] Global test environment tear-down
-[==========] 23 tests from 12 test suites ran. (351 ms total)
+[==========] 23 tests from 12 test suites ran. (391 ms total)
 [  PASSED  ] 23 tests.
