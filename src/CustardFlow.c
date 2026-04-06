@@ -773,6 +773,7 @@ void attention_forward(const float *input, const float *weights_query, const flo
                 size_t offset_query = (idx_sequence * size_sequence + idx_embedding) * dim_model + idx_head * (dim_model / num_heads);
                 for (size_t idx_prefix = 0; idx_prefix <= idx_embedding; idx_prefix++){
                     size_t offset_key = (idx_sequence * size_sequence + idx_prefix) * dim_model + idx_head * (dim_model / num_heads);
+                    printf("Offset query: %zu, Offset key: %zu\n", offset_query, offset_key);
                     float attention_score = 0.0f;
                     // attention score is dot product of q and k vectors of the head for the embedding and prefix embedding
                     for (size_t idx_dim = 0; idx_dim < dim_model / num_heads; idx_dim++){

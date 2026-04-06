@@ -1,0 +1,79 @@
+[ RUN      ] AttentionForwardNoCacheTest.BasicFunctionality
+Offset query: 0, Offset key: 0
+Offset query: 128, Offset key: 0
+Offset query: 128, Offset key: 128
+Offset query: 256, Offset key: 0
+Offset query: 256, Offset key: 128
+Offset query: 256, Offset key: 256
+Offset query: 384, Offset key: 0
+Offset query: 384, Offset key: 128
+Offset query: 384, Offset key: 256
+Offset query: 384, Offset key: 384
+Offset query: 512, Offset key: 0
+Offset query: 512, Offset key: 128
+Offset query: 512, Offset key: 256
+Offset query: 512, Offset key: 384
+Offset query: 512, Offset key: 512
+Offset query: 640, Offset key: 0
+Offset query: 640, Offset key: 128
+Offset query: 640, Offset key: 256
+Offset query: 640, Offset key: 384
+Offset query: 640, Offset key: 512
+Offset query: 640, Offset key: 640
+Offset query: 768, Offset key: 0
+Offset query: 768, Offset key: 128
+Offset query: 768, Offset key: 256
+Offset query: 768, Offset key: 384
+Offset query: 768, Offset key: 512
+Offset query: 768, Offset key: 640
+Offset query: 768, Offset key: 768
+Offset query: 896, Offset key: 0
+Offset query: 896, Offset key: 128
+Offset query: 896, Offset key: 256
+Offset query: 896, Offset key: 384
+Offset query: 896, Offset key: 512
+Offset query: 896, Offset key: 640
+Offset query: 896, Offset key: 768
+Offset query: 896, Offset key: 896
+Offset query: 1024, Offset key: 0
+Offset query: 1024, Offset key: 128
+Offset query: 1024, Offset key: 256
+Offset query: 1024, Offset key: 384
+Offset query: 1024, Offset key: 512
+Offset query: 1024, Offset key: 640
+Offset query: 1024, Offset key: 768
+Offset query: 1024, Offset key: 896
+Offset query: 1024, Offset key: 1024
+[       OK ] AttentionForwardNoCacheTest.BasicFunctionality (3 ms)
+[----------] 1 test from AttentionForwardNoCacheTest (3 ms total)
+
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (101 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (102 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (89 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (1 ms)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (295 ms total)
+
+[----------] Global test environment tear-down
+[==========] 23 tests from 12 test suites ran. (1101 ms total)
+[  PASSED  ] 23 tests.
