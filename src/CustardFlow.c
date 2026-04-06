@@ -618,9 +618,6 @@ void layer_normalization_backward(const float *inputs,
         }
         x_mean /= (float)num_features;
         
-        // print mean
-        printf("Mean of sample %zu: %f\n", idx_sample, x_mean);
-
         // Variance
         float variance = 0.0f;
         for (size_t idx_feature = 0; idx_feature < num_features; ++idx_feature) {
@@ -629,8 +626,6 @@ void layer_normalization_backward(const float *inputs,
         }
         variance /= (float)num_features;
 
-        // print variance
-        printf("Variance of sample %zu: %f\n", idx_sample, variance);
 
         // Inverse standard deviation plus epsilon for numerical stability
         const float inv_stddev = 1.0f / sqrtf(variance + LN_EPS);
@@ -773,7 +768,6 @@ void attention_forward(const float *input, const float *weights_query, const flo
                 size_t offset_query = (idx_sequence * size_sequence + idx_embedding) * dim_model + idx_head * (dim_model / num_heads);
                 for (size_t idx_prefix = 0; idx_prefix <= idx_embedding; idx_prefix++){
                     size_t offset_key = (idx_sequence * size_sequence + idx_prefix) * dim_model + idx_head * (dim_model / num_heads);
-                    printf("Offset query: %zu, Offset key: %zu\n", offset_query, offset_key);
                     float attention_score = 0.0f;
                     // attention score is dot product of q and k vectors of the head for the embedding and prefix embedding
                     for (size_t idx_dim = 0; idx_dim < dim_model / num_heads; idx_dim++){
