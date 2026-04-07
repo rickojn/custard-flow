@@ -1,12 +1,50 @@
+attention
 
-attention_score
-0.269963831
-[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 493176))](running)
+weights_output[0]
+0.863977671
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 498622))](running)
 =thread-selected,id="7"
 
-Thread 1 "cf_test" hit Breakpoint 3, attention_forward_mask (input=0x5555590d6a40, weights_query=0x5555590d8a00, weights_key=0x5555590da200, weights_value=0x5555590d8340, weights_output=0x5555590d8440, output=0x5555590d9660, size_batch=1, size_sequence=2, dim_model=3, num_heads=1) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:889
-889	        simd_matmul(&queries[idx_sequence * size_sequence * dim_model], keys_transpose, 
-[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 493176))](running)
+Thread 1 "cf_test" hit Breakpoint 3, attention_forward_mask (input=0x5555590d6a40, weights_query=0x5555590d8a00, weights_key=0x5555590da200, weights_value=0x5555590d8340, weights_output=0x5555590d8440, output=0x5555590d9660, size_batch=1, size_sequence=2, dim_model=3, num_heads=1) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:891
+891	        simd_matmul(&queries[idx_sequence * size_sequence * dim_model], keys_transpose,
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 498622))](running)
 =thread-selected,id="7"
-attention_weights[0]
-0.269963831
+
+Thread 1 "cf_test" hit Breakpoint 4, attention_forward_mask (input=0x5555590d6a40, weights_query=0x5555590d8a00, weights_key=0x5555590da200, weights_value=0x5555590d8340, weights_output=0x5555590d8440, output=0x5555590d9660, size_batch=1, size_sequence=2, dim_model=3, num_heads=1) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:912
+912	    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 498622))](running)
+=thread-selected,id="7"
+
+Thread 1 "cf_test" hit Breakpoint 6, attention_forward_mask (input=0x5555590d6a40, weights_query=0x5555590d8a00, weights_key=0x5555590da200, weights_value=0x5555590d8340, weights_output=0x5555590d8440, output=0x5555590d9660, size_batch=1, size_sequence=2, dim_model=3, num_heads=1) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:933
+933	    float *output_aggregated = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+weights_output[0]
+0.863977671
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 498622))](running)
+=thread-selected,id="7"
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 498622))](running)
+=thread-selected,id="7"
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 498622))](running)
+=thread-selected,id="7"
+Kill the program being debugged? (y or n) [answered Y; input not from terminal]
+[Inferior 1 (process 498546) killed]
+The program '/home/rickojn/coding/custard-flow/build-debug/cf_test' has exited with code 0 (0x00000000).
+
+
+output[0]
+0.062089663
+output_aggregated[0]
+0.353714257
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 499873))](running)
+=thread-selected,id="7"
+
+Thread 1 "cf_test" hit Breakpoint 3, attention_forward_mask (input=0x5555590d6a40, weights_query=0x5555590d8a00, weights_key=0x5555590da200, weights_value=0x5555590d8340, weights_output=0x5555590d8440, output=0x5555590d9660, size_batch=1, size_sequence=2, dim_model=3, num_heads=1) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:933
+933	    float *output_aggregated = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 499873))](running)
+=thread-selected,id="7"
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 499873))](running)
+=thread-selected,id="7"
+output[0]
+0.062089663
+output_aggregated[0]
+0.28549242
+

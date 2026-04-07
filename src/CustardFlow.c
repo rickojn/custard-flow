@@ -359,6 +359,8 @@ void simd_kernel(const float * tile_A, const float * tile_B, float * C,
 
 void simd_matmul(const float *A, const float *B, float *C, size_t M, size_t N, size_t K)
 {
+    memset(C, 0, M * N * sizeof(float)); 
+    
     float * A_col_major = (float*)malloc(M * K * sizeof(float));
     transpose_matrix(A, A_col_major, M, K);
     float * C_col_major = (float*)malloc(M * N * sizeof(float));
