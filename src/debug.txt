@@ -1,32 +1,79 @@
+=thread-group-added,id="i1"
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.2) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word".
+Warning: Debuggee TargetArchitecture not detected, assuming x86_64.
+=cmd-param-changed,param="pagination",value="off"
+Stopped due to shared library event (no libraries added or removed)
+Loaded '/lib64/ld-linux-x86-64.so.2'. Symbols loaded.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, main (argc=0, argv=0x7fffffffd490) at /home/rickojn/coding/custard-flow/build-debug/_deps/googletest-src/googletest/src/gtest_main.cc:60
+60	GTEST_API_ int main(int argc, char **argv) {
+Loaded '/usr/local/libtorch/lib/libc10.so'. Symbols loaded.
+Loaded '/lib/x86_64-linux-gnu/libpthread.so.0'. Symbols loaded.
+Loaded '/usr/local/libtorch/lib/libtorch_cpu.so'. Symbols loaded.
+Loaded '/usr/local/libtorch/lib/libtorch_cuda.so'. Symbols loaded.
+Loaded '/usr/local/libtorch/lib/libtorch.so'. Symbols loaded.
+Loaded '/lib/x86_64-linux-gnu/libstdc++.so.6'. Symbols loaded.
+Loaded '/lib/x86_64-linux-gnu/libm.so.6'. Symbols loaded.
+Loaded '/lib/x86_64-linux-gnu/libgcc_s.so.1'. Symbols loaded.
+Loaded '/lib/x86_64-linux-gnu/libc.so.6'. Symbols loaded.
+Loaded '/lib/x86_64-linux-gnu/libdl.so.2'. Symbols loaded.
+Loaded '/lib/x86_64-linux-gnu/librt.so.1'. Symbols loaded.
+Loaded '/usr/local/libtorch/lib/libgomp-98b21ff3.so.1'. Symbols loaded.
+Loaded '/usr/local/libtorch/lib/libc10_cuda.so'. Symbols loaded.
+Loaded '/usr/local/libtorch/lib/libcudart-d0da41ae.so.11.0'. Symbols loaded.
+Loaded '/usr/local/libtorch/lib/libcublas-3b81d170.so.11'. Symbols loaded.
+Loaded '/usr/local/libtorch/lib/libcublasLt-b6d14a74.so.11'. Symbols loaded.
+Loaded '/usr/local/libtorch/lib/libcudnn.so.9'. Symbols loaded.
+Loaded '/usr/lib/wsl/lib/libcuda.so.1'. Symbols loaded.
+Loaded '/usr/local/cuda/targets/x86_64-linux/lib/libnvrtc.so'. Symbols loaded.
+[New Thread 0x7fff49352000 (LWP 445667)]
+[New Thread 0x7fff48942000 (LWP 445668)]
+[Thread 0x7fff48942000 (LWP 445668) exited]
+[New Thread 0x7fff48942000 (LWP 445669)]
+[New Thread 0x7fff43a4e000 (LWP 445670)]
+[New Thread 0x7fff4324d000 (LWP 445671)]
+[New Thread 0x7fff42a4c000 (LWP 445672)]
 
 Thread 1 "cf_test" hit Breakpoint 2, attention_forward (input=0x5555590dad00, weights_query=0x5555590e7680, weights_key=0x5555590f7700, weights_value=0x555559107780, weights_output=0x555559117800, output=0x5555590dd190, size_batch=1, size_sequence=9, dim_model=128, num_heads=8) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:781
-781	                    attention_score /= sqrtf((float)(dim_model / num_heads));                   
+781	                    attention_score /= sqrtf((float)(dim_model / num_heads));
 Loaded '/usr/lib/wsl/lib/libdxcore.so'. Symbols loaded.
 Loaded '/usr/lib/wsl/drivers/nvbl.inf_amd64_70c1aa7869b9caef/libcuda.so.1.1'. Symbols loaded.
 Loaded '/usr/lib/wsl/drivers/nvbl.inf_amd64_70c1aa7869b9caef/libnvdxgdmal.so.1'. Symbols loaded.
+Warning: Source file '/home/rickojn/coding/custard-flow/src/CustardFlow.c' is newer than module file '/home/rickojn/coding/custard-flow/build-debug/cf_test'.
 Execute debugger commands using "-exec <command>", for example "-exec info registers" will list registers in use (when GDB is the debugger)
 keys[0]
 0.402773708
-queries[0]
--0.964318335
-attention_score
-490.057098
-
-
-
-
-
-Thread 1 "cf_test" hit Breakpoint 3, attention_forward_mask (input=0x5555590dad00, weights_query=0x5555590e7680, weights_key=0x5555590f7700, weights_value=0x555559107780, weights_output=0x555559117800, output=0x5555590dbf80, size_batch=1, size_sequence=9, dim_model=128, num_heads=8) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:883
-883	        simd_matmul(&queries[idx_sequence * size_sequence * dim_model], keys_transpose, 
-[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 439390))](running)
+keys[1]
+3.87851071
+keys[2]
+-3.72569823
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 445672))](running)
 =thread-selected,id="7"
-queries[0]
--0.964318335
-keys[0]
+
+Thread 1 "cf_test" hit Breakpoint 2, attention_forward (input=0x5555590dad00, weights_query=0x5555590e7680, weights_key=0x5555590f7700, weights_value=0x555559107780, weights_output=0x555559117800, output=0x5555590dd190, size_batch=1, size_sequence=9, dim_model=128, num_heads=8) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:781
+781	                    attention_score /= sqrtf((float)(dim_model / num_heads));
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 445672))](running)
+=thread-selected,id="7"
+
+Thread 1 "cf_test" hit Breakpoint 3, attention_forward_mask (input=0x5555590dad00, weights_query=0x5555590e7680, weights_key=0x5555590f7700, weights_value=0x555559107780, weights_output=0x555559117800, output=0x5555590dbf80, size_batch=1, size_sequence=9, dim_model=128, num_heads=8) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:889
+889	                    size_sequence, size_sequence, dim_model);
+keys_transpose[0]
 0.402773708
-attention_weights[0]
--598.062683
-
-
-
-
+keys_transpose[1]
+-13.5001497

@@ -875,13 +875,17 @@ q4    x x x x x x
 
     // allocate memory for one B dimension of k transpose
     float *keys_transpose = (float *)malloc(dim_model * size_sequence * sizeof(float));
+    // allocate memory a copy of attention scores for debugging
+    float *attention_scores_copy = (float *)malloc(size_batch * size_sequence * size_sequence * sizeof(float));
+    // tbc
 
+    
     // populate attention weights tensor with attention scores by multiplying q with k transpose for each sequence in the batch
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
         transpose_matrix(&keys[idx_sequence * size_sequence * dim_model], keys_transpose, size_sequence, dim_model);
         simd_matmul(&queries[idx_sequence * size_sequence * dim_model], keys_transpose, 
-                    &attention_weights[idx_sequence * size_sequence], 
+                    &attention_weights[idx_sequence * size_sequence * size_sequence], 
                     size_sequence, size_sequence, dim_model);
     }
 
