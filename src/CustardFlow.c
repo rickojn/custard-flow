@@ -881,7 +881,7 @@ q4    x x x x x x
     {
         transpose_matrix(&keys[idx_sequence * size_sequence * dim_model], keys_transpose, size_sequence, dim_model);
         simd_matmul(&queries[idx_sequence * size_sequence * dim_model], keys_transpose, 
-                    &attention_weights[idx_sequence * size_sequence * size_sequence], 
+                    &attention_weights[idx_sequence * size_sequence], 
                     size_sequence, size_sequence, dim_model);
     }
 

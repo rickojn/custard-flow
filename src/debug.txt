@@ -1,0 +1,32 @@
+
+Thread 1 "cf_test" hit Breakpoint 2, attention_forward (input=0x5555590dad00, weights_query=0x5555590e7680, weights_key=0x5555590f7700, weights_value=0x555559107780, weights_output=0x555559117800, output=0x5555590dd190, size_batch=1, size_sequence=9, dim_model=128, num_heads=8) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:781
+781	                    attention_score /= sqrtf((float)(dim_model / num_heads));                   
+Loaded '/usr/lib/wsl/lib/libdxcore.so'. Symbols loaded.
+Loaded '/usr/lib/wsl/drivers/nvbl.inf_amd64_70c1aa7869b9caef/libcuda.so.1.1'. Symbols loaded.
+Loaded '/usr/lib/wsl/drivers/nvbl.inf_amd64_70c1aa7869b9caef/libnvdxgdmal.so.1'. Symbols loaded.
+Execute debugger commands using "-exec <command>", for example "-exec info registers" will list registers in use (when GDB is the debugger)
+keys[0]
+0.402773708
+queries[0]
+-0.964318335
+attention_score
+490.057098
+
+
+
+
+
+Thread 1 "cf_test" hit Breakpoint 3, attention_forward_mask (input=0x5555590dad00, weights_query=0x5555590e7680, weights_key=0x5555590f7700, weights_value=0x555559107780, weights_output=0x555559117800, output=0x5555590dbf80, size_batch=1, size_sequence=9, dim_model=128, num_heads=8) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:883
+883	        simd_matmul(&queries[idx_sequence * size_sequence * dim_model], keys_transpose, 
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 439390))](running)
+=thread-selected,id="7"
+queries[0]
+-0.964318335
+keys[0]
+0.402773708
+attention_weights[0]
+-598.062683
+
+
+
+
