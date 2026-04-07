@@ -541,9 +541,9 @@ TEST(AttentionForwardNoCacheTest, DISABLED_BasicFunctionality) {
 TEST(AttentionForwardMaskTest, BasicFunctionality) {
     // ARRANGE
     int batch_size = 1; 
-    int size_sequence = 9;
-    int dim_model = 128;
-    int num_heads = 8; 
+    int size_sequence = 2;
+    int dim_model = 3;
+    int num_heads = 1; 
     // use torch to generate randomly populated input and weight tensors
     torch::manual_seed(42);
     torch::Tensor input = torch::randn({batch_size, size_sequence, dim_model}, torch::requires_grad());

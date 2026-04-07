@@ -835,6 +835,8 @@ void attention_forward_mask(const float *input, const float *weights_query, cons
 
     // allocate memory for attention weights
     float *attention_weights = (float *)malloc(size_batch * size_sequence * size_sequence * sizeof(float));
+    // zero attention weights
+    memset(attention_weights, 0, size_batch * size_sequence * size_sequence * sizeof(float));
 
     // compute q, k and v
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){ // each sample is a sequence of embeddings

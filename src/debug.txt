@@ -1,33 +1,12 @@
+
 attention_score
-490.057098
-keys[0]
-0.402773708
-keys[1]
-3.87851071
-keys[2]
--3.72569823
-[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 472211))](running)
+0.269963831
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 493176))](running)
 =thread-selected,id="7"
 
-Thread 1 "cf_test" hit Breakpoint 3, attention_forward_mask (input=0x5555590dad00, weights_query=0x5555590e7680, weights_key=0x5555590f7700, weights_value=0x555559107780, weights_output=0x555559117800, output=0x5555590dbf80, size_batch=1, size_sequence=9, dim_model=128, num_heads=8) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:888
-888	                    &attention_weights[idx_sequence * size_sequence * size_sequence],
-[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 472211))](running)
-=thread-selected,id="7"
-[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 472211))](running)
+Thread 1 "cf_test" hit Breakpoint 3, attention_forward_mask (input=0x5555590d6a40, weights_query=0x5555590d8a00, weights_key=0x5555590da200, weights_value=0x5555590d8340, weights_output=0x5555590d8440, output=0x5555590d9660, size_batch=1, size_sequence=2, dim_model=3, num_heads=1) at /home/rickojn/coding/custard-flow/src/CustardFlow.c:889
+889	        simd_matmul(&queries[idx_sequence * size_sequence * dim_model], keys_transpose, 
+[Switching to thread 7 (Thread 0x7fff42a4c000 (LWP 493176))](running)
 =thread-selected,id="7"
 attention_weights[0]
--598.062683
-keys[0]
-0.402773708
-keys[1]
-3.87851071
-keys_transpose[0]
-0.402773708
-keys_transpose[1]
--13.5001497
-keys_transpose[128]
-1.79851222
-keys_transpose[127]
--10.307744
-keys_transpose[9]
-3.87851071
+0.269963831
