@@ -496,6 +496,11 @@ TEST(AttentionForwardNoCacheTest, DISABLED_BasicFunctionality) {
     attention_forward(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
         actual_output, dummy, batch_size, size_sequence, dim_model, num_heads);
     // ASSERT
+    // for debugging: compare 
+
+
+
+
     // log max and mean absolute and relative differences for debugging
     float max_abs_diff = 0.0f;
     float max_rel_diff = 0.0f;
@@ -563,14 +568,31 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
     float *actual_output_ptr = new float[batch_size * size_sequence * dim_model];
     float *expected_output_ptr = new float[batch_size * size_sequence * dim_model];
 
-    float * db_matrix = new float[batch_size * size_sequence * dim_model]; // for debugging
+    float * expected_db_matrix = new float[batch_size * size_sequence * dim_model]; // for debugging
+    float * actual_db_matrix = new float[batch_size * size_sequence * dim_model]; // for debugging
     
     attention_forward(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
-        expected_output_ptr, db_matrix, batch_size, size_sequence, dim_model, num_heads);
+        expected_output_ptr, expected_db_matrix, batch_size, size_sequence, dim_model, num_heads);
         
     // ACT
     attention_forward_mask(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
-        actual_output_ptr, db_matrix, batch_size, size_sequence, dim_model, num_heads);
+        actual_output_ptr, actual_db_matrix, batch_size, size_sequence, dim_model, num_heads);
+
+
+    // DEBUG ASSERT: compare actual_db_matrix and expected_db_matrix to check if the intermediate db_matrix is the same for both implementations,
+    // log message also if they match.
+    bool db_matrix_match = true;
+    for (int i = 0; i < batch_size * size_sequence * dim_model; ++i) {
+        if (fabsf(actual_db_matrix[i] - expected_db_matrix[i]) > 1e-3f) {
+            db_matrix_match = false;
+            std::cout << "Mismatch in db_matrix at index " << i << ": actual=" << actual_db_matrix[i] << ", expected=" << expected_db_matrix[i] << std::endl;
+        }
+    }
+    if (db_matrix_match) {
+        std::cout << "db_matrix matches between attention_forward and attention_forward_mask implementations." << std::endl;
+    } else {
+        std::cout << "db_matrix does NOT match between attention_forward and attention_forward_mask implementations." << std::endl;
+    }
 
     // ASSERT
 
