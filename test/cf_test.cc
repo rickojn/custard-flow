@@ -543,7 +543,12 @@ TEST(AttentionForwardNoCacheTest, DISABLED_BasicFunctionality) {
 
 // using the cf attention_foward as a reference for expected output, test the attention_forward_mask implementation.
 
+/*
 
+./my_tests --gtest_filter=MySuite.MyTest
+./build-debug/cf_test --gtest_filter=AttentionForwardMaskTest.BasicFunctionality
+
+*/
 TEST(AttentionForwardMaskTest, BasicFunctionality) {
     // ARRANGE
     int batch_size = 1; 
@@ -568,8 +573,8 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
     float *actual_output_ptr = new float[batch_size * size_sequence * dim_model];
     float *expected_output_ptr = new float[batch_size * size_sequence * dim_model];
 
-    float * expected_db_matrix = new float[batch_size * size_sequence * dim_model]; // for debugging
-    float * actual_db_matrix = new float[batch_size * size_sequence * dim_model]; // for debugging
+    float * expected_db_matrix = new float[batch_size * size_sequence * size_sequence]; // for debugging
+    float * actual_db_matrix = new float[batch_size * size_sequence * size_sequence]; // for debugging
     
     attention_forward(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
         expected_output_ptr, expected_db_matrix, batch_size, size_sequence, dim_model, num_heads);
@@ -582,7 +587,7 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
     // DEBUG ASSERT: compare actual_db_matrix and expected_db_matrix to check if the intermediate db_matrix is the same for both implementations,
     // log message also if they match.
     bool db_matrix_match = true;
-    for (int i = 0; i < batch_size * size_sequence * dim_model; ++i) {
+    for (int i = 0; i < batch_size * size_sequence * size_sequence; ++i) {
         if (fabsf(actual_db_matrix[i] - expected_db_matrix[i]) > 1e-3f) {
             db_matrix_match = false;
             std::cout << "Mismatch in db_matrix at index " << i << ": actual=" << actual_db_matrix[i] << ", expected=" << expected_db_matrix[i] << std::endl;
