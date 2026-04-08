@@ -735,8 +735,7 @@ For each element of the sequence:
 */
 
 void attention_forward(const float *input, const float *weights_query, const float *weights_key, 
-    const float *weights_value, const float *weights_output, 
-    float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
+    const float *weights_value, const float *weights_output, float *output, float *db_matrix, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
 {
     // zero output
     memset(output, 0, size_batch * size_sequence * dim_model * sizeof(float));
@@ -797,6 +796,7 @@ void attention_forward(const float *input, const float *weights_query, const flo
         }
     }
 
+    memcpy(db_matrix, output, size_batch * size_sequence * dim_model * sizeof(float)); // copy attention weights to db_matrix for debugging
     // aggregate heads by multiplying with weights_output
     float *output_aggregated = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
     simd_matmul(output, weights_output, output_aggregated, size_batch * size_sequence, dim_model, dim_model);
@@ -814,7 +814,7 @@ void attention_forward(const float *input, const float *weights_query, const flo
 
 void attention_forward_mask(const float *input, const float *weights_query, const float *weights_key,
     const float *weights_value, const float *weights_output, 
-    float *output, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
+    float *output, float * db_matrix, size_t size_batch, size_t size_sequence, size_t dim_model, size_t num_heads)
 {
     // zero output
     memset(output, 0, size_batch * size_sequence * dim_model * sizeof(float));
@@ -929,6 +929,8 @@ q4    x x x x x x
                     size_sequence, dim_model, size_sequence);
     }
 
+
+    memcpy(db_matrix, output, size_batch * size_sequence * dim_model * sizeof(float)); // copy attention weights to db_matrix for debugging
     // aggregate heads by multiplying with weights_output
     float *output_aggregated = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
     simd_matmul(output, weights_output, output_aggregated, size_batch * size_sequence, dim_model, dim_model);

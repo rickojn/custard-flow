@@ -490,10 +490,11 @@ TEST(AttentionForwardNoCacheTest, DISABLED_BasicFunctionality) {
     auto attention_output_bsd = attention_output.permute({1, 0, 2}).contiguous();
     float *expected_output_ptr = attention_output_bsd.data_ptr<float>();
     float *actual_output = new float[batch_size * size_sequence * dim_model];
+    float * dummy = new float[batch_size * size_sequence * dim_model]; // for debugging
     
     // ACT
     attention_forward(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
-        actual_output, batch_size, size_sequence, dim_model, num_heads);
+        actual_output, dummy, batch_size, size_sequence, dim_model, num_heads);
     // ASSERT
     // log max and mean absolute and relative differences for debugging
     float max_abs_diff = 0.0f;
@@ -561,13 +562,15 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
     // allocate memory for actual and expected output tensors, and compute expected output using attention_forward as reference
     float *actual_output_ptr = new float[batch_size * size_sequence * dim_model];
     float *expected_output_ptr = new float[batch_size * size_sequence * dim_model];
+
+    float * db_matrix = new float[batch_size * size_sequence * dim_model]; // for debugging
     
     attention_forward(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
-        expected_output_ptr, batch_size, size_sequence, dim_model, num_heads);
+        expected_output_ptr, db_matrix, batch_size, size_sequence, dim_model, num_heads);
         
     // ACT
     attention_forward_mask(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
-        actual_output_ptr, batch_size, size_sequence, dim_model, num_heads);
+        actual_output_ptr, db_matrix, batch_size, size_sequence, dim_model, num_heads);
 
     // ASSERT
 
