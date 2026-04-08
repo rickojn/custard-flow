@@ -780,7 +780,7 @@ void attention_forward(const float *input, const float *weights_query, const flo
                     attention_weights[idx_prefix] = attention_score;
                 }
                 softmax_forward(attention_weights, idx_embedding + 1, 1);
-                memcpy(db_matrix, &attention_weights[idx_embedding * size_sequence], (idx_embedding + 1) * sizeof(float)); // copy attention weights to db_matrix for debugging
+                memcpy(&db_matrix[idx_embedding * size_sequence], attention_weights, (idx_embedding + 1) * sizeof(float)); // copy attention weights to db_matrix for debugging
                 // compute output as sum of weighted value vectors for the head for the embedding and prefix embedding
                 size_t offset_v = (idx_sequence * size_sequence + idx_embedding) * dim_model + idx_head * (dim_model / num_heads);
                 for (size_t idx_prefix = 0; idx_prefix <= idx_embedding; idx_prefix++){
@@ -794,7 +794,6 @@ void attention_forward(const float *input, const float *weights_query, const flo
         }
     }
 
-    memcpy(db_matrix, output, size_batch * size_sequence * dim_model * sizeof(float)); // copy attention weights to db_matrix for debugging
     // aggregate heads by multiplying with weights_output
     float *output_aggregated = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
     simd_matmul(output, weights_output, output_aggregated, size_batch * size_sequence, dim_model, dim_model);

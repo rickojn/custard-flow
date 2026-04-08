@@ -555,6 +555,14 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
     int size_sequence = 2;
     int dim_model = 3;
     int num_heads = 1; 
+
+    //logout dimensions for debugging
+    std::cout << "Batch size: " << batch_size << std::endl;
+    std::cout << "Sequence length: " << size_sequence << std::endl;
+    std::cout << "Model dimension: " << dim_model << std::endl;
+    std::cout << "Number of heads: " << num_heads << std::endl;
+
+
     // use torch to generate randomly populated input and weight tensors
     torch::manual_seed(42);
     torch::Tensor input = torch::randn({batch_size, size_sequence, dim_model}, torch::requires_grad());
