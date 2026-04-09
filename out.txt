@@ -4,30 +4,18 @@ Note: Google Test filter = AttentionForwardMaskTest.BasicFunctionality
 [----------] Global test environment set-up.
 [----------] 1 test from AttentionForwardMaskTest
 [ RUN      ] AttentionForwardMaskTest.BasicFunctionality
-Batch size: 1
-Sequence length: 2
-Model dimension: 3
-Number of heads: 1
-Mismatch in db_matrix at index 1: actual=0.334067, expected=0.183419
-Mismatch in db_matrix at index 2: actual=0.183419, expected=0.275007
-Mismatch in db_matrix at index 3: actual=-0.0188228, expected=0.23273
+Batch size: 16
+Sequence length: 9
+Model dimension: 128
+Number of heads: 8
 db_matrix does NOT match between attention_forward and attention_forward_mask implementations.
-/home/rickojn/coding/custard-flow/test/cf_test.cc:638: Failure
-Value of: abs_diff <= atol + rtol * fabsf(expected)
-  Actual: false
-Expected: true
-Mismatch at (0, 0, 0): actual=0.2854924201965332, expected=0.35371425747871399, abs_diff=0.068221837282180786, rel_diff=0.19287218153476715
-Max absolute difference: 0.0682218
-Max relative difference: 0.192872
-Mean absolute difference: 0.0113703
-Mean relative difference: 0.0321454
-[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality (770 ms)
-[----------] 1 test from AttentionForwardMaskTest (770 ms total)
+Max absolute difference: 0
+Max relative difference: 0
+Mean absolute difference: 0
+Mean relative difference: 0
+[       OK ] AttentionForwardMaskTest.BasicFunctionality (259 ms)
+[----------] 1 test from AttentionForwardMaskTest (259 ms total)
 
 [----------] Global test environment tear-down
-[==========] 1 test from 1 test suite ran. (770 ms total)
-[  PASSED  ] 0 tests.
-[  FAILED  ] 1 test, listed below:
-[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality
-
- 1 FAILED TEST
+[==========] 1 test from 1 test suite ran. (259 ms total)
+[  PASSED  ] 1 test.

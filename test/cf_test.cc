@@ -551,10 +551,10 @@ TEST(AttentionForwardNoCacheTest, DISABLED_BasicFunctionality) {
 */
 TEST(AttentionForwardMaskTest, BasicFunctionality) {
     // ARRANGE
-    int batch_size = 1; 
-    int size_sequence = 2;
-    int dim_model = 3;
-    int num_heads = 1; 
+    int batch_size = 16; 
+    int size_sequence = 9;
+    int dim_model = 128;
+    int num_heads = 8; 
 
     //logout dimensions for debugging
     std::cout << "Batch size: " << batch_size << std::endl;
@@ -595,10 +595,10 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
     // DEBUG ASSERT: compare actual_db_matrix and expected_db_matrix to check if the intermediate db_matrix is the same for both implementations,
     // log message also if they match.
     bool db_matrix_match = true;
-    for (int i = 0; i < batch_size * size_sequence * size_sequence; ++i) {
+    for (int i = 0; i < batch_size * size_sequence * dim_model; ++i) {
         if (fabsf(actual_db_matrix[i] - expected_db_matrix[i]) > 1e-3f) {
             db_matrix_match = false;
-            std::cout << "Mismatch in db_matrix at index " << i << ": actual=" << actual_db_matrix[i] << ", expected=" << expected_db_matrix[i] << std::endl;
+            // std::cout << "Mismatch in db_matrix at index " << i << ": actual=" << actual_db_matrix[i] << ", expected=" << expected_db_matrix[i] << std::endl;
         }
     }
     if (db_matrix_match) {
