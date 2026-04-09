@@ -8,7 +8,10 @@ Batch size: 1
 Sequence length: 2
 Model dimension: 3
 Number of heads: 1
-db_matrix matches between attention_forward and attention_forward_mask implementations.
+Mismatch in db_matrix at index 1: actual=0.334067, expected=0.183419
+Mismatch in db_matrix at index 2: actual=0.183419, expected=0.275007
+Mismatch in db_matrix at index 3: actual=-0.0188228, expected=0.23273
+db_matrix does NOT match between attention_forward and attention_forward_mask implementations.
 /home/rickojn/coding/custard-flow/test/cf_test.cc:638: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
   Actual: false
@@ -18,11 +21,11 @@ Max absolute difference: 0.0682218
 Max relative difference: 0.192872
 Mean absolute difference: 0.0113703
 Mean relative difference: 0.0321454
-[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality (768 ms)
-[----------] 1 test from AttentionForwardMaskTest (768 ms total)
+[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality (770 ms)
+[----------] 1 test from AttentionForwardMaskTest (770 ms total)
 
 [----------] Global test environment tear-down
-[==========] 1 test from 1 test suite ran. (768 ms total)
+[==========] 1 test from 1 test suite ran. (770 ms total)
 [  PASSED  ] 0 tests.
 [  FAILED  ] 1 test, listed below:
 [  FAILED  ] AttentionForwardMaskTest.BasicFunctionality

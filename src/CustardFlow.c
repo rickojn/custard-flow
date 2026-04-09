@@ -762,7 +762,7 @@ void attention_forward(const float *input, const float *weights_query, const flo
         simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_value, &values[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
     }
 
-    memset(db_matrix, 0, size_sequence * size_sequence * sizeof(float));
+    // memset(db_matrix, 0, size_sequence * size_sequence * sizeof(float));
     // compute attention 
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){ // each seqence of embeddings
         for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++){ // each embedding in the sequence
@@ -780,7 +780,7 @@ void attention_forward(const float *input, const float *weights_query, const flo
                     attention_weights[idx_prefix] = attention_score;
                 }
                 softmax_forward(attention_weights, idx_embedding + 1, 1);
-                memcpy(&db_matrix[idx_embedding * size_sequence], attention_weights, (idx_embedding + 1) * sizeof(float)); // copy attention weights to db_matrix for debugging
+                // memcpy(&db_matrix[idx_embedding * size_sequence], attention_weights, (idx_embedding + 1) * sizeof(float)); // copy attention weights to db_matrix for debugging
                 // compute output as sum of weighted value vectors for the head for the embedding and prefix embedding
                 size_t offset_v = (idx_sequence * size_sequence + idx_embedding) * dim_model + idx_head * (dim_model / num_heads);
                 for (size_t idx_prefix = 0; idx_prefix <= idx_embedding; idx_prefix++){
@@ -793,6 +793,10 @@ void attention_forward(const float *input, const float *weights_query, const flo
             }
         }
     }
+
+    memset(db_matrix, 0, size_batch * size_sequence * size_sequence * sizeof(float));
+    memcpy(db_matrix, output, size_batch * size_sequence * size_sequence * sizeof(float));
+
 
     // aggregate heads by multiplying with weights_output
     float *output_aggregated = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
@@ -926,12 +930,12 @@ q4    x x x x x x
         } 
     }
 
-    memset(db_matrix, 0, size_batch * size_sequence * size_sequence * sizeof(float));
-    memcpy(db_matrix, attention_weights, size_batch * size_sequence * size_sequence * sizeof(float)); // copy attention weights to db_matrix for debugging
+    // memset(db_matrix, 0, size_batch * size_sequence * size_sequence * sizeof(float));
+    // memcpy(db_matrix, attention_weights, size_batch * size_sequence * size_sequence * sizeof(float)); // copy attention weights to db_matrix for debugging
 
     // weighted sum of attention values
 
-    float *v_transpose = (float *)malloc(dim_model * size_sequence * dim_model * sizeof(float));
+    float *v_transpose = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
     transpose_matrix(values, v_transpose, size_batch * size_sequence, dim_model);
 
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
@@ -941,7 +945,8 @@ q4    x x x x x x
                     size_sequence, dim_model, size_sequence);
     }
 
-
+    memset(db_matrix, 0, size_batch * size_sequence * size_sequence * sizeof(float));
+    memcpy(db_matrix, output, size_batch * size_sequence * size_sequence * sizeof(float));
 
     // aggregate heads by multiplying with weights_output
     float *output_aggregated = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
