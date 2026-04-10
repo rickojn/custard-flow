@@ -940,7 +940,7 @@ q4    x x x x x x
 
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
-        naive_matmul(&attention_weights[idx_sequence * size_sequence * size_sequence], &values[idx_sequence * size_sequence * dim_model], 
+        simd_matmul(&attention_weights[idx_sequence * size_sequence * size_sequence], &values[idx_sequence * size_sequence * dim_model], 
                     &output[idx_sequence * size_sequence * dim_model], 
                     size_sequence, dim_model, size_sequence);
     }
