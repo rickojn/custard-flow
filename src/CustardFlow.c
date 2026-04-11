@@ -809,9 +809,9 @@ void attention_forward(const float *input, const float *weights_query, const flo
     float *weights_output_transpose = (float *)malloc(dim_model * dim_model * sizeof(float));
     transpose_matrix(weights_output, weights_output_transpose, dim_model, dim_model);
     float *output_aggregated = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
-    simd_matmul(output, weights_output_transpose, output_aggregated, size_batch * size_sequence, dim_model, dim_model);
+    simd_matmul(output, weights_output, output_aggregated, size_batch * size_sequence, dim_model, dim_model);
     memcpy(output, output_aggregated, size_batch * size_sequence * dim_model * sizeof(float));
-    transpose_matrix(output_aggregated, output, size_batch * size_sequence, dim_model); // transpose back to original shape
+    // transpose_matrix(output_aggregated, output, size_batch * size_sequence, dim_model); // transpose back to original shape
 
     free(output_aggregated);
     free(weights_output_transpose);

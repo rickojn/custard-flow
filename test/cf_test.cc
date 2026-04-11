@@ -499,14 +499,16 @@ TEST(AttentionForwardReferenceTest, BasicFunctionality) {
     float sum_abs_diff = 0.0f;
     float sum_rel_diff = 0.0f;
     // for (int i = 0; i < batch_size; ++i) {
-    for (int i = 0; i < 1; ++i) {
+    for (int idx_sequence = 0; idx_sequence < 1; ++idx_sequence) {
         // for (int j = 0; j < size_sequence; ++j) {
-        for (int j = 0; j < 2; ++j) {
+        for (int idx_embedding = 0; idx_embedding < 1; ++idx_embedding) {
             // for (int k = 0; k < dim_model; ++k) {
-            for (int k = 0; k < 1; ++k) {
-                int idx = i * size_sequence * dim_model + j * dim_model + k;
-                float actual = actual_output[idx];
-                float expected = expected_output_ptr[idx];
+            for (int idx_dim = 0; idx_dim < dim_model; ++idx_dim) {
+                // int idx = i * size_sequence * dim_model + j * dim_model + k;
+                int offset = idx_sequence * size_sequence * dim_model + idx_embedding * dim_model + idx_dim; // actual and expected are both in row-major format, so this indexing should be correct
+                int offset_transposed = idx_dim * size_sequence * dim_model + idx_embedding; // for debugging if transposition is the issue
+                float actual = actual_output[offset_transposed];
+                float expected = expected_output_ptr[offset];
                 float abs_diff = fabsf(actual - expected);
                 float rel_diff = abs_diff / (fabsf(expected) + 1e-6f);
                 max_abs_diff = std::max(max_abs_diff, abs_diff);
@@ -518,7 +520,7 @@ TEST(AttentionForwardReferenceTest, BasicFunctionality) {
                 const float rtol = 1e-3f;   // maybe 2e-3f if needed
 
                 EXPECT_TRUE(abs_diff <= atol + rtol * fabsf(expected))
-                    << "Mismatch at (" << i << ", " << j << ", " << k << "): "
+                    << "Mismatch at (" << idx_sequence << ", " << idx_embedding << ", " << idx_dim << "): "
                     << "actual=" << actual
                     << ", expected=" << expected
                     << ", abs_diff=" << abs_diff
