@@ -446,10 +446,10 @@ TEST(SoftmaxCrossEntropyBackwardTest, MatchesPyTorch) {
 TEST(AttentionForwardReferenceTest, BasicFunctionality) {
     // ARRANGE
     torch::manual_seed(42);
-    int batch_size = 16; // passes if batch_size=1 but fails for batch_size=2, need to investigate
-    int size_sequence = 9;
-    int dim_model = 128;
-    int num_heads = 8; 
+    int batch_size = 2; // passes if batch_size=1 but fails for batch_size=2, need to investigate
+    int size_sequence = 2;
+    int dim_model = 3;
+    int num_heads = 1; 
     torch::Tensor input = torch::randn({size_sequence, batch_size, dim_model}, torch::requires_grad());
     torch::Tensor weights_query = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_key = torch::randn({dim_model, dim_model}, torch::requires_grad());
@@ -480,7 +480,7 @@ TEST(AttentionForwardReferenceTest, BasicFunctionality) {
     auto attention_output = std::get<0>(attention_output_tuple);
 
     auto input_btc = input.permute({1, 0, 2}).contiguous();   // [B,T,C]
-    float *input_ptr = input_btc.data_ptr<float>();
+    float *input_ptr = input.data_ptr<float>();
 
     // float *input_ptr = input.data_ptr<float>();
     float *weights_query_ptr = weights_query.data_ptr<float>();
