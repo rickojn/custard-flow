@@ -852,11 +852,19 @@ void attention_forward_mask(const float *input, const float *weights_query, cons
     // zero attention weights
     memset(attention_weights, 0, size_batch * size_sequence * size_sequence * sizeof(float));
 
+    // transpose q, k and v weights
+    float *weights_query_transpose = (float *)malloc(dim_model * dim_model * sizeof(float));
+    float *weights_key_transpose = (float *)malloc(dim_model * dim_model * sizeof(float));
+    float *weights_value_transpose = (float *)malloc(dim_model * dim_model * sizeof(float));
+    transpose_matrix(weights_query, weights_query_transpose, dim_model, dim_model);
+    transpose_matrix(weights_key, weights_key_transpose, dim_model, dim_model);
+    transpose_matrix(weights_value, weights_value_transpose, dim_model, dim_model);
+
     // compute q, k and v
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){ // each sample is a sequence of embeddings
-        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_query, &queries[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
-        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_key, &keys[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
-        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_value, &values[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
+        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_query_transpose, &queries[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
+        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_key_transpose, &keys[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
+        simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_value_transpose, &values[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
     }
 
 

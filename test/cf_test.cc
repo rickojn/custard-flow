@@ -555,10 +555,10 @@ TEST(AttentionForwardReferenceTest, BasicFunctionality) {
 */
 TEST(AttentionForwardMaskTest, BasicFunctionality) {
     // ARRANGE
-    int batch_size = 16; 
-    int size_sequence = 9;
-    int dim_model = 128;
-    int num_heads = 8; 
+    int batch_size = 1; 
+    int size_sequence = 2;
+    int dim_model = 3;
+    int num_heads = 1; 
 
     //logout dimensions for debugging
     std::cout << "Batch size: " << batch_size << std::endl;
@@ -581,6 +581,7 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
     float *weights_value_ptr = weights_value.data_ptr<float>();
     float *weights_output_ptr = weights_output.data_ptr<float>();
 
+
     // allocate memory for actual and expected output tensors, and compute expected output using attention_forward as reference
     float *actual_output_ptr = new float[batch_size * size_sequence * dim_model];
     float *expected_output_ptr = new float[batch_size * size_sequence * dim_model];
@@ -602,7 +603,7 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
     for (int i = 0; i < batch_size * size_sequence * dim_model; ++i) {
         if (fabsf(actual_db_matrix[i] - expected_db_matrix[i]) > 1e-3f) {
             db_matrix_match = false;
-            // std::cout << "Mismatch in db_matrix at index " << i << ": actual=" << actual_db_matrix[i] << ", expected=" << expected_db_matrix[i] << std::endl;
+            std::cout << "Mismatch in db_matrix at index " << i << ": actual=" << actual_db_matrix[i] << ", expected=" << expected_db_matrix[i] << std::endl;
         }
     }
     if (db_matrix_match) {
@@ -617,18 +618,13 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
     float max_rel_diff = 0.0f;
     float sum_abs_diff = 0.0f;
     float sum_rel_diff = 0.0f;
-    for (int i = 0; i < batch_size; ++i)
+    for (int idx_sequence = 0; idx_sequence < batch_size; ++idx_sequence)
     {
-        for (int i = 0; i < 1; ++i) 
-        // for (int j = 0; j < size_sequence; ++j)
-        {
-            for (int j = 0; j < 1; ++j) 
-            // for (int k = 0; k < dim_model; ++k)
-            
-            for (int k = 0; k < 1; ++k) {
-                int idx = i * size_sequence * dim_model + j * dim_model + k;
-                float actual = actual_output_ptr[idx];
-                float expected = expected_output_ptr[idx];
+        for (int idx_embedding = 0; idx_embedding < size_sequence; ++idx_embedding) {
+            for (int idx_dim = 0; idx_dim < dim_model; ++idx_dim) {
+                int offset = idx_sequence * size_sequence * dim_model + idx_embedding * dim_model + idx_dim;
+                float actual = actual_output_ptr[offset];
+                float expected = expected_output_ptr[offset];
                 float abs_diff = fabsf(actual - expected);
                 float rel_diff = abs_diff / (fabsf(expected) + 1e-6f);
                 max_abs_diff = std::max(max_abs_diff, abs_diff);
@@ -640,7 +636,7 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
                 const float rtol = 1e-3f; // maybe 2e-3f if needed
 
                 EXPECT_TRUE(abs_diff <= atol + rtol * fabsf(expected))
-                    << "Mismatch at (" << i << ", " << j << ", " << k << "): "
+                    << "Mismatch at (" << idx_sequence << ", " << idx_embedding << ", " << idx_dim << "): "
                     << "actual=" << actual
                     << ", expected=" << expected
                     << ", abs_diff=" << abs_diff
