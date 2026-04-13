@@ -446,11 +446,11 @@ TEST(SoftmaxCrossEntropyBackwardTest, MatchesPyTorch) {
 TEST(AttentionForwardReferenceTest, BasicFunctionality) {
     // ARRANGE
     torch::manual_seed(42);
-    int batch_size = 2; // passes if batch_size=1 but fails for batch_size=2, need to investigate
-    int size_sequence = 2;
-    int dim_model = 3;
-    int num_heads = 1; 
-    torch::Tensor input = torch::randn({size_sequence, batch_size, dim_model}, torch::requires_grad());
+    int batch_size = 16; // passes if batch_size=1 but fails for batch_size=2, need to investigate
+    int size_sequence = 9;
+    int dim_model = 128;
+    int num_heads = 8; 
+    torch::Tensor input = torch::randn({batch_size, size_sequence, dim_model}, torch::requires_grad());
     torch::Tensor weights_query = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_key = torch::randn({dim_model, dim_model}, torch::requires_grad());
     torch::Tensor weights_value = torch::randn({dim_model, dim_model}, torch::requires_grad());
@@ -461,6 +461,8 @@ TEST(AttentionForwardReferenceTest, BasicFunctionality) {
     // auto weights_key_t = weights_key.transpose(0, 1);
     // auto weights_value_t = weights_value.transpose(0, 1);
     // auto weights_output_t = weights_output.transpose(0, 1);
+
+    auto input_btc = input.permute({1, 0, 2}).contiguous();   // [B,T,C]
 
     torch::nn::MultiheadAttention mha(torch::nn::MultiheadAttentionOptions(dim_model, num_heads));
     torch::NoGradGuard no_grad;
@@ -476,10 +478,12 @@ TEST(AttentionForwardReferenceTest, BasicFunctionality) {
     torch::Tensor key_padding_mask;
 
     
-    auto attention_output_tuple = mha->forward(input, input, input, /*key_padding_mask=*/key_padding_mask, /*need_weights=*/true, /*attn_mask=*/causal_mask);
+    auto attention_output_tuple = mha->forward(input_btc, input_btc, input_btc, /*key_padding_mask=*/key_padding_mask, /*need_weights=*/true, /*attn_mask=*/causal_mask);
     auto attention_output = std::get<0>(attention_output_tuple);
 
-    auto input_btc = input.permute({1, 0, 2}).contiguous();   // [B,T,C]
+    // attention_output = attention_output.permute({1, 0, 2}).contiguous();   // [B,T,C]
+
+    // auto input_btc = input.permute({1, 0, 2}).contiguous();   // [B,T,C]
     float *input_ptr = input.data_ptr<float>();
 
     // float *input_ptr = input.data_ptr<float>();
@@ -507,11 +511,11 @@ TEST(AttentionForwardReferenceTest, BasicFunctionality) {
     float sum_abs_diff = 0.0f;
     float sum_rel_diff = 0.0f;
     // for (int i = 0; i < batch_size; ++i) {
-    for (int idx_sequence = 0; idx_sequence < 1; ++idx_sequence) {
+    for (int idx_sequence = 0; idx_sequence < batch_size; ++idx_sequence) {
         // for (int j = 0; j < size_sequence; ++j) {
-        for (int idx_embedding = 0; idx_embedding < 2; ++idx_embedding) {
+        for (int idx_embedding = 0; idx_embedding < size_sequence; ++idx_embedding) {
             // for (int k = 0; k < dim_model; ++k) {
-            for (int idx_dim = 0; idx_dim < 1; ++idx_dim) {
+            for (int idx_dim = 0; idx_dim < dim_model; ++idx_dim) {
                 int offset = idx_sequence * size_sequence * dim_model + idx_embedding * dim_model + idx_dim;
                 float actual = actual_output[offset];
                 float expected = expected_output_ptr[offset];
