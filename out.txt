@@ -1,21 +1,140 @@
 Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googletest-src/googletest/src/gtest_main.cc
-Note: Google Test filter = AttentionForwardMaskTest.BasicFunctionality
-[==========] Running 1 test from 1 test suite.
+[==========] Running 24 tests from 13 test suites.
 [----------] Global test environment set-up.
+[----------] 1 test from MatrixMultiplicationTest
+[ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (772 ms)
+[----------] 1 test from MatrixMultiplicationTest (772 ms total)
+
+[----------] 1 test from MatrixMultiplicationBackwardsTest
+[ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
+[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (12 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (12 ms total)
+
+[----------] 1 test from CrossEntropyLossTest
+[ RUN      ] CrossEntropyLossTest.BasicFunctionality
+[       OK ] CrossEntropyLossTest.BasicFunctionality (0 ms)
+[----------] 1 test from CrossEntropyLossTest (0 ms total)
+
+[----------] 1 test from LossBackwardTest
+[ RUN      ] LossBackwardTest.BasicFunctionality
+[       OK ] LossBackwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from LossBackwardTest (0 ms total)
+
+[----------] 1 test from layer_norm_test
+[ RUN      ] layer_norm_test.basic_functionality
+[       OK ] layer_norm_test.basic_functionality (0 ms)
+[----------] 1 test from layer_norm_test (0 ms total)
+
+[----------] 1 test from layer_norm_backward_test
+[ RUN      ] layer_norm_backward_test.basic_functionality
+[       OK ] layer_norm_backward_test.basic_functionality (0 ms)
+[----------] 1 test from layer_norm_backward_test (0 ms total)
+
+[----------] 1 test from ReLUForwardTest
+[ RUN      ] ReLUForwardTest.BasicFunctionality
+[       OK ] ReLUForwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from ReLUForwardTest (0 ms total)
+
+[----------] 1 test from ReLUBackwardTest
+[ RUN      ] ReLUBackwardTest.BasicFunctionality
+[       OK ] ReLUBackwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from ReLUBackwardTest (0 ms total)
+
+[----------] 1 test from SoftmaxForwardTest
+[ RUN      ] SoftmaxForwardTest.BasicFunctionality
+[       OK ] SoftmaxForwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from SoftmaxForwardTest (0 ms total)
+
+[----------] 1 test from SoftmaxCrossEntropyBackwardTest
+[ RUN      ] SoftmaxCrossEntropyBackwardTest.MatchesPyTorch
+[       OK ] SoftmaxCrossEntropyBackwardTest.MatchesPyTorch (0 ms)
+[----------] 1 test from SoftmaxCrossEntropyBackwardTest (0 ms total)
+
+[----------] 1 test from AttentionForwardReferenceTest
+[ RUN      ] AttentionForwardReferenceTest.BasicFunctionality
+Max absolute difference: 0.00183868
+Max relative difference: 0.00393725
+Mean absolute difference: 2.40905e-05
+Mean relative difference: 1.31639e-06
+[       OK ] AttentionForwardReferenceTest.BasicFunctionality (15 ms)
+[----------] 1 test from AttentionForwardReferenceTest (15 ms total)
+
 [----------] 1 test from AttentionForwardMaskTest
 [ RUN      ] AttentionForwardMaskTest.BasicFunctionality
-Batch size: 16
-Sequence length: 9
-Model dimension: 128
-Number of heads: 8
-db_matrix does NOT match between attention_forward and attention_forward_mask implementations.
-Max absolute difference: 0
-Max relative difference: 0
-Mean absolute difference: 0
-Mean relative difference: 0
-[       OK ] AttentionForwardMaskTest.BasicFunctionality (259 ms)
-[----------] 1 test from AttentionForwardMaskTest (259 ms total)
+Batch size: 1
+Sequence length: 2
+Model dimension: 3
+Number of heads: 1
+db_matrix matches between attention_forward and attention_forward_mask implementations.
+/home/rickojn/coding/custard-flow/test/cf_test.cc:638: Failure
+Value of: abs_diff <= atol + rtol * fabsf(expected)
+  Actual: false
+Expected: true
+Mismatch at (0, 0, 0): actual=0.32072374224662781, expected=0.048064757138490677, abs_diff=0.27265897393226624, rel_diff=5.6726241111755371
+/home/rickojn/coding/custard-flow/test/cf_test.cc:638: Failure
+Value of: abs_diff <= atol + rtol * fabsf(expected)
+  Actual: false
+Expected: true
+Mismatch at (0, 0, 1): actual=-0.1785602867603302, expected=-0.021353950724005699, abs_diff=0.15720634162425995, rel_diff=7.3615875244140625
+/home/rickojn/coding/custard-flow/test/cf_test.cc:638: Failure
+Value of: abs_diff <= atol + rtol * fabsf(expected)
+  Actual: false
+Expected: true
+Mismatch at (0, 0, 2): actual=-0.23886173963546753, expected=0.21473681926727295, abs_diff=0.45359855890274048, rel_diff=2.1123366355895996
+/home/rickojn/coding/custard-flow/test/cf_test.cc:638: Failure
+Value of: abs_diff <= atol + rtol * fabsf(expected)
+  Actual: false
+Expected: true
+Mismatch at (0, 1, 0): actual=0.10222231596708298, expected=0.17318408191204071, abs_diff=0.070961765944957733, rel_diff=0.40974527597427368
+/home/rickojn/coding/custard-flow/test/cf_test.cc:638: Failure
+Value of: abs_diff <= atol + rtol * fabsf(expected)
+  Actual: false
+Expected: true
+Mismatch at (0, 1, 1): actual=-0.19589594006538391, expected=0.040319237858057022, abs_diff=0.23621517419815063, rel_diff=5.8584771156311035
+/home/rickojn/coding/custard-flow/test/cf_test.cc:638: Failure
+Value of: abs_diff <= atol + rtol * fabsf(expected)
+  Actual: false
+Expected: true
+Mismatch at (0, 1, 2): actual=-0.14584654569625854, expected=0.18313618004322052, abs_diff=0.32898271083831787, rel_diff=1.7963731288909912
+Max absolute difference: 0.453599
+Max relative difference: 7.36159
+Mean absolute difference: 0.253271
+Mean relative difference: 3.86852
+[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality (0 ms)
+[----------] 1 test from AttentionForwardMaskTest (0 ms total)
+
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (97 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (92 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (87 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (1 ms)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (279 ms total)
 
 [----------] Global test environment tear-down
-[==========] 1 test from 1 test suite ran. (259 ms total)
-[  PASSED  ] 1 test.
+[==========] 24 tests from 13 test suites ran. (1082 ms total)
+[  PASSED  ] 23 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality
+
+ 1 FAILED TEST
