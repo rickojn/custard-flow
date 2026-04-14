@@ -446,7 +446,7 @@ TEST(SoftmaxCrossEntropyBackwardTest, MatchesPyTorch) {
 TEST(AttentionForwardReferenceTest, BasicFunctionality) {
     // ARRANGE
     torch::manual_seed(42);
-    int batch_size = 16; // passes if batch_size=1 but fails for batch_size=2, need to investigate
+    int batch_size = 16; 
     int size_sequence = 9;
     int dim_model = 128;
     int num_heads = 8; 
@@ -494,11 +494,12 @@ TEST(AttentionForwardReferenceTest, BasicFunctionality) {
     auto attention_output_bsd = attention_output.permute({1, 0, 2}).contiguous();
     float *expected_output_ptr = attention_output_bsd.data_ptr<float>();
     float *actual_output = new float[batch_size * size_sequence * dim_model];
-    float * dummy = new float[batch_size * size_sequence * dim_model]; // for debugging
+    // float * db_matrix = new float[batch_size * size_sequence * dim_model]; // for debugging
+    float * db_matrix = new float[batch_size * size_sequence * size_sequence]; // for debugging
     
     // ACT
     attention_forward(input_ptr, weights_query_ptr, weights_key_ptr, weights_value_ptr, weights_output_ptr,
-        actual_output, dummy, batch_size, size_sequence, dim_model, num_heads);
+        actual_output, db_matrix, batch_size, size_sequence, dim_model, num_heads);
     // ASSERT
     // for debugging: compare 
 
