@@ -968,8 +968,11 @@ q4    x x x x x x
     memcpy(db_matrix, output, size_batch * size_sequence * size_sequence * sizeof(float));
 
     // aggregate heads by multiplying with weights_output
+    // transpose weights_output for matmul
+    float *weights_output_transpose = (float *)malloc(dim_model * dim_model * sizeof(float));
+    transpose_matrix(weights_output, weights_output_transpose, dim_model, dim_model);
     float *output_aggregated = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
-    simd_matmul(output, weights_output, output_aggregated, size_batch * size_sequence, dim_model, dim_model);
+    simd_matmul(output, weights_output_transpose, output_aggregated, size_batch * size_sequence, dim_model, dim_model);
     memcpy(output, output_aggregated, size_batch * size_sequence * dim_model * sizeof(float));
     free(output_aggregated);
 

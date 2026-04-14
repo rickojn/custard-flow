@@ -555,9 +555,9 @@ TEST(AttentionForwardReferenceTest, BasicFunctionality) {
 */
 TEST(AttentionForwardMaskTest, BasicFunctionality) {
     // ARRANGE
-    int batch_size = 1; 
-    int size_sequence = 2;
-    int dim_model = 3;
+    int batch_size = 16; 
+    int size_sequence = 9;
+    int dim_model = 16;
     int num_heads = 1; 
 
     //logout dimensions for debugging
