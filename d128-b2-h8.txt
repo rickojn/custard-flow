@@ -3,8 +3,8 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (767 ms)
-[----------] 1 test from MatrixMultiplicationTest (767 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (773 ms)
+[----------] 1 test from MatrixMultiplicationTest (773 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
@@ -57,8 +57,8 @@ Max absolute difference: 0.00183868
 Max relative difference: 0.00393725
 Mean absolute difference: 2.40905e-05
 Mean relative difference: 1.31639e-06
-[       OK ] AttentionForwardReferenceTest.BasicFunctionality (14 ms)
-[----------] 1 test from AttentionForwardReferenceTest (14 ms total)
+[       OK ] AttentionForwardReferenceTest.BasicFunctionality (15 ms)
+[----------] 1 test from AttentionForwardReferenceTest (15 ms total)
 
 [----------] 1 test from AttentionForwardMaskTest
 [ RUN      ] AttentionForwardMaskTest.BasicFunctionality
@@ -82,10 +82,10 @@ Mismatch in db_matrix at index 140: actual=6.32321, expected=11.4686
 Mismatch in db_matrix at index 141: actual=3.31221, expected=-3.35133
 Mismatch in db_matrix at index 142: actual=-32.9947, expected=-11.6434
 Mismatch in db_matrix at index 143: actual=6.52686, expected=-8.73987
-Mismatch in db_matrix at index 164: actual=-8.22091e-33, expected=8.92798
-Mismatch in db_matrix at index 165: actual=4.29666e-41, expected=4.32899
-Mismatch in db_matrix at index 166: actual=-8.22091e-33, expected=-2.18871
-Mismatch in db_matrix at index 167: actual=4.29666e-41, expected=3.23181
+Mismatch in db_matrix at index 164: actual=-0.337142, expected=8.92798
+Mismatch in db_matrix at index 165: actual=4.40919e-41, expected=4.32899
+Mismatch in db_matrix at index 166: actual=-0.337142, expected=-2.18871
+Mismatch in db_matrix at index 167: actual=4.40919e-41, expected=3.23181
 Mismatch in db_matrix at index 168: actual=0.324135, expected=14.5821
 Mismatch in db_matrix at index 169: actual=0.965959, expected=7.88446
 Mismatch in db_matrix at index 170: actual=-1.40534, expected=-3.22875
@@ -214,10 +214,10 @@ Mismatch in db_matrix at index 292: actual=7.39886e-43, expected=1.97858
 Mismatch in db_matrix at index 293: actual=0, expected=-11.5645
 Mismatch in db_matrix at index 294: actual=8.96831e-44, expected=15.2506
 Mismatch in db_matrix at index 295: actual=0, expected=-12.0622
-Mismatch in db_matrix at index 296: actual=226067, expected=-2.59085
-Mismatch in db_matrix at index 297: actual=3.39829e-41, expected=10.2697
-Mismatch in db_matrix at index 298: actual=1497.5, expected=-14.9574
-Mismatch in db_matrix at index 299: actual=3.39829e-41, expected=-6.52288
+Mismatch in db_matrix at index 296: actual=-1.06042e+34, expected=-2.59085
+Mismatch in db_matrix at index 297: actual=3.52665e-41, expected=10.2697
+Mismatch in db_matrix at index 298: actual=-7.1345e+31, expected=-14.9574
+Mismatch in db_matrix at index 299: actual=3.52665e-41, expected=-6.52288
 Mismatch in db_matrix at index 300: actual=0, expected=-13.8364
 Mismatch in db_matrix at index 301: actual=0, expected=-9.25348
 Mismatch in db_matrix at index 302: actual=0, expected=-7.41577
@@ -246,10 +246,10 @@ Mismatch in db_matrix at index 324: actual=-0.422391, expected=-5.59989
 Mismatch in db_matrix at index 325: actual=0.472085, expected=-5.82196
 Mismatch in db_matrix at index 326: actual=-0.643034, expected=7.41287e-43
 Mismatch in db_matrix at index 327: actual=-0.65532, expected=0
-Mismatch in db_matrix at index 328: actual=-1.5629, expected=-8.22091e-33
-Mismatch in db_matrix at index 329: actual=-0.0215586, expected=4.29666e-41
-Mismatch in db_matrix at index 330: actual=-0.397594, expected=-8.22091e-33
-Mismatch in db_matrix at index 331: actual=-0.0803595, expected=4.29666e-41
+Mismatch in db_matrix at index 328: actual=-1.5629, expected=-0.337142
+Mismatch in db_matrix at index 329: actual=-0.0215586, expected=4.40919e-41
+Mismatch in db_matrix at index 330: actual=-0.397594, expected=-0.337142
+Mismatch in db_matrix at index 331: actual=-0.0803595, expected=4.40919e-41
 Mismatch in db_matrix at index 332: actual=0.0593704, expected=0.324135
 Mismatch in db_matrix at index 333: actual=0.261305, expected=0.965959
 Mismatch in db_matrix at index 334: actual=-0.0835766, expected=-1.40534
@@ -378,10 +378,10 @@ Mismatch in db_matrix at index 456: actual=-1.74958, expected=7.39886e-43
 Mismatch in db_matrix at index 457: actual=0.714808, expected=0
 Mismatch in db_matrix at index 458: actual=-1.38585, expected=8.96831e-44
 Mismatch in db_matrix at index 459: actual=-1.37144, expected=0
-Mismatch in db_matrix at index 460: actual=0.751581, expected=226067
-Mismatch in db_matrix at index 461: actual=-0.490661, expected=3.39829e-41
-Mismatch in db_matrix at index 462: actual=1.29718, expected=1497.5
-Mismatch in db_matrix at index 463: actual=1.42486, expected=3.39829e-41
+Mismatch in db_matrix at index 460: actual=0.751581, expected=-1.06042e+34
+Mismatch in db_matrix at index 461: actual=-0.490661, expected=3.52665e-41
+Mismatch in db_matrix at index 462: actual=1.29718, expected=-7.1345e+31
+Mismatch in db_matrix at index 463: actual=1.42486, expected=3.52665e-41
 Mismatch in db_matrix at index 464: actual=-1.34271, expected=0
 Mismatch in db_matrix at index 465: actual=0.876527, expected=0
 Mismatch in db_matrix at index 466: actual=-0.0187177, expected=0
@@ -12462,8 +12462,8 @@ Max absolute difference: 479.286
 Max relative difference: 2884.94
 Mean absolute difference: 91.7648
 Mean relative difference: 5.09769
-[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality (59 ms)
-[----------] 1 test from AttentionForwardMaskTest (59 ms total)
+[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality (63 ms)
+[----------] 1 test from AttentionForwardMaskTest (63 ms total)
 
 [----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
@@ -12485,15 +12485,15 @@ Mean relative difference: 5.09769
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (93 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (95 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (87 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (90 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (1 ms)
-[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (281 ms total)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (285 ms total)
 
 [----------] Global test environment tear-down
-[==========] 24 tests from 13 test suites ran. (1139 ms total)
+[==========] 24 tests from 13 test suites ran. (1155 ms total)
 [  PASSED  ] 23 tests.
 [  FAILED  ] 1 test, listed below:
 [  FAILED  ] AttentionForwardMaskTest.BasicFunctionality

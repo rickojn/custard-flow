@@ -1,0 +1,501 @@
+Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googletest-src/googletest/src/gtest_main.cc
+[==========] Running 24 tests from 13 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from MatrixMultiplicationTest
+[ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (257 ms)
+[----------] 1 test from MatrixMultiplicationTest (257 ms total)
+
+[----------] 1 test from MatrixMultiplicationBackwardsTest
+[ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
+[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (12 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (12 ms total)
+
+[----------] 1 test from CrossEntropyLossTest
+[ RUN      ] CrossEntropyLossTest.BasicFunctionality
+[       OK ] CrossEntropyLossTest.BasicFunctionality (0 ms)
+[----------] 1 test from CrossEntropyLossTest (0 ms total)
+
+[----------] 1 test from LossBackwardTest
+[ RUN      ] LossBackwardTest.BasicFunctionality
+[       OK ] LossBackwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from LossBackwardTest (0 ms total)
+
+[----------] 1 test from layer_norm_test
+[ RUN      ] layer_norm_test.basic_functionality
+[       OK ] layer_norm_test.basic_functionality (0 ms)
+[----------] 1 test from layer_norm_test (0 ms total)
+
+[----------] 1 test from layer_norm_backward_test
+[ RUN      ] layer_norm_backward_test.basic_functionality
+[       OK ] layer_norm_backward_test.basic_functionality (0 ms)
+[----------] 1 test from layer_norm_backward_test (0 ms total)
+
+[----------] 1 test from ReLUForwardTest
+[ RUN      ] ReLUForwardTest.BasicFunctionality
+[       OK ] ReLUForwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from ReLUForwardTest (0 ms total)
+
+[----------] 1 test from ReLUBackwardTest
+[ RUN      ] ReLUBackwardTest.BasicFunctionality
+[       OK ] ReLUBackwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from ReLUBackwardTest (0 ms total)
+
+[----------] 1 test from SoftmaxForwardTest
+[ RUN      ] SoftmaxForwardTest.BasicFunctionality
+[       OK ] SoftmaxForwardTest.BasicFunctionality (0 ms)
+[----------] 1 test from SoftmaxForwardTest (0 ms total)
+
+[----------] 1 test from SoftmaxCrossEntropyBackwardTest
+[ RUN      ] SoftmaxCrossEntropyBackwardTest.MatchesPyTorch
+[       OK ] SoftmaxCrossEntropyBackwardTest.MatchesPyTorch (0 ms)
+[----------] 1 test from SoftmaxCrossEntropyBackwardTest (0 ms total)
+
+[----------] 1 test from AttentionForwardReferenceTest
+[ RUN      ] AttentionForwardReferenceTest.BasicFunctionality
+Max absolute difference: 0.00183868
+Max relative difference: 0.00393725
+Mean absolute difference: 2.40905e-05
+Mean relative difference: 1.31639e-06
+[       OK ] AttentionForwardReferenceTest.BasicFunctionality (14 ms)
+[----------] 1 test from AttentionForwardReferenceTest (14 ms total)
+
+[----------] 1 test from AttentionForwardMaskTest
+[ RUN      ] AttentionForwardMaskTest.BasicFunctionality
+Batch size: 1
+Sequence length: 9
+Model dimension: 128
+Number of heads: 1
+Mismatch in db_matrix at index 84: actual=-3.51725e+22, expected=-1.11726e+22
+Mismatch in db_matrix at index 86: actual=-3.51725e+22, expected=-1.11726e+22
+Mismatch in db_matrix at index 88: actual=-9.42974e+20, expected=-1.88248e+21
+Mismatch in db_matrix at index 90: actual=-4.59626e+21, expected=-1.6022e+22
+Mismatch in db_matrix at index 92: actual=-4.59533e+21, expected=-1.49568e+22
+Mismatch in db_matrix at index 96: actual=-9.44865e+20, expected=-1.88529e+21
+Mismatch in db_matrix at index 98: actual=-9.44893e+20, expected=-1.88532e+21
+Mismatch in db_matrix at index 108: actual=1.7444e+28, expected=-4.04997e+20
+Mismatch in db_matrix at index 109: actual=7.39086e+22, expected=3.24863e-41
+Mismatch in db_matrix at index 110: actual=5.49648e+22, expected=-4.04996e+20
+Mismatch in db_matrix at index 111: actual=1.69256e+22, expected=3.24863e-41
+Mismatch in db_matrix at index 112: actual=1.12587e+24, expected=-1.15352e+33
+Mismatch in db_matrix at index 113: actual=1.06435e+24, expected=4.28783e-41
+Mismatch in db_matrix at index 114: actual=7.9033e+31, expected=-1.88534e+21
+Mismatch in db_matrix at index 115: actual=7.50107e+28, expected=3.24863e-41
+Mismatch in db_matrix at index 116: actual=1.84971e+31, expected=-1.88534e+21
+Mismatch in db_matrix at index 117: actual=2.82601e+23, expected=3.24863e-41
+Mismatch in db_matrix at index 118: actual=7.27159e+31, expected=-1.8861e+21
+Mismatch in db_matrix at index 122: actual=1.80768e-43, expected=1.77532e+28
+Mismatch in db_matrix at index 123: actual=0, expected=1.76859e+31
+Mismatch in db_matrix at index 124: actual=-4.04997e+20, expected=2.69083e+20
+Mismatch in db_matrix at index 126: actual=-4.04996e+20, expected=-1.8861e+21
+Mismatch in db_matrix at index 128: actual=-1.15352e+33, expected=4.2039e-45
+Mismatch in db_matrix at index 130: actual=-9.44901e+20, expected=1.0695e-38
+Mismatch in db_matrix at index 131: actual=3.24863e-41, expected=-3.82918e+20
+Mismatch in db_matrix at index 132: actual=-9.449e+20, expected=-1.15352e+33
+Mismatch in db_matrix at index 134: actual=-9.45282e+20, expected=9.20443e-41
+Mismatch in db_matrix at index 136: actual=6.30584e-44, expected=-1.88608e+21
+Mismatch in db_matrix at index 140: actual=0, expected=-1.88611e+21
+Mismatch in db_matrix at index 142: actual=-9.45293e+20, expected=2.8026e-45
+Mismatch in db_matrix at index 146: actual=7.11003e-21, expected=-1.88597e+21
+Mismatch in db_matrix at index 147: actual=-3.82918e+20, expected=3.24863e-41
+Mismatch in db_matrix at index 148: actual=7.8784e+25, expected=-4.26433e+20
+Mismatch in db_matrix at index 150: actual=9.19056e-41, expected=-4.26193e+20
+Mismatch in db_matrix at index 152: actual=-9.45275e+20, expected=-4.26433e+20
+Mismatch in db_matrix at index 154: actual=3.82554e-43, expected=-4.26193e+20
+Mismatch in db_matrix at index 156: actual=-9.4337e+20, expected=0
+Mismatch in db_matrix at index 160: actual=-2.13711e+21, expected=0
+Mismatch in db_matrix at index 162: actual=-2.13599e+21, expected=0
+Mismatch in db_matrix at index 164: actual=-9.43872e+20, expected=0
+Mismatch in db_matrix at index 168: actual=-2.13711e+21, expected=0
+Mismatch in db_matrix at index 170: actual=-2.13599e+21, expected=4.94658e-43
+Mismatch in db_matrix at index 172: actual=-9.44324e+20, expected=-1.88613e+21
+Mismatch in db_matrix at index 176: actual=-2.13711e+21, expected=1.73523e-41
+Mismatch in db_matrix at index 178: actual=-2.13599e+21, expected=-1.88597e+21
+Mismatch in db_matrix at index 180: actual=-9.44775e+20, expected=-4.26433e+20
+Mismatch in db_matrix at index 182: actual=0, expected=-4.26193e+20
+Mismatch in db_matrix at index 184: actual=-2.13711e+21, expected=-4.26433e+20
+Mismatch in db_matrix at index 186: actual=-2.13599e+21, expected=-4.26193e+20
+Mismatch in db_matrix at index 188: actual=-9.45286e+20, expected=0
+Mismatch in db_matrix at index 192: actual=-2.13711e+21, expected=0
+Mismatch in db_matrix at index 194: actual=-2.13599e+21, expected=0
+Mismatch in db_matrix at index 196: actual=-9.45809e+20, expected=0
+Mismatch in db_matrix at index 200: actual=-2.13711e+21, expected=-1.88615e+21
+Mismatch in db_matrix at index 202: actual=-2.13599e+21, expected=2.8026e-45
+Mismatch in db_matrix at index 204: actual=-9.46312e+20, expected=1.7711e-41
+Mismatch in db_matrix at index 206: actual=0, expected=-1.88597e+21
+Mismatch in db_matrix at index 208: actual=-2.13711e+21, expected=-4.33134e+20
+Mismatch in db_matrix at index 210: actual=-2.13599e+21, expected=-4.31861e+20
+Mismatch in db_matrix at index 212: actual=0, expected=-4.33134e+20
+Mismatch in db_matrix at index 214: actual=0, expected=-4.31861e+20
+Mismatch in db_matrix at index 224: actual=-9.45316e+20, expected=0
+Mismatch in db_matrix at index 228: actual=-5.91167e+20, expected=-1.88616e+21
+Mismatch in db_matrix at index 230: actual=-9.44905e+20, expected=2.8026e-45
+Mismatch in db_matrix at index 232: actual=-4.26433e+20, expected=1.80697e-41
+Mismatch in db_matrix at index 234: actual=-4.26193e+20, expected=-1.88597e+21
+Mismatch in db_matrix at index 236: actual=-4.26433e+20, expected=-4.2619e+20
+Mismatch in db_matrix at index 238: actual=-4.26193e+20, expected=0
+Mismatch in db_matrix at index 240: actual=0, expected=-4.27184e+20
+Mismatch in db_matrix at index 256: actual=-9.45325e+20, expected=0
+Mismatch in db_matrix at index 260: actual=-5.91167e+20, expected=-1.88618e+21
+Mismatch in db_matrix at index 262: actual=-9.44905e+20, expected=0
+Mismatch in db_matrix at index 264: actual=-4.26433e+20, expected=0
+Mismatch in db_matrix at index 266: actual=-4.26193e+20, expected=0
+Mismatch in db_matrix at index 268: actual=-4.26433e+20, expected=-1.88618e+21
+Mismatch in db_matrix at index 270: actual=-4.26193e+20, expected=0
+Mismatch in db_matrix at index 274: actual=0, expected=7.87725e+25
+Mismatch in db_matrix at index 276: actual=0, expected=-1.88613e+21
+Mismatch in db_matrix at index 278: actual=0, expected=-1.88618e+21
+Mismatch in db_matrix at index 280: actual=0, expected=-1.88618e+21
+Mismatch in db_matrix at index 282: actual=0, expected=-1.88611e+21
+Mismatch in db_matrix at index 284: actual=-9.45333e+20, expected=-1.88613e+21
+Mismatch in db_matrix at index 286: actual=2.8026e-45, expected=-1.88613e+21
+Mismatch in db_matrix at index 288: actual=-5.91185e+20, expected=0
+Mismatch in db_matrix at index 290: actual=-9.44905e+20, expected=4.62428e-44
+Mismatch in db_matrix at index 292: actual=-4.26433e+20, expected=1.08991e+27
+Mismatch in db_matrix at index 293: actual=3.24863e-41, expected=2.56807e+29
+Mismatch in db_matrix at index 294: actual=-4.26193e+20, expected=7.23742e+31
+Mismatch in db_matrix at index 295: actual=3.24863e-41, expected=1.65328e+19
+Mismatch in db_matrix at index 296: actual=-4.26433e+20, expected=1.0695e-38
+Mismatch in db_matrix at index 298: actual=-4.26193e+20, expected=6.86636e-44
+Mismatch in db_matrix at index 300: actual=0, expected=-1.88918e+21
+Mismatch in db_matrix at index 304: actual=0, expected=-2.13711e+21
+Mismatch in db_matrix at index 306: actual=0, expected=-2.13599e+21
+Mismatch in db_matrix at index 312: actual=-9.4534e+20, expected=1.74838e+25
+Mismatch in db_matrix at index 313: actual=3.24863e-41, expected=4.54482e+30
+Mismatch in db_matrix at index 314: actual=2.8026e-45, expected=1.8492e+20
+Mismatch in db_matrix at index 315: actual=0, expected=2.16796e+29
+Mismatch in db_matrix at index 316: actual=-5.91203e+20, expected=4.74289e+30
+Mismatch in db_matrix at index 317: actual=3.24863e-41, expected=8.08926e+20
+Mismatch in db_matrix at index 318: actual=-9.44905e+20, expected=1.74441e+22
+Mismatch in db_matrix at index 319: actual=3.24863e-41, expected=7.21281e+22
+Mismatch in db_matrix at index 320: actual=-4.66081e+20, expected=4.81678e+30
+Mismatch in db_matrix at index 321: actual=3.24863e-41, expected=3.31889e+12
+Mismatch in db_matrix at index 322: actual=-4.17953e+20, expected=1.88368e+11
+Mismatch in db_matrix at index 323: actual=3.24863e-41, expected=1.84922e+31
+Mismatch in db_matrix at index 324: actual=-4.66081e+20, expected=242.396
+Mismatch in db_matrix at index 325: actual=3.24863e-41, expected=7.44087e+28
+Mismatch in db_matrix at index 326: actual=-4.17953e+20, expected=7.21377e+22
+Mismatch in db_matrix at index 327: actual=3.24863e-41, expected=1.16284e+27
+Mismatch in db_matrix at index 328: actual=0, expected=7.39637e+31
+Mismatch in db_matrix at index 329: actual=0, expected=7.56561e+28
+Mismatch in db_matrix at index 330: actual=0, expected=1.6635e+22
+Mismatch in db_matrix at index 331: actual=0, expected=3.21322e+21
+Mismatch in db_matrix at index 340: actual=-9.45348e+20, expected=-1.88714e+21
+Mismatch in db_matrix at index 342: actual=2.8026e-45, expected=-1.88534e+21
+Mismatch in db_matrix at index 344: actual=-5.91221e+20, expected=-1.88623e+21
+Mismatch in db_matrix at index 346: actual=-9.44905e+20, expected=1.4013e-44
+Mismatch in db_matrix at index 348: actual=-4.27251e+20, expected=1.77532e+28
+Mismatch in db_matrix at index 349: actual=3.24863e-41, expected=7.37278e+28
+Mismatch in db_matrix at index 350: actual=0, expected=3.88148e+25
+Mismatch in db_matrix at index 352: actual=-4.27251e+20, expected=-1.88623e+21
+Mismatch in db_matrix at index 356: actual=0, expected=1.08991e+27
+Mismatch in db_matrix at index 357: actual=0, expected=2.56807e+29
+Mismatch in db_matrix at index 358: actual=0, expected=7.23742e+31
+Mismatch in db_matrix at index 360: actual=0, expected=-1.88624e+21
+Mismatch in db_matrix at index 364: actual=0, expected=1.77532e+28
+Mismatch in db_matrix at index 365: actual=0, expected=7.37278e+28
+Mismatch in db_matrix at index 366: actual=0, expected=4.07003e+31
+Mismatch in db_matrix at index 368: actual=-9.45356e+20, expected=-1.88624e+21
+Mismatch in db_matrix at index 372: actual=-5.91239e+20, expected=1.08991e+27
+Mismatch in db_matrix at index 373: actual=3.24863e-41, expected=2.56807e+29
+Mismatch in db_matrix at index 374: actual=-9.44905e+20, expected=7.23742e+31
+Mismatch in db_matrix at index 376: actual=-4.2619e+20, expected=-4.55876e+21
+Mismatch in db_matrix at index 378: actual=0, expected=-4.55885e+21
+Mismatch in db_matrix at index 380: actual=-4.2619e+20, expected=-4.55889e+21
+Mismatch in db_matrix at index 382: actual=0, expected=-4.55872e+21
+Mismatch in db_matrix at index 384: actual=0, expected=-4.55876e+21
+Mismatch in db_matrix at index 386: actual=0, expected=-4.55876e+21
+Mismatch in db_matrix at index 390: actual=0, expected=-4.5591e+21
+Mismatch in db_matrix at index 396: actual=-9.45364e+20, expected=0
+Mismatch in db_matrix at index 400: actual=-5.91257e+20, expected=-4.55147e+21
+Mismatch in db_matrix at index 402: actual=-9.44905e+20, expected=-4.55147e+21
+Mismatch in db_matrix at index 404: actual=-4.27251e+20, expected=-4.55147e+21
+Mismatch in db_matrix at index 406: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 408: actual=-4.27251e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 410: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 414: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 416: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 418: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 422: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 424: actual=-9.45372e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 426: actual=2.8026e-45, expected=-1.49569e+22
+Mismatch in db_matrix at index 428: actual=-5.91275e+20, expected=0
+Mismatch in db_matrix at index 430: actual=-9.44905e+20, expected=-1.88249e+21
+Mismatch in db_matrix at index 432: actual=-4.66081e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 434: actual=-4.17953e+20, expected=-1.49569e+22
+Mismatch in db_matrix at index 436: actual=-4.66081e+20, expected=0
+Mismatch in db_matrix at index 438: actual=-4.17953e+20, expected=-1.88249e+21
+Mismatch in db_matrix at index 440: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 442: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 446: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 448: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 450: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 452: actual=-9.4538e+20, expected=0
+Mismatch in db_matrix at index 454: actual=2.8026e-45, expected=-1.88249e+21
+Mismatch in db_matrix at index 456: actual=-5.91293e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 458: actual=-9.44905e+20, expected=-1.49569e+22
+Mismatch in db_matrix at index 460: actual=-4.66081e+20, expected=0
+Mismatch in db_matrix at index 462: actual=-4.17953e+20, expected=-1.88249e+21
+Mismatch in db_matrix at index 464: actual=-4.66081e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 466: actual=-4.17953e+20, expected=-1.49569e+22
+Mismatch in db_matrix at index 470: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 472: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 474: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 478: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 480: actual=-9.45388e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 482: actual=2.8026e-45, expected=-1.49569e+22
+Mismatch in db_matrix at index 484: actual=-5.91311e+20, expected=0
+Mismatch in db_matrix at index 486: actual=-9.44905e+20, expected=-1.88249e+21
+Mismatch in db_matrix at index 488: actual=-4.27251e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 490: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 492: actual=-4.27251e+20, expected=0
+Mismatch in db_matrix at index 494: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 496: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 498: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 502: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 504: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 506: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 510: actual=1.80768e-43, expected=-1.88249e+21
+Mismatch in db_matrix at index 512: actual=-9.45397e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 514: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 518: actual=4.17609e+30, expected=-1.88249e+21
+Mismatch in db_matrix at index 520: actual=-9.45399e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 522: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 528: actual=-9.45324e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 530: actual=-9.45395e+20, expected=-1.49569e+22
+Mismatch in db_matrix at index 532: actual=-9.45395e+20, expected=0
+Mismatch in db_matrix at index 534: actual=-9.45315e+20, expected=-1.88249e+21
+Mismatch in db_matrix at index 536: actual=-9.45322e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 538: actual=-9.45322e+20, expected=-1.49569e+22
+Mismatch in db_matrix at index 542: actual=4.62428e-44, expected=-1.88249e+21
+Mismatch in db_matrix at index 544: actual=-8.56914e+32, expected=-1.59197e+22
+Mismatch in db_matrix at index 546: actual=2.8026e-45, expected=-1.49569e+22
+Mismatch in db_matrix at index 550: actual=9.10844e-44, expected=-1.88249e+21
+Mismatch in db_matrix at index 552: actual=1.7444e+28, expected=-1.59197e+22
+Mismatch in db_matrix at index 553: actual=7.39086e+22, expected=4.28783e-41
+Mismatch in db_matrix at index 554: actual=5.49648e+22, expected=-1.49569e+22
+Mismatch in db_matrix at index 555: actual=1.69256e+22, expected=4.28783e-41
+Mismatch in db_matrix at index 556: actual=1.12587e+24, expected=0
+Mismatch in db_matrix at index 557: actual=1.06435e+24, expected=0
+Mismatch in db_matrix at index 558: actual=1.70915e+25, expected=-1.88249e+21
+Mismatch in db_matrix at index 559: actual=7.50108e+28, expected=3.24863e-41
+Mismatch in db_matrix at index 560: actual=1.84971e+31, expected=-1.59197e+22
+Mismatch in db_matrix at index 561: actual=2.82601e+23, expected=4.28783e-41
+Mismatch in db_matrix at index 562: actual=7.27159e+31, expected=-1.49569e+22
+Mismatch in db_matrix at index 566: actual=9.10844e-44, expected=-1.88249e+21
+Mismatch in db_matrix at index 568: actual=1.7444e+28, expected=-1.59197e+22
+Mismatch in db_matrix at index 569: actual=7.39086e+22, expected=4.28783e-41
+Mismatch in db_matrix at index 570: actual=5.49648e+22, expected=-1.49569e+22
+Mismatch in db_matrix at index 571: actual=1.69256e+22, expected=4.28783e-41
+Mismatch in db_matrix at index 572: actual=1.12587e+24, expected=0
+Mismatch in db_matrix at index 573: actual=1.06435e+24, expected=0
+Mismatch in db_matrix at index 574: actual=1.70909e+25, expected=-1.88249e+21
+Mismatch in db_matrix at index 575: actual=7.50108e+28, expected=3.24863e-41
+Mismatch in db_matrix at index 576: actual=1.84971e+31, expected=-1.59197e+22
+Mismatch in db_matrix at index 577: actual=2.82601e+23, expected=4.28783e-41
+Mismatch in db_matrix at index 578: actual=7.27159e+31, expected=-1.49569e+22
+Mismatch in db_matrix at index 582: actual=1.35926e-43, expected=-1.88249e+21
+Mismatch in db_matrix at index 584: actual=1.74838e+25, expected=-1.59197e+22
+Mismatch in db_matrix at index 585: actual=4.54482e+30, expected=4.28783e-41
+Mismatch in db_matrix at index 586: actual=1.8492e+20, expected=-1.49569e+22
+Mismatch in db_matrix at index 587: actual=2.16796e+29, expected=4.28783e-41
+Mismatch in db_matrix at index 588: actual=4.74289e+30, expected=0
+Mismatch in db_matrix at index 589: actual=2.02231e+20, expected=0
+Mismatch in db_matrix at index 590: actual=2.1682e-10, expected=-1.88249e+21
+Mismatch in db_matrix at index 592: actual=1.77435e+28, expected=-1.59197e+22
+Mismatch in db_matrix at index 593: actual=7.14417e+31, expected=4.28783e-41
+Mismatch in db_matrix at index 594: actual=2.08695e-10, expected=-1.49569e+22
+Mismatch in db_matrix at index 595: actual=1.7444e+28, expected=4.28783e-41
+Mismatch in db_matrix at index 596: actual=7.39086e+22, expected=0
+Mismatch in db_matrix at index 597: actual=2.81242e+29, expected=0
+Mismatch in db_matrix at index 598: actual=7.11854e+22, expected=-1.88249e+21
+Mismatch in db_matrix at index 599: actual=1.69256e+22, expected=3.24863e-41
+Mismatch in db_matrix at index 600: actual=1.12587e+24, expected=-1.59197e+22
+Mismatch in db_matrix at index 602: actual=0.000917202, expected=-1.49569e+22
+Mismatch in db_matrix at index 606: actual=6.77248e-42, expected=-1.88249e+21
+Mismatch in db_matrix at index 608: actual=-9.45926e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 610: actual=-9.449e+20, expected=-1.49569e+22
+Mismatch in db_matrix at index 612: actual=-9.44889e+20, expected=0
+Mismatch in db_matrix at index 614: actual=6.30584e-44, expected=-1.88249e+21
+Mismatch in db_matrix at index 616: actual=6.30584e-44, expected=-1.59197e+22
+Mismatch in db_matrix at index 618: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 620: actual=-9.45427e+20, expected=0
+Mismatch in db_matrix at index 622: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 624: actual=-9.24085e+20, expected=-1.59197e+22
+Mismatch in db_matrix at index 626: actual=-9.24086e+20, expected=-1.49569e+22
+Mismatch in db_matrix at index 628: actual=-1.00353e+21, expected=0
+Mismatch in db_matrix at index 630: actual=6.30584e-44, expected=-1.88249e+21
+Mismatch in db_matrix at index 632: actual=6.30584e-44, expected=-1.59197e+22
+Mismatch in db_matrix at index 634: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 636: actual=-9.45432e+20, expected=0
+Mismatch in db_matrix at index 638: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 640: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 642: actual=1.26117e-44, expected=-1.49569e+22
+Mismatch in db_matrix at index 644: actual=-1.00364e+21, expected=0
+Mismatch in db_matrix at index 646: actual=-1.00371e+21, expected=-1.88249e+21
+Mismatch in db_matrix at index 648: actual=-1.00377e+21, expected=-1.59197e+22
+Mismatch in db_matrix at index 650: actual=-1.00331e+21, expected=-1.49569e+22
+Mismatch in db_matrix at index 652: actual=-1.00331e+21, expected=0
+Mismatch in db_matrix at index 654: actual=-1.00331e+21, expected=-1.88249e+21
+Mismatch in db_matrix at index 656: actual=2.38772e-38, expected=-1.59197e+22
+Mismatch in db_matrix at index 658: actual=-1.00352e+21, expected=-1.49569e+22
+Mismatch in db_matrix at index 662: actual=9.3887e-44, expected=-1.88249e+21
+Mismatch in db_matrix at index 664: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 666: actual=1.4013e-45, expected=-1.49569e+22
+Mismatch in db_matrix at index 668: actual=-1.00327e+21, expected=0
+Mismatch in db_matrix at index 670: actual=-1.00327e+21, expected=-1.88249e+21
+Mismatch in db_matrix at index 672: actual=-1.00327e+21, expected=-1.59197e+22
+Mismatch in db_matrix at index 674: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 678: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 680: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 682: actual=-9.43476e+20, expected=-1.49569e+22
+Mismatch in db_matrix at index 684: actual=-4.59626e+21, expected=0
+Mismatch in db_matrix at index 686: actual=-4.59533e+21, expected=-1.88249e+21
+Mismatch in db_matrix at index 688: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 690: actual=-2.74112e+22, expected=-1.49569e+22
+Mismatch in db_matrix at index 692: actual=5.68957e+36, expected=0
+Mismatch in db_matrix at index 694: actual=5.68741e+36, expected=-1.88249e+21
+Mismatch in db_matrix at index 696: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 698: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 702: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 704: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 706: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 710: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 712: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 714: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 718: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 720: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 722: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 726: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 728: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 730: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 734: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 736: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 738: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 742: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 744: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 746: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 750: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 752: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 754: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 758: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 760: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 762: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 766: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 768: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 770: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 774: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 776: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 778: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 782: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 784: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 786: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 790: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 792: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 794: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 796: actual=-2.10814e+21, expected=0
+Mismatch in db_matrix at index 798: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 800: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 802: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 806: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 808: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 810: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 814: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 816: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 818: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 822: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 824: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 826: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 830: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 832: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 834: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 838: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 840: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 842: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 846: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 848: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 850: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 854: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 856: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 858: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 862: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 864: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 866: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 870: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 872: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 874: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 878: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 880: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 882: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 886: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 888: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 890: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 894: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 896: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 898: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 902: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 904: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 906: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 910: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 912: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 914: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 918: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 920: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 922: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 926: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 928: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 930: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 934: actual=0, expected=-1.88249e+21
+Mismatch in db_matrix at index 936: actual=0, expected=-1.59197e+22
+Mismatch in db_matrix at index 938: actual=0, expected=-1.49569e+22
+Mismatch in db_matrix at index 1064: actual=0, expected=-2.12224e+21
+Mismatch in db_matrix at index 1072: actual=0, expected=-2.119e+21
+Mismatch in db_matrix at index 1088: actual=0, expected=-2.08462e+21
+Mismatch in db_matrix at index 1096: actual=0, expected=-1.72438e+21
+Mismatch in db_matrix at index 1104: actual=0, expected=-2.12238e+21
+Mismatch in db_matrix at index 1112: actual=0, expected=-1.6893e+21
+Mismatch in db_matrix at index 1120: actual=0, expected=-3.00925e+21
+Mismatch in db_matrix at index 1128: actual=0, expected=-1.84084e+21
+Mismatch in db_matrix at index 1136: actual=0, expected=-2.12224e+21
+Mismatch in db_matrix at index 1142: actual=0, expected=-7.46287e+21
+Mismatch in db_matrix at index 1144: actual=0, expected=-2.95999e+23
+Mismatch in db_matrix at index 1146: actual=0, expected=-2.95997e+23
+Mismatch in db_matrix at index 1150: actual=0, expected=-7.46287e+21
+db_matrix does NOT match between attention_forward and attention_forward_mask implementations.
+Max absolute difference: 3.8147e-05
+Max relative difference: 7.76896e-06
+Mean absolute difference: 7.75688e-07
+Mean relative difference: 3.11366e-08
+[       OK ] AttentionForwardMaskTest.BasicFunctionality (4 ms)
+[----------] 1 test from AttentionForwardMaskTest (4 ms total)
+
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (97 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (94 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (127 ms)
+[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (1 ms)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (322 ms total)
+
+[----------] Global test environment tear-down
+[==========] 24 tests from 13 test suites ran. (615 ms total)
+[  PASSED  ] 24 tests.
