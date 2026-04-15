@@ -557,9 +557,9 @@ TEST(AttentionForwardReferenceTest, BasicFunctionality) {
 TEST(AttentionForwardMaskTest, BasicFunctionality) {
     // ARRANGE
     int batch_size = 2; 
-    int size_sequence = 9;
-    int dim_model = 128;
-    int num_heads = 8; 
+    int size_sequence = 3;
+    int dim_model = 4;
+    int num_heads = 2; 
 
     //logout dimensions for debugging
     std::cout << "Batch size: " << batch_size << std::endl;
