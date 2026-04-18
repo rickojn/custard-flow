@@ -848,9 +848,9 @@ void attention_forward_mask(const float *input, const float *weights_query, cons
     float *values = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
 
     // allocate memory for attention weights
-    float *attention_weights = (float *)malloc(size_batch * size_sequence * size_sequence * sizeof(float));
+    float *attention_weights = (float *)malloc(size_batch * size_sequence * size_sequence * num_heads * sizeof(float));
     // zero attention weights
-    memset(attention_weights, 0, size_batch * size_sequence * size_sequence * sizeof(float));
+    memset(attention_weights, 0, size_batch * size_sequence * size_sequence * num_heads * sizeof(float));
 
     // transpose q, k and v weights
     float *weights_query_transpose = (float *)malloc(dim_model * dim_model * sizeof(float));
