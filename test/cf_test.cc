@@ -600,18 +600,18 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
 
     // DEBUG ASSERT: compare actual_db_matrix and expected_db_matrix to check if the intermediate db_matrix is the same for both implementations,
     // log message also if they match.
-    bool db_matrix_match = true;
-    for (int i = 0; i < batch_size * size_sequence * dim_model; ++i) {
-        if (fabsf(actual_db_matrix[i] - expected_db_matrix[i]) > 1e-3f) {
-            db_matrix_match = false;
-            std::cout << "Mismatch in db_matrix at index " << i << ": actual=" << actual_db_matrix[i] << ", expected=" << expected_db_matrix[i] << std::endl;
-        }
-    }
-    if (db_matrix_match) {
-        std::cout << "db_matrix matches between attention_forward and attention_forward_mask implementations." << std::endl;
-    } else {
-        std::cout << "db_matrix does NOT match between attention_forward and attention_forward_mask implementations." << std::endl;
-    }
+    // bool db_matrix_match = true;
+    // for (int i = 0; i < batch_size * size_sequence * dim_model; ++i) {
+    //     if (fabsf(actual_db_matrix[i] - expected_db_matrix[i]) > 1e-3f) {
+    //         db_matrix_match = false;
+    //         std::cout << "Mismatch in db_matrix at index " << i << ": actual=" << actual_db_matrix[i] << ", expected=" << expected_db_matrix[i] << std::endl;
+    //     }
+    // }
+    // if (db_matrix_match) {
+    //     std::cout << "db_matrix matches between attention_forward and attention_forward_mask implementations." << std::endl;
+    // } else {
+    //     std::cout << "db_matrix does NOT match between attention_forward and attention_forward_mask implementations." << std::endl;
+    // }
 
     // ASSERT
 

@@ -3,13 +3,13 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (766 ms)
-[----------] 1 test from MatrixMultiplicationTest (766 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (781 ms)
+[----------] 1 test from MatrixMultiplicationTest (781 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
-[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (12 ms)
-[----------] 1 test from MatrixMultiplicationBackwardsTest (12 ms total)
+[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (11 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (11 ms total)
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
@@ -57,125 +57,65 @@ Max absolute difference: 0.00183868
 Max relative difference: 0.00393725
 Mean absolute difference: 2.40905e-05
 Mean relative difference: 1.31639e-06
-[       OK ] AttentionForwardReferenceTest.BasicFunctionality (15 ms)
-[----------] 1 test from AttentionForwardReferenceTest (15 ms total)
+[       OK ] AttentionForwardReferenceTest.BasicFunctionality (12 ms)
+[----------] 1 test from AttentionForwardReferenceTest (12 ms total)
 
 [----------] 1 test from AttentionForwardMaskTest
 [ RUN      ] AttentionForwardMaskTest.BasicFunctionality
-Batch size: 2
+Batch size: 1
 Sequence length: 3
 Model dimension: 4
 Number of heads: 2
-Mismatch in db_matrix at index 0: actual=1, expected=0.931081
-Mismatch in db_matrix at index 1: actual=0, expected=-4.59482
-Mismatch in db_matrix at index 2: actual=0, expected=4.91135
-Mismatch in db_matrix at index 3: actual=0.999975, expected=-3.85744
-Mismatch in db_matrix at index 4: actual=2.50919e-05, expected=0.464231
-Mismatch in db_matrix at index 5: actual=0, expected=-2.81098
-Mismatch in db_matrix at index 6: actual=0.992491, expected=4.91126
-Mismatch in db_matrix at index 7: actual=0.00642296, expected=-3.85744
-Mismatch in db_matrix at index 8: actual=0.00108625, expected=0.766877
-Mismatch in db_matrix at index 9: actual=1, expected=-3.8254
-Mismatch in db_matrix at index 10: actual=0, expected=4.59856
-Mismatch in db_matrix at index 11: actual=0, expected=-3.82418
-Mismatch in db_matrix at index 12: actual=0.00163093, expected=-0.129506
-Mismatch in db_matrix at index 13: actual=0.998369, expected=-1.47592
-Mismatch in db_matrix at index 14: actual=0, expected=-2.98449
-Mismatch in db_matrix at index 15: actual=0.993848, expected=3.81693
-Mismatch in db_matrix at index 16: actual=1.06165e-05, expected=-0.0532943
-Mismatch in db_matrix at index 17: actual=0.00614107, expected=-0.542673
-Mismatch in db_matrix at index 22: actual=-3.57887e-10, expected=-4.60741e+17
-db_matrix does NOT match between attention_forward and attention_forward_mask implementations.
 /home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
   Actual: false
 Expected: true
-Mismatch at (0, 1, 0): actual=-2.7186524868011475, expected=-4.3261761665344238, abs_diff=1.6075236797332764, rel_diff=0.37158063054084778
+Mismatch at (0, 1, 0): actual=0.90687453746795654, expected=1.6430346965789795, abs_diff=0.73616015911102295, rel_diff=0.44804880023002625
 /home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
   Actual: false
 Expected: true
-Mismatch at (0, 1, 1): actual=2.3247153759002686, expected=-0.28009334206581116, abs_diff=2.6048088073730469, rel_diff=9.2997550964355469
+Mismatch at (0, 1, 1): actual=-3.3483781814575195, expected=-5.9168534278869629, abs_diff=2.5684752464294434, rel_diff=0.43409472703933716
 /home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
   Actual: false
 Expected: true
-Mismatch at (0, 1, 2): actual=-0.37732365727424622, expected=1.9772809743881226, abs_diff=2.3546047210693359, rel_diff=1.1908290386199951
+Mismatch at (0, 1, 2): actual=7.8029632568359375, expected=14.411046981811523, abs_diff=6.6080837249755859, rel_diff=0.45854291319847107
 /home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
   Actual: false
 Expected: true
-Mismatch at (0, 1, 3): actual=6.7814249992370605, expected=3.5552456378936768, abs_diff=3.2261793613433838, rel_diff=0.90744179487228394
+Mismatch at (0, 1, 3): actual=0.42307788133621216, expected=-0.25736728310585022, abs_diff=0.68044519424438477, rel_diff=2.6438579559326172
 /home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
   Actual: false
 Expected: true
-Mismatch at (0, 2, 0): actual=-2.7210206985473633, expected=-3.1647088527679443, abs_diff=0.44368815422058105, rel_diff=0.14019869267940521
+Mismatch at (0, 2, 0): actual=0.23219472169876099, expected=1.5316258668899536, abs_diff=1.2994310855865479, rel_diff=0.84839928150177002
 /home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
   Actual: false
 Expected: true
-Mismatch at (0, 2, 1): actual=2.3014302253723145, expected=1.387706995010376, abs_diff=0.91372323036193848, rel_diff=0.65844058990478516
+Mismatch at (0, 2, 1): actual=-1.0791006088256836, expected=-4.5908751487731934, abs_diff=3.5117745399475098, rel_diff=0.76494646072387695
 /home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
   Actual: false
 Expected: true
-Mismatch at (0, 2, 2): actual=-0.37819820642471313, expected=0.25131690502166748, abs_diff=0.62951511144638062, rel_diff=2.5048556327819824
+Mismatch at (0, 2, 2): actual=1.5501811504364014, expected=14.512608528137207, abs_diff=12.962427139282227, rel_diff=0.89318376779556274
 /home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
   Actual: false
 Expected: true
-Mismatch at (0, 2, 3): actual=6.7270402908325195, expected=5.4046039581298828, abs_diff=1.3224363327026367, rel_diff=0.24468696117401123
-/home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
-Value of: abs_diff <= atol + rtol * fabsf(expected)
-  Actual: false
-Expected: true
-Mismatch at (1, 1, 0): actual=-1.1358214616775513, expected=-0.98146051168441772, abs_diff=0.15436094999313354, rel_diff=0.15727661550045013
-/home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
-Value of: abs_diff <= atol + rtol * fabsf(expected)
-  Actual: false
-Expected: true
-Mismatch at (1, 1, 1): actual=0.10737228393554688, expected=0.3345315158367157, abs_diff=0.22715923190116882, rel_diff=0.67903482913970947
-/home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
-Value of: abs_diff <= atol + rtol * fabsf(expected)
-  Actual: false
-Expected: true
-Mismatch at (1, 1, 2): actual=-2.4000029563903809, expected=-2.5971949100494385, abs_diff=0.19719195365905762, rel_diff=0.07592494785785675
-/home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
-Value of: abs_diff <= atol + rtol * fabsf(expected)
-  Actual: false
-Expected: true
-Mismatch at (1, 1, 3): actual=-1.1125915050506592, expected=-0.90758770704269409, abs_diff=0.20500379800796509, rel_diff=0.22587741911411285
-/home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
-Value of: abs_diff <= atol + rtol * fabsf(expected)
-  Actual: false
-Expected: true
-Mismatch at (1, 2, 0): actual=6.393134593963623, expected=6.0432753562927246, abs_diff=0.34985923767089844, rel_diff=0.057892311364412308
-/home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
-Value of: abs_diff <= atol + rtol * fabsf(expected)
-  Actual: false
-Expected: true
-Mismatch at (1, 2, 1): actual=5.2190146446228027, expected=4.9355545043945312, abs_diff=0.28346014022827148, rel_diff=0.057432267814874649
-/home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
-Value of: abs_diff <= atol + rtol * fabsf(expected)
-  Actual: false
-Expected: true
-Mismatch at (1, 2, 2): actual=-5.1019091606140137, expected=-4.8334255218505859, abs_diff=0.26848363876342773, rel_diff=0.055547267198562622
-/home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
-Value of: abs_diff <= atol + rtol * fabsf(expected)
-  Actual: false
-Expected: true
-Mismatch at (1, 2, 3): actual=3.207587718963623, expected=3.0166366100311279, abs_diff=0.19095110893249512, rel_diff=0.063299320638179779
-Max absolute difference: 3.22618
-Max relative difference: 9.29976
-Mean absolute difference: 0.624123
-Mean relative difference: 0.69542
-[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality (1 ms)
-[----------] 1 test from AttentionForwardMaskTest (1 ms total)
+Mismatch at (0, 2, 3): actual=0.86018568277359009, expected=0.1932615339756012, abs_diff=0.6669241189956665, rel_diff=3.4508712291717529
+Max absolute difference: 12.9624
+Max relative difference: 3.45087
+Mean absolute difference: 2.41948
+Mean relative difference: 0.828495
+[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality (0 ms)
+[----------] 1 test from AttentionForwardMaskTest (0 ms total)
 
 [----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1 (0 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1 (3 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m3_k3_n3 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n1
@@ -183,27 +123,3 @@ Mean relative difference: 0.69542
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k8_n8 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k16_n16 (0 ms)
-[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n8 (0 ms)
-[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
-[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (101 ms)
-[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
-[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (94 ms)
-[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (87 ms)
-[ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (1 ms)
-[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (286 ms total)
-
-[----------] Global test environment tear-down
-[==========] 24 tests from 13 test suites ran. (1084 ms total)
-[  PASSED  ] 23 tests.
-[  FAILED  ] 1 test, listed below:
-[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality
-
- 1 FAILED TEST
