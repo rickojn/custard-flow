@@ -867,6 +867,8 @@ void attention_forward_mask(const float *input, const float *weights_query, cons
         simd_matmul(&input[idx_sequence * size_sequence * dim_model], weights_value_transpose, &values[idx_sequence * size_sequence * dim_model], size_sequence, dim_model, dim_model);
     }
 
+    size_t size_head = dim_model / num_heads;
+
 
     /*
     For each sequence we want a T x T attention score matrix, each row is the attention scores for the embedding at 
@@ -894,24 +896,48 @@ q4    x x x x x x
             q2  xxxx
             q3  xxxx
             q4  xxxx
+    For two heads we would have two of these attention score matrices per sequence, each of shape T x T but computed using different slices of the q and k matrices.
+q1    x x x
+q2    x x x
+q3    x x x
+q4    x x x
+            @
+                kkk
+                1234
 
+                xxxx
+                xxxx
+                xxxx
+            =
+                kkkk
+                1234
+            q1  xxxx
+            q2  xxxx
+            q3  xxxx
+            q4  xxxx
     */
 
     // allocate memory for one B dimension of k transpose head
-    float *keys_transpose = (float *)malloc((dim_model / num_heads) * size_sequence *  sizeof(float));
+    float *keys_transpose = (float *)malloc(size_sequence * size_head * sizeof(float));
     
     
     // populate attention weights tensor with attention scores by multiplying q with k transpose for each sequence in the batch
+
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
+        size_t offset_sequence_kq = idx_sequence * size_sequence * dim_model;
+        size_t offset_sequence_attention_weights = idx_sequence * size_sequence * size_sequence * num_heads;
         for (size_t idx_head = 0; idx_head < num_heads; idx_head++)
         {
-            transpose_matrix(&keys[idx_sequence * size_sequence * dim_model + idx_head * (dim_model / num_heads)], keys_transpose, size_sequence, dim_model / num_heads);
-            simd_matmul(&queries[idx_sequence * size_sequence * dim_model + idx_head * (dim_model / num_heads)], keys_transpose,
-                        &attention_weights[idx_sequence * size_sequence * size_sequence + idx_head * (size_sequence * size_sequence / num_heads)],
-                        size_sequence, size_sequence, dim_model / num_heads);
+            size_t offset_k = offset_sequence_kq + idx_head * size_head;
+            transpose_matrix(&keys[offset_k], keys_transpose, size_sequence, size_head);
+            size_t offset_q = offset_sequence_kq + idx_head * size_head;
+            size_t offset_attention_weights = offset_sequence_attention_weights + idx_head * size_sequence * size_sequence; // ???
+            simd_matmul(&queries[offset_q], keys_transpose, &attention_weights[offset_attention_weights], size_sequence, size_sequence, size_head);
         }
     }
+
+
 
     // scale attention scores by sqrt of dimension of head
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
