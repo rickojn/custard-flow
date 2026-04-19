@@ -636,12 +636,12 @@ TEST(AttentionForwardMaskTest, BasicFunctionality) {
                 const float atol = 2e-3f;
                 const float rtol = 1e-3f; // maybe 2e-3f if needed
 
-                // EXPECT_TRUE(abs_diff <= atol + rtol * fabsf(expected))
-                //     << "Mismatch at (" << idx_sequence << ", " << idx_embedding << ", " << idx_dim << "): "
-                //     << "actual=" << actual
-                //     << ", expected=" << expected
-                //     << ", abs_diff=" << abs_diff
-                //     << ", rel_diff=" << rel_diff;
+                EXPECT_TRUE(abs_diff <= atol + rtol * fabsf(expected))
+                    << "Mismatch at (" << idx_sequence << ", " << idx_embedding << ", " << idx_dim << "): "
+                    << "actual=" << actual
+                    << ", expected=" << expected
+                    << ", abs_diff=" << abs_diff
+                    << ", rel_diff=" << rel_diff;
             }
         }
     }
