@@ -875,47 +875,43 @@ void attention_forward_mask(const float *input, const float *weights_query, cons
     For each sequence we want a T x T attention score matrix, each row is the attention scores for the embedding at 
     that position to all the embeddings in the sequence including itself. This will be obtained by doing B matrix 
     multiplications between q and k transpose chopped up into 2 x B smaller matrices of shapes T x C and C x T. 
-    e.g T = 4 C = 6
-q1    x x x x x x
-q2    x x x x x x
-q3    x x x x x x
-q4    x x x x x x
-            @   
-                kkkk
-                1234
+    e.g T = 3 C = 4
+q1    x x x x 
+q2    x x x x 
+q3    x x x x 
 
-                xxxx
-                xxxx
-                xxxx
-                xxxx
-                xxxx
-                xxxx
+            @   
+                kkk
+                123
+
+                xxx
+                xxx
+                xxx
+                xxx
             =
-                kkkk
-                1234
-            q1  xxxx
-            q2  xxxx
-            q3  xxxx
-            q4  xxxx
+                kkk
+                123
+            q1  xxx
+            q2  xxx
+            q3  xxx
+
     For two heads we would have two of these attention score matrices per sequence, each of shape T x T but computed using different slices of the q and k matrices.
-q1    x x x
-q2    x x x
-q3    x x x
-q4    x x x
+q1    x x 
+q2    x x 
+q3    x x 
+
             @
                 kkk
-                1234
+                123
 
-                xxxx
-                xxxx
-                xxxx
+                xxx
+                xxx
             =
-                kkkk
-                1234
-            q1  xxxx
-            q2  xxxx
-            q3  xxxx
-            q4  xxxx
+                kkk
+                123
+            q1  xxx
+            q2  xxx
+            q3  xxx
     */
 
     // allocate memory for one B dimension of k transpose head
