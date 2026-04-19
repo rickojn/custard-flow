@@ -784,6 +784,7 @@ void attention_forward(const float *input, const float *weights_query, const flo
                         attention_score += queries[offset_query + idx_dim] * keys[offset_key + idx_dim];
                     }
                     //scale attention score by sqrt of dimension of head
+                    printf("Attention score before scaling for head %zu and embedding %zu: %f\n", idx_head, idx_embedding, attention_score);
                     attention_score /= sqrtf((float)(dim_model / num_heads));                   
                     attention_weights[idx_prefix] = attention_score;
                 }
@@ -937,6 +938,24 @@ q4    x x x
             size_t offset_attention_weights = offset_sequence_attention_weights + idx_head * size_sequence * size_sequence; // ???
             printf("offset_attention_weights: %zu\n", offset_attention_weights);
             simd_matmul(&queries[offset_q], keys_transpose, &attention_weights[offset_attention_weights], size_sequence, size_sequence, size_head);
+        }
+    }
+
+    // log out attention scores for debugging
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
+    {
+        printf("Attention scores for sequence %zu for masked fn:\n", idx_sequence);
+        for (size_t idx_head = 0; idx_head < num_heads; idx_head++)
+        {
+            printf("Head %zu:\n", idx_head);
+            for (size_t idx_row = 0; idx_row < size_sequence; idx_row++)
+            {
+                for (size_t idx_col = 0; idx_col < size_sequence; idx_col++)
+                {
+                    printf("%f ", attention_weights[idx_sequence * size_sequence * size_sequence * num_heads + idx_head * size_sequence * size_sequence + idx_row * size_sequence + idx_col]);
+                }
+                printf("\n");
+            }
         }
     }
 
