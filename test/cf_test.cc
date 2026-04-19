@@ -446,7 +446,7 @@ TEST(SoftmaxCrossEntropyBackwardTest, MatchesPyTorch) {
 TEST(AttentionForwardReferenceTest, BasicFunctionality) {
     // ARRANGE
     torch::manual_seed(42);
-    int batch_size = 1; 
+    int batch_size = 2; 
     int size_sequence = 3;
     int dim_model = 4;
     int num_heads = 2; 
@@ -556,7 +556,7 @@ TEST(AttentionForwardReferenceTest, BasicFunctionality) {
 */
 TEST(AttentionForwardMaskTest, BasicFunctionality) {
     // ARRANGE
-    int batch_size = 1; 
+    int batch_size = 2; 
     int size_sequence = 3;
     int dim_model = 4;
     int num_heads = 2; 

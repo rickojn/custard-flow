@@ -3,8 +3,8 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (777 ms)
-[----------] 1 test from MatrixMultiplicationTest (777 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (243 ms)
+[----------] 1 test from MatrixMultiplicationTest (243 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
@@ -53,62 +53,101 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 
 [----------] 1 test from AttentionForwardReferenceTest
 [ RUN      ] AttentionForwardReferenceTest.BasicFunctionality
-Attention score before scaling for head 0 and embedding 0: -0.191056
-Attention score before scaling for head 1 and embedding 0: 0.072337
-Attention score before scaling for head 0 and embedding 1: -1.068274
-Attention score before scaling for head 0 and embedding 1: 8.233849
-Attention score before scaling for head 1 and embedding 1: 0.827777
-Attention score before scaling for head 1 and embedding 1: 4.984027
-Attention score before scaling for head 0 and embedding 2: -0.387543
-Attention score before scaling for head 0 and embedding 2: 6.850588
-Attention score before scaling for head 0 and embedding 2: 0.130657
-Attention score before scaling for head 1 and embedding 2: 0.075164
-Attention score before scaling for head 1 and embedding 2: 1.593013
-Attention score before scaling for head 1 and embedding 2: 0.164693
-Max absolute difference: 4.76837e-07
-Max relative difference: 1.15797e-06
-Mean absolute difference: 1.08033e-07
-Mean relative difference: 2.28562e-07
+Attention score before scaling for head 0 and embedding 0: 4.136964
+Attention score before scaling for head 1 and embedding 0: 33.911465
+Attention score before scaling for head 0 and embedding 1: 0.529316
+Attention score before scaling for head 0 and embedding 1: 0.669079
+Attention score before scaling for head 1 and embedding 1: 34.120583
+Attention score before scaling for head 1 and embedding 1: 19.000137
+Attention score before scaling for head 0 and embedding 2: 3.419888
+Attention score before scaling for head 0 and embedding 2: 0.028033
+Attention score before scaling for head 0 and embedding 2: 0.268553
+Attention score before scaling for head 1 and embedding 2: 6.717923
+Attention score before scaling for head 1 and embedding 2: 2.981661
+Attention score before scaling for head 1 and embedding 2: 0.227880
+Attention score before scaling for head 0 and embedding 0: 7.530897
+Attention score before scaling for head 1 and embedding 0: 3.885800
+Attention score before scaling for head 0 and embedding 1: -0.923184
+Attention score before scaling for head 0 and embedding 1: 1.662081
+Attention score before scaling for head 1 and embedding 1: -4.831910
+Attention score before scaling for head 1 and embedding 1: 1.657795
+Attention score before scaling for head 0 and embedding 2: 5.624397
+Attention score before scaling for head 0 and embedding 2: -3.258688
+Attention score before scaling for head 0 and embedding 2: 1.505983
+Attention score before scaling for head 1 and embedding 2: 5.632334
+Attention score before scaling for head 1 and embedding 2: -1.672982
+Attention score before scaling for head 1 and embedding 2: 2.557229
+Max absolute difference: 1.3113e-06
+Max relative difference: 5.21773e-06
+Mean absolute difference: 1.85023e-07
+Mean relative difference: 3.05054e-07
 [       OK ] AttentionForwardReferenceTest.BasicFunctionality (0 ms)
 [----------] 1 test from AttentionForwardReferenceTest (0 ms total)
 
 [----------] 1 test from AttentionForwardMaskTest
 [ RUN      ] AttentionForwardMaskTest.BasicFunctionality
-Batch size: 1
+Batch size: 2
 Sequence length: 3
 Model dimension: 4
 Number of heads: 2
-Attention score before scaling for head 0 and embedding 0: -0.191056
-Attention score before scaling for head 1 and embedding 0: 0.072337
-Attention score before scaling for head 0 and embedding 1: -1.068274
-Attention score before scaling for head 0 and embedding 1: 8.233849
-Attention score before scaling for head 1 and embedding 1: 0.827777
-Attention score before scaling for head 1 and embedding 1: 4.984027
-Attention score before scaling for head 0 and embedding 2: -0.387543
-Attention score before scaling for head 0 and embedding 2: 6.850588
-Attention score before scaling for head 0 and embedding 2: 0.130657
-Attention score before scaling for head 1 and embedding 2: 0.075164
-Attention score before scaling for head 1 and embedding 2: 1.593013
-Attention score before scaling for head 1 and embedding 2: 0.164693
+Attention score before scaling for head 0 and embedding 0: 4.136964
+Attention score before scaling for head 1 and embedding 0: 33.911465
+Attention score before scaling for head 0 and embedding 1: 0.529316
+Attention score before scaling for head 0 and embedding 1: 0.669079
+Attention score before scaling for head 1 and embedding 1: 34.120583
+Attention score before scaling for head 1 and embedding 1: 19.000137
+Attention score before scaling for head 0 and embedding 2: 3.419888
+Attention score before scaling for head 0 and embedding 2: 0.028033
+Attention score before scaling for head 0 and embedding 2: 0.268553
+Attention score before scaling for head 1 and embedding 2: 6.717923
+Attention score before scaling for head 1 and embedding 2: 2.981661
+Attention score before scaling for head 1 and embedding 2: 0.227880
+Attention score before scaling for head 0 and embedding 0: 7.530897
+Attention score before scaling for head 1 and embedding 0: 3.885800
+Attention score before scaling for head 0 and embedding 1: -0.923184
+Attention score before scaling for head 0 and embedding 1: 1.662081
+Attention score before scaling for head 1 and embedding 1: -4.831910
+Attention score before scaling for head 1 and embedding 1: 1.657795
+Attention score before scaling for head 0 and embedding 2: 5.624397
+Attention score before scaling for head 0 and embedding 2: -3.258688
+Attention score before scaling for head 0 and embedding 2: 1.505983
+Attention score before scaling for head 1 and embedding 2: 5.632334
+Attention score before scaling for head 1 and embedding 2: -1.672982
+Attention score before scaling for head 1 and embedding 2: 2.557229
 offset_k: 0
 offset_q: 0
 offset_attention_weights: 0
 offset_k: 2
 offset_q: 2
 offset_attention_weights: 9
+offset_k: 12
+offset_q: 12
+offset_attention_weights: 18
+offset_k: 14
+offset_q: 14
+offset_attention_weights: 27
 Attention scores for sequence 0 for masked fn:
 Head 0:
--0.191056 0.262901 3.499168 
--0.087888 0.072337 0.799472 
--1.068274 0.790252 8.233849 
+4.136964 3.163887 -4.534318 
+0.529316 0.669079 -0.990421 
+3.419888 0.028033 0.268553 
 Head 1:
-0.072337 0.799472 1.124063 
-0.790252 8.233849 12.919803 
-0.827777 15.305749 4.984027 
-Max absolute difference: 12.9567
-Max relative difference: 3.44003
-Mean absolute difference: 2.41839
-Mean relative difference: 0.827434
+33.911465 19.538477 1.770557 
+34.120583 19.000137 1.690412 
+6.717923 2.981662 0.227880 
+Attention scores for sequence 1 for masked fn:
+Head 0:
+7.530897 -5.418539 1.266582 
+-0.923184 1.662081 0.553821 
+5.624397 -3.258688 1.505983 
+Head 1:
+3.885800 -2.167337 0.513773 
+-4.831910 1.657795 -1.919109 
+5.632334 -1.672982 2.557229 
+Max absolute difference: 7.39868
+Max relative difference: 14.6736
+Mean absolute difference: 1.09586
+Mean relative difference: 1.48064
 [       OK ] AttentionForwardMaskTest.BasicFunctionality (0 ms)
 [----------] 1 test from AttentionForwardMaskTest (0 ms total)
 
@@ -128,17 +167,17 @@ Mean relative difference: 0.827434
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (94 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (89 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (85 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (97 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (80 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (82 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (1 ms)
-[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (263 ms total)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (271 ms total)
 
 [----------] Global test environment tear-down
-[==========] 24 tests from 13 test suites ran. (1056 ms total)
+[==========] 24 tests from 13 test suites ran. (530 ms total)
 [  PASSED  ] 24 tests.
