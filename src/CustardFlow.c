@@ -930,9 +930,12 @@ q4    x x x
         for (size_t idx_head = 0; idx_head < num_heads; idx_head++)
         {
             size_t offset_k = offset_sequence_kq + idx_head * size_head;
+            printf("offset_k: %zu\n", offset_k);
             transpose_matrix(&keys[offset_k], keys_transpose, size_sequence, size_head);
             size_t offset_q = offset_sequence_kq + idx_head * size_head;
+            printf("offset_q: %zu\n", offset_q);
             size_t offset_attention_weights = offset_sequence_attention_weights + idx_head * size_sequence * size_sequence; // ???
+            printf("offset_attention_weights: %zu\n", offset_attention_weights);
             simd_matmul(&queries[offset_q], keys_transpose, &attention_weights[offset_attention_weights], size_sequence, size_sequence, size_head);
         }
     }

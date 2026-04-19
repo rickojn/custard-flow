@@ -3,8 +3,8 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (42 ms)
-[----------] 1 test from MatrixMultiplicationTest (42 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (266 ms)
+[----------] 1 test from MatrixMultiplicationTest (266 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
@@ -66,6 +66,12 @@ Batch size: 1
 Sequence length: 3
 Model dimension: 4
 Number of heads: 2
+offset_k: 0
+offset_q: 0
+offset_attention_weights: 0
+offset_k: 2
+offset_q: 2
+offset_attention_weights: 9
 Mismatch in db_matrix at index 0: actual=1, expected=0.061005
 Mismatch in db_matrix at index 1: actual=0, expected=0.368317
 Mismatch in db_matrix at index 2: actual=0, expected=-0.442555
@@ -139,19 +145,19 @@ Mean relative difference: 0.827434
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (89 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (88 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (84 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (87 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (86 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (79 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (0 ms)
-[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (262 ms total)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (256 ms total)
 
 [----------] Global test environment tear-down
-[==========] 24 tests from 13 test suites ran. (331 ms total)
+[==========] 24 tests from 13 test suites ran. (551 ms total)
 [  PASSED  ] 23 tests.
 [  FAILED  ] 1 test, listed below:
 [  FAILED  ] AttentionForwardMaskTest.BasicFunctionality
