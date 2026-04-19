@@ -931,14 +931,11 @@ q3    x x
             size_t offset_k = offset_sequence_kq + idx_head * size_head;
             printf("offset_k: %zu\n", offset_k);
             // copy the head slice of k for the sequence to the allocated memory for k head
-            // elements are not contiguous in memory so we have to copy them one by one
+            // elements are not contiguous in memory so we have to copy them each embedding head
             for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++)
             {
-                for (size_t idx_dim = 0; idx_dim < size_head; idx_dim++)
-                {
-                    keys_head[idx_embedding * size_head + idx_dim] = keys[offset_k + idx_embedding * dim_model + idx_dim];
-                    queries_head[idx_embedding * size_head + idx_dim] = queries[offset_k + idx_embedding * dim_model + idx_dim];    
-                }
+                memcpy(&keys_head[idx_embedding * size_head], &keys[offset_k + idx_embedding * dim_model], size_head * sizeof(float));
+                memcpy(&queries_head[idx_embedding * size_head], &queries[offset_k + idx_embedding * dim_model], size_head * sizeof(float));
             }
             transpose_matrix(keys_head, keys_transpose, size_sequence, size_head);
             size_t offset_q = offset_sequence_kq + idx_head * size_head;
