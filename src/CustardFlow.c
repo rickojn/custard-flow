@@ -914,6 +914,8 @@ q3    x x
             q3  xxx
     */
 
+    float *queries_head = (float *)malloc(size_sequence * size_head * sizeof(float));
+    float *keys_head = (float *)malloc(size_sequence * size_head * sizeof(float));
     // allocate memory for one B dimension of k transpose head
     float *keys_transpose = (float *)malloc(size_sequence * size_head * sizeof(float));
     
@@ -928,12 +930,22 @@ q3    x x
         {
             size_t offset_k = offset_sequence_kq + idx_head * size_head;
             printf("offset_k: %zu\n", offset_k);
-            transpose_matrix(&keys[offset_k], keys_transpose, size_sequence, size_head);
+            // copy the head slice of k for the sequence to the allocated memory for k head
+            // elements are not contiguous in memory so we have to copy them one by one
+            for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++)
+            {
+                for (size_t idx_dim = 0; idx_dim < size_head; idx_dim++)
+                {
+                    keys_head[idx_embedding * size_head + idx_dim] = keys[offset_k + idx_embedding * dim_model + idx_dim];
+                    queries_head[idx_embedding * size_head + idx_dim] = queries[offset_k + idx_embedding * dim_model + idx_dim];    
+                }
+            }
+            transpose_matrix(keys_head, keys_transpose, size_sequence, size_head);
             size_t offset_q = offset_sequence_kq + idx_head * size_head;
             printf("offset_q: %zu\n", offset_q);
             size_t offset_attention_weights = offset_sequence_attention_weights + idx_head * size_sequence * size_sequence; // ???
             printf("offset_attention_weights: %zu\n", offset_attention_weights);
-            simd_matmul(&queries[offset_q], keys_transpose, &attention_weights[offset_attention_weights], size_sequence, size_sequence, size_head);
+            simd_matmul(queries_head, keys_transpose, &attention_weights[offset_attention_weights], size_sequence, size_sequence, size_head);
         }
     }
 
