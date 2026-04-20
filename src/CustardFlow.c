@@ -955,15 +955,19 @@ q3    x x
     // scale attention scores by sqrt of dimension of head
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
-        for (size_t idx_row = 0; idx_row < size_sequence; idx_row++)
+        size_t offset_sequence = idx_sequence * size_sequence * size_sequence * num_heads;
+        for (size_t idx_head = 0; idx_head < num_heads; idx_head++)
         {
-            for (size_t idx_col = 0; idx_col < size_sequence; idx_col++)
-            {                
-                attention_weights[idx_sequence * size_sequence * size_sequence + idx_row * size_sequence + idx_col] /= sqrtf((float)(dim_model / num_heads));
+            size_t offset_head = offset_sequence + idx_head * size_sequence * size_sequence;
+            for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++)
+            {
+                for (size_t idx_prefix = 0; idx_prefix < size_sequence; idx_prefix++)
+                {
+                    attention_weights[offset_head + idx_embedding * size_sequence + idx_prefix] /= sqrtf((float)(dim_model / num_heads));
+                }
             }
         }
     }
-
         // log out attention scores for debugging
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
@@ -1033,8 +1037,4 @@ q3    x x
     simd_matmul(output, weights_output_transpose, output_aggregated, size_batch * size_sequence, dim_model, dim_model);
     memcpy(output, output_aggregated, size_batch * size_sequence * dim_model * sizeof(float));
     free(output_aggregated);
-
-
-}
-
-
+    }

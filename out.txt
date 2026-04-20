@@ -4,12 +4,12 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
 [       OK ] MatrixMultiplicationTest.CompareWithLibTorch (820 ms)
-[----------] 1 test from MatrixMultiplicationTest (821 ms total)
+[----------] 1 test from MatrixMultiplicationTest (820 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
-[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (18 ms)
-[----------] 1 test from MatrixMultiplicationBackwardsTest (19 ms total)
+[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (22 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (22 ms total)
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
@@ -28,7 +28,7 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 
 [----------] 1 test from layer_norm_backward_test
 [ RUN      ] layer_norm_backward_test.basic_functionality
-[       OK ] layer_norm_backward_test.basic_functionality (1 ms)
+[       OK ] layer_norm_backward_test.basic_functionality (0 ms)
 [----------] 1 test from layer_norm_backward_test (1 ms total)
 
 [----------] 1 test from ReLUForwardTest
@@ -69,8 +69,8 @@ Max absolute difference: 4.76837e-07
 Max relative difference: 1.15797e-06
 Mean absolute difference: 1.08033e-07
 Mean relative difference: 2.28562e-07
-[       OK ] AttentionForwardReferenceTest.BasicFunctionality (2 ms)
-[----------] 1 test from AttentionForwardReferenceTest (2 ms total)
+[       OK ] AttentionForwardReferenceTest.BasicFunctionality (1 ms)
+[----------] 1 test from AttentionForwardReferenceTest (1 ms total)
 
 [----------] 1 test from AttentionForwardMaskTest
 [ RUN      ] AttentionForwardMaskTest.BasicFunctionality
@@ -102,9 +102,9 @@ Head 0:
 -0.755384 5.822210 -0.064307 
 -0.274034 4.844098 0.092389 
 Head 1:
-0.072337 1.124063 0.281698 
-0.827777 4.984027 5.596723 
-0.075164 1.593013 0.164693 
+0.051150 0.794833 0.199191 
+0.585326 3.524240 3.957481 
+0.053149 1.126431 0.116456 
 /home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
   Actual: false
@@ -168,19 +168,19 @@ Mean relative difference: 0.279018
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (154 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (205 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (134 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (121 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (108 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (130 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (2 ms)
-[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (401 ms total)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (3 ms)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (462 ms total)
 
 [----------] Global test environment tear-down
-[==========] 24 tests from 13 test suites ran. (1249 ms total)
+[==========] 24 tests from 13 test suites ran. (1314 ms total)
 [  PASSED  ] 23 tests.
 [  FAILED  ] 1 test, listed below:
 [  FAILED  ] AttentionForwardMaskTest.BasicFunctionality
