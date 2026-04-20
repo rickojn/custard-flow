@@ -784,8 +784,8 @@ void attention_forward(const float *input, const float *weights_query, const flo
                         attention_score += queries[offset_query + idx_dim] * keys[offset_key + idx_dim];
                     }
                     //scale attention score by sqrt of dimension of head
-                    printf("Attention score before scaling for head %zu and embedding %zu: %f\n", idx_head, idx_embedding, attention_score);
                     attention_score /= sqrtf((float)(dim_model / num_heads));                   
+                    printf("Attention score before scaling for head %zu and embedding %zu for prefix %zu: %f\n", idx_head, idx_embedding, idx_prefix, attention_score);
                     attention_weights[idx_prefix] = attention_score;
                 }
                 softmax_forward(attention_weights, idx_embedding + 1, 1);
@@ -949,7 +949,22 @@ q3    x x
         }
     }
 
-    // log out attention scores for debugging
+
+
+
+    // scale attention scores by sqrt of dimension of head
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
+    {
+        for (size_t idx_row = 0; idx_row < size_sequence; idx_row++)
+        {
+            for (size_t idx_col = 0; idx_col < size_sequence; idx_col++)
+            {                
+                attention_weights[idx_sequence * size_sequence * size_sequence + idx_row * size_sequence + idx_col] /= sqrtf((float)(dim_model / num_heads));
+            }
+        }
+    }
+
+        // log out attention scores for debugging
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
         printf("Attention scores for sequence %zu for masked fn:\n", idx_sequence);
@@ -967,19 +982,6 @@ q3    x x
         }
     }
 
-
-
-    // scale attention scores by sqrt of dimension of head
-    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
-    {
-        for (size_t idx_row = 0; idx_row < size_sequence; idx_row++)
-        {
-            for (size_t idx_col = 0; idx_col < size_sequence; idx_col++)
-            {                
-                attention_weights[idx_sequence * size_sequence * size_sequence + idx_row * size_sequence + idx_col] /= sqrtf((float)(dim_model / num_heads));
-            }
-        }
-    }
 
     // apply causal mask to attention weights
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
