@@ -785,10 +785,13 @@ void attention_forward(const float *input, const float *weights_query, const flo
                     }
                     //scale attention score by sqrt of dimension of head
                     attention_score /= sqrtf((float)(dim_model / num_heads));                   
-                    printf("Attention score before scaling for head %zu and embedding %zu for prefix %zu: %f\n", idx_head, idx_embedding, idx_prefix, attention_score);
                     attention_weights[idx_prefix] = attention_score;
                 }
                 softmax_forward(attention_weights, idx_embedding + 1, 1);
+                // log attention weights for debugging
+                for (size_t idx_prefix = 0; idx_prefix <= idx_embedding; idx_prefix++){
+                    printf("Attention weight for sequence %zu embedding %zu head %zu prefix %zu: %f\n", idx_sequence, idx_embedding, idx_head, idx_prefix, attention_weights[idx_prefix]);
+                }
                 memcpy(&db_matrix[idx_embedding * size_sequence], attention_weights, (idx_embedding + 1) * sizeof(float)); // copy attention weights to db_matrix for debugging
                 // compute output as sum of weighted value vectors for the head for the embedding and prefix embedding
                 size_t offset_v = (idx_sequence * size_sequence + idx_embedding) * dim_model + idx_head * (dim_model / num_heads);
@@ -990,7 +993,22 @@ q3    x x
         }
     }
 
-            // log out attention scores for debugging
+ 
+
+    // apply softmax to attention weights
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
+    {
+        size_t offset_sequence = idx_sequence * size_sequence * size_sequence * num_heads;
+        for (size_t idx_head = 0; idx_head < num_heads; idx_head++)
+        {            size_t offset_head = offset_sequence + idx_head * size_sequence * size_sequence;
+        for (size_t idx_row = 0; idx_row < size_sequence; idx_row++)
+        {            
+            softmax_forward(&attention_weights[offset_head + idx_row * size_sequence], size_sequence, 1);
+        } 
+    }
+}
+
+               // log out attention scores for debugging
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
         printf("Attention scores for sequence %zu for masked fn:\n", idx_sequence);
@@ -1008,15 +1026,6 @@ q3    x x
         }
     }
 
-
-    // apply softmax to attention weights
-    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
-    {
-        for (size_t idx_row = 0; idx_row < size_sequence; idx_row++)
-        {            
-            softmax_forward(&attention_weights[idx_sequence * size_sequence * size_sequence + idx_row * size_sequence], size_sequence, 1);
-        } 
-    }
 
     memset(db_matrix, 0, size_batch * size_sequence * size_sequence * sizeof(float));
     memcpy(db_matrix, attention_weights, size_batch * size_sequence * size_sequence * sizeof(float)); // copy attention weights to db_matrix for debugging

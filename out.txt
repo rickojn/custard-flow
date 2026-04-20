@@ -3,18 +3,18 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (837 ms)
-[----------] 1 test from MatrixMultiplicationTest (837 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (769 ms)
+[----------] 1 test from MatrixMultiplicationTest (769 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
-[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (19 ms)
-[----------] 1 test from MatrixMultiplicationBackwardsTest (19 ms total)
+[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (12 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (12 ms total)
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
-[       OK ] CrossEntropyLossTest.BasicFunctionality (1 ms)
-[----------] 1 test from CrossEntropyLossTest (1 ms total)
+[       OK ] CrossEntropyLossTest.BasicFunctionality (0 ms)
+[----------] 1 test from CrossEntropyLossTest (0 ms total)
 
 [----------] 1 test from LossBackwardTest
 [ RUN      ] LossBackwardTest.BasicFunctionality
@@ -29,7 +29,7 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 [----------] 1 test from layer_norm_backward_test
 [ RUN      ] layer_norm_backward_test.basic_functionality
 [       OK ] layer_norm_backward_test.basic_functionality (0 ms)
-[----------] 1 test from layer_norm_backward_test (1 ms total)
+[----------] 1 test from layer_norm_backward_test (0 ms total)
 
 [----------] 1 test from ReLUForwardTest
 [ RUN      ] ReLUForwardTest.BasicFunctionality
@@ -53,24 +53,24 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 
 [----------] 1 test from AttentionForwardReferenceTest
 [ RUN      ] AttentionForwardReferenceTest.BasicFunctionality
-Attention score before scaling for head 0 and embedding 0 for prefix 0: -0.135097
-Attention score before scaling for head 1 and embedding 0 for prefix 0: 0.051150
-Attention score before scaling for head 0 and embedding 1 for prefix 0: -0.755384
-Attention score before scaling for head 0 and embedding 1 for prefix 1: 5.822210
-Attention score before scaling for head 1 and embedding 1 for prefix 0: 0.585326
-Attention score before scaling for head 1 and embedding 1 for prefix 1: 3.524239
-Attention score before scaling for head 0 and embedding 2 for prefix 0: -0.274034
-Attention score before scaling for head 0 and embedding 2 for prefix 1: 4.844098
-Attention score before scaling for head 0 and embedding 2 for prefix 2: 0.092389
-Attention score before scaling for head 1 and embedding 2 for prefix 0: 0.053149
-Attention score before scaling for head 1 and embedding 2 for prefix 1: 1.126431
-Attention score before scaling for head 1 and embedding 2 for prefix 2: 0.116456
+Attention weight for sequence 0 embedding 0 head 0 prefix 0: 1.000000
+Attention weight for sequence 0 embedding 0 head 1 prefix 0: 1.000000
+Attention weight for sequence 0 embedding 1 head 0 prefix 0: 0.001389
+Attention weight for sequence 0 embedding 1 head 0 prefix 1: 0.998611
+Attention weight for sequence 0 embedding 1 head 1 prefix 0: 0.050263
+Attention weight for sequence 0 embedding 1 head 1 prefix 1: 0.949737
+Attention weight for sequence 0 embedding 2 head 0 prefix 0: 0.005901
+Attention weight for sequence 0 embedding 2 head 0 prefix 1: 0.985587
+Attention weight for sequence 0 embedding 2 head 0 prefix 2: 0.008512
+Attention weight for sequence 0 embedding 2 head 1 prefix 0: 0.200388
+Attention weight for sequence 0 embedding 2 head 1 prefix 1: 0.586128
+Attention weight for sequence 0 embedding 2 head 1 prefix 2: 0.213484
 Max absolute difference: 4.76837e-07
 Max relative difference: 1.15797e-06
 Mean absolute difference: 1.08033e-07
 Mean relative difference: 2.28562e-07
-[       OK ] AttentionForwardReferenceTest.BasicFunctionality (1 ms)
-[----------] 1 test from AttentionForwardReferenceTest (1 ms total)
+[       OK ] AttentionForwardReferenceTest.BasicFunctionality (0 ms)
+[----------] 1 test from AttentionForwardReferenceTest (0 ms total)
 
 [----------] 1 test from AttentionForwardMaskTest
 [ RUN      ] AttentionForwardMaskTest.BasicFunctionality
@@ -78,18 +78,18 @@ Batch size: 1
 Sequence length: 3
 Model dimension: 4
 Number of heads: 2
-Attention score before scaling for head 0 and embedding 0 for prefix 0: -0.135097
-Attention score before scaling for head 1 and embedding 0 for prefix 0: 0.051150
-Attention score before scaling for head 0 and embedding 1 for prefix 0: -0.755384
-Attention score before scaling for head 0 and embedding 1 for prefix 1: 5.822210
-Attention score before scaling for head 1 and embedding 1 for prefix 0: 0.585326
-Attention score before scaling for head 1 and embedding 1 for prefix 1: 3.524239
-Attention score before scaling for head 0 and embedding 2 for prefix 0: -0.274034
-Attention score before scaling for head 0 and embedding 2 for prefix 1: 4.844098
-Attention score before scaling for head 0 and embedding 2 for prefix 2: 0.092389
-Attention score before scaling for head 1 and embedding 2 for prefix 0: 0.053149
-Attention score before scaling for head 1 and embedding 2 for prefix 1: 1.126431
-Attention score before scaling for head 1 and embedding 2 for prefix 2: 0.116456
+Attention weight for sequence 0 embedding 0 head 0 prefix 0: 1.000000
+Attention weight for sequence 0 embedding 0 head 1 prefix 0: 1.000000
+Attention weight for sequence 0 embedding 1 head 0 prefix 0: 0.001389
+Attention weight for sequence 0 embedding 1 head 0 prefix 1: 0.998611
+Attention weight for sequence 0 embedding 1 head 1 prefix 0: 0.050263
+Attention weight for sequence 0 embedding 1 head 1 prefix 1: 0.949737
+Attention weight for sequence 0 embedding 2 head 0 prefix 0: 0.005901
+Attention weight for sequence 0 embedding 2 head 0 prefix 1: 0.985587
+Attention weight for sequence 0 embedding 2 head 0 prefix 2: 0.008512
+Attention weight for sequence 0 embedding 2 head 1 prefix 0: 0.200388
+Attention weight for sequence 0 embedding 2 head 1 prefix 1: 0.586128
+Attention weight for sequence 0 embedding 2 head 1 prefix 2: 0.213484
 offset_k: 0
 offset_q: 0
 offset_attention_weights: 0
@@ -98,13 +98,13 @@ offset_q: 2
 offset_attention_weights: 9
 Attention scores for sequence 0 for masked fn:
 Head 0:
--0.135097 -inf -inf 
--0.755384 5.822210 -inf 
--0.274034 4.844098 0.092389 
+1.000000 0.000000 0.000000 
+0.001389 0.998611 0.000000 
+0.005901 0.985587 0.008512 
 Head 1:
-0.051150 -inf -inf 
-0.585326 3.524240 -inf 
-0.053149 1.126431 0.116456 
+1.000000 0.000000 0.000000 
+0.050263 0.949737 0.000000 
+0.200388 0.586128 0.213484 
 /home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
   Actual: false
@@ -168,19 +168,19 @@ Mean relative difference: 0.279018
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (151 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (91 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (147 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (86 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (119 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (82 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (1 ms)
-[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (423 ms total)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (0 ms)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (262 ms total)
 
 [----------] Global test environment tear-down
-[==========] 24 tests from 13 test suites ran. (1289 ms total)
+[==========] 24 tests from 13 test suites ran. (1049 ms total)
 [  PASSED  ] 23 tests.
 [  FAILED  ] 1 test, listed below:
 [  FAILED  ] AttentionForwardMaskTest.BasicFunctionality
