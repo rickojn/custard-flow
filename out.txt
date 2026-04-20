@@ -3,13 +3,13 @@ Running main() from /home/rickojn/coding/custard-flow/build-debug/_deps/googlete
 [----------] Global test environment set-up.
 [----------] 1 test from MatrixMultiplicationTest
 [ RUN      ] MatrixMultiplicationTest.CompareWithLibTorch
-[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (820 ms)
-[----------] 1 test from MatrixMultiplicationTest (820 ms total)
+[       OK ] MatrixMultiplicationTest.CompareWithLibTorch (837 ms)
+[----------] 1 test from MatrixMultiplicationTest (837 ms total)
 
 [----------] 1 test from MatrixMultiplicationBackwardsTest
 [ RUN      ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards
-[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (22 ms)
-[----------] 1 test from MatrixMultiplicationBackwardsTest (22 ms total)
+[       OK ] MatrixMultiplicationBackwardsTest.SimdMatmulBackwards (19 ms)
+[----------] 1 test from MatrixMultiplicationBackwardsTest (19 ms total)
 
 [----------] 1 test from CrossEntropyLossTest
 [ RUN      ] CrossEntropyLossTest.BasicFunctionality
@@ -98,12 +98,12 @@ offset_q: 2
 offset_attention_weights: 9
 Attention scores for sequence 0 for masked fn:
 Head 0:
--0.135097 2.474286 0.049197 
--0.755384 5.822210 -0.064307 
+-0.135097 -inf -inf 
+-0.755384 5.822210 -inf 
 -0.274034 4.844098 0.092389 
 Head 1:
-0.051150 0.794833 0.199191 
-0.585326 3.524240 3.957481 
+0.051150 -inf -inf 
+0.585326 3.524240 -inf 
 0.053149 1.126431 0.116456 
 /home/rickojn/coding/custard-flow/test/cf_test.cc:639: Failure
 Value of: abs_diff <= atol + rtol * fabsf(expected)
@@ -149,8 +149,8 @@ Max absolute difference: 1.44959
 Max relative difference: 2.6159
 Mean absolute difference: 0.225088
 Mean relative difference: 0.279018
-[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality (0 ms)
-[----------] 1 test from AttentionForwardMaskTest (0 ms total)
+[  FAILED  ] AttentionForwardMaskTest.BasicFunctionality (1 ms)
+[----------] 1 test from AttentionForwardMaskTest (1 ms total)
 
 [----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m1_k1_n1
@@ -168,19 +168,19 @@ Mean relative difference: 0.279018
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k15_n1 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (205 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m256_k512_n1024 (151 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32
 [       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m8_k16_n32 (0 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (121 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1024 (147 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (130 ms)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m257_k512_n1023 (119 ms)
 [ RUN      ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784
-[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (3 ms)
-[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (462 ms total)
+[       OK ] VariousSizes/SIMDMatrixMultiplicationTest.CompareWithLibTorch/m16_k8_n784 (1 ms)
+[----------] 12 tests from VariousSizes/SIMDMatrixMultiplicationTest (423 ms total)
 
 [----------] Global test environment tear-down
-[==========] 24 tests from 13 test suites ran. (1314 ms total)
+[==========] 24 tests from 13 test suites ran. (1289 ms total)
 [  PASSED  ] 23 tests.
 [  FAILED  ] 1 test, listed below:
 [  FAILED  ] AttentionForwardMaskTest.BasicFunctionality

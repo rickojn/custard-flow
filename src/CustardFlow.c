@@ -968,7 +968,29 @@ q3    x x
             }
         }
     }
-        // log out attention scores for debugging
+
+
+    // apply causal mask to attention weights
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
+    {
+        size_t offset_sequence = idx_sequence * size_sequence * size_sequence * num_heads;
+        for (size_t idx_head = 0; idx_head < num_heads; idx_head++)
+        {
+            size_t offset_head = offset_sequence + idx_head * size_sequence * size_sequence;
+            for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++)
+            {
+                for (size_t idx_prefix = 0; idx_prefix < size_sequence; idx_prefix++)
+                {
+                    if (idx_prefix > idx_embedding)
+                    {
+                        attention_weights[offset_head + idx_embedding * size_sequence + idx_prefix] = -INFINITY; // set attention scores for future tokens to -infinity
+                    }
+                }
+            }
+        }
+    }
+
+            // log out attention scores for debugging
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
         printf("Attention scores for sequence %zu for masked fn:\n", idx_sequence);
@@ -986,21 +1008,6 @@ q3    x x
         }
     }
 
-
-    // apply causal mask to attention weights
-    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
-    {
-        for (size_t idx_row = 0; idx_row < size_sequence; idx_row++)
-        {
-            for (size_t idx_col = 0; idx_col < size_sequence; idx_col++)
-            {
-                if (idx_col > idx_row)
-                {
-                    attention_weights[idx_sequence * size_sequence * size_sequence + idx_row * size_sequence + idx_col] = -INFINITY; // causal mask
-                }
-            }
-        }
-    }
 
     // apply softmax to attention weights
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
