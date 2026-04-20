@@ -806,6 +806,15 @@ void attention_forward(const float *input, const float *weights_query, const flo
         }
     }
 
+    // log output for debugging
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++){
+        for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++){
+            for (size_t idx_dim = 0; idx_dim < dim_model; idx_dim++){
+                printf("Output for sequence %zu embedding %zu dim %zu: %f\n", idx_sequence, idx_embedding, idx_dim, output[(idx_sequence * size_sequence + idx_embedding) * dim_model + idx_dim]);
+            }
+        }    
+    }  
+
     memset(db_matrix, 0, size_batch * size_sequence * size_sequence * sizeof(float));
     memcpy(db_matrix, output, size_batch * size_sequence * size_sequence * sizeof(float));
 
@@ -1032,14 +1041,33 @@ q3    x x
 
     // weighted sum of attention values
 
-    float *v_transpose = (float *)malloc(size_batch * size_sequence * dim_model * sizeof(float));
-    transpose_matrix(values, v_transpose, size_batch * size_sequence, dim_model);
 
     for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
     {
-        simd_matmul(&attention_weights[idx_sequence * size_sequence * size_sequence], &values[idx_sequence * size_sequence * dim_model], 
-                    &output[idx_sequence * size_sequence * dim_model], 
-                    size_sequence, dim_model, size_sequence);
+        size_t offset_sequence_attention_weights = idx_sequence * size_sequence * size_sequence * num_heads;
+        size_t offset_sequence_values = idx_sequence * size_sequence * dim_model;
+        for (size_t idx_head = 0; idx_head < num_heads; idx_head++)
+        {
+            size_t offset_head_attention_weights = offset_sequence_attention_weights + idx_head * size_sequence * size_sequence;
+            size_t offset_head_values = offset_sequence_values + idx_head * size_sequence * dim_model;
+            simd_matmul(&attention_weights[offset_head_attention_weights], &values[offset_head_values], 
+                        &output[offset_head_values], 
+                        size_sequence, size_head, size_sequence);
+        }
+    }
+
+    // log output for debugging
+    for (size_t idx_sequence = 0; idx_sequence < size_batch; idx_sequence++)
+    {
+        printf("Output for sequence %zu for masked fn:\n", idx_sequence);
+        for (size_t idx_embedding = 0; idx_embedding < size_sequence; idx_embedding++)
+        {            printf("Embedding %zu:\n", idx_embedding);
+            for (size_t idx_dim = 0; idx_dim < dim_model; idx_dim++)
+            {                
+                printf("%f ", output[idx_sequence * size_sequence * dim_model + idx_embedding * dim_model + idx_dim]);
+            }
+            printf("\n");
+        }
     }
 
     // memset(db_matrix, 0, size_batch * size_sequence * size_sequence * sizeof(float));
