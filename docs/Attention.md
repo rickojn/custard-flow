@@ -278,7 +278,7 @@ $$
 
 Applying the chain rule gives
 
-$$
+```math
 \frac{\partial L}{\partial O_1}
 =
 \frac{\partial L}{\partial a}\frac{\partial a}{\partial O_1}
@@ -286,11 +286,11 @@ $$
 \frac{\partial L}{\partial c}\frac{\partial c}{\partial O_1}
 +
 \frac{\partial L}{\partial e}\frac{\partial e}{\partial O_1}.
-$$
+```
 
 Hence,
 
-$$
+```math
 \boxed{
 \frac{\partial L}{\partial O_1}
 =
@@ -300,12 +300,12 @@ $$
 +
 \frac{\partial L}{\partial e}q
 }
-$$
+```
 
 More generally, because $A=HW_O$,
 
-$$
+```math
 \frac{\partial L}{\partial W_O}=H^T\frac{\partial L}{\partial A},
 \qquad
 \frac{\partial L}{\partial H}=\frac{\partial L}{\partial A}W_O^T.
-$$
+```
