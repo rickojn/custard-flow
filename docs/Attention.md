@@ -242,7 +242,7 @@ $$
 
 ## Attention backward pass
 
-Given the loss $L$, we need to calculate gradients with respect to the query, key, value, and output projection matrices, as well as the input activations.
+Given the loss $L$, we need to calculate gradients with respect to the query, key, value, and output projection matrices, as well as the input activations. We shall derive the gradient of one representative element from each projection matrix and one representative input activation before presenting the corresponding matrix formulas..
 
 ### Example: gradient of $O_1$
 
@@ -309,3 +309,7 @@ More generally, because $A=HW_O$,
 \qquad
 \frac{\partial L}{\partial H}=\frac{\partial L}{\partial A}W_O^T.
 ```
+
+## Gradient of Q1
+
+Q1 contributes directly to the first element of the query projection for all tokens in the sequence. Each of these query components affects the attention scores in that token’s row of the score matrix. Those scores affect the corresponding row of attention weights, weighted value sums, and final outputs.
