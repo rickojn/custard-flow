@@ -135,21 +135,21 @@ $$
 Softmax is applied independently to each row of the score matrix:
 
 $$
-\operatorname{softmax}([xS_x,xS_y,xS_z]) = [xW_x,xW_y,xW_z],
+\mathrm{softmax}([xS_x,xS_y,xS_z]) = [xW_x,xW_y,xW_z],
 $$
 
 $$
-\operatorname{softmax}([yS_x,yS_y,yS_z]) = [yW_x,yW_y,yW_z],
+\mathrm{softmax}([yS_x,yS_y,yS_z]) = [yW_x,yW_y,yW_z],
 $$
 
 $$
-\operatorname{softmax}([zS_x,zS_y,zS_z]) = [zW_x,zW_y,zW_z].
+\mathrm{softmax}([zS_x,zS_y,zS_z]) = [zW_x,zW_y,zW_z].
 $$
 
 Thus,
 
 $$
-W = \operatorname{softmax}(S) =
+W = \mathrm{softmax}(S) =
 \begin{bmatrix}
 xW_x & xW_y & xW_z \\
 yW_x & yW_y & yW_z \\
@@ -237,7 +237,7 @@ $$
 In compact form, the complete forward pass is
 
 $$
-A = \operatorname{softmax}\!\left(\frac{(XW_Q)(XW_K)^T}{\sqrt{2}}\right)(XW_V)W_O.
+A = \mathrm{softmax}\!\left(\frac{(XW_Q)(XW_K)^T}{\sqrt{2}}\right)(XW_V)W_O.
 $$
 
 ## Attention backward pass
