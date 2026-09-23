@@ -2,14 +2,14 @@
 
 ## Attention forward pass
 
-This example uses three input tokens, each with an embedding dimension of 2. It describes single-head scaled dot-product attention with an output projection.
+This example uses an input sequence of 3 tokens, each with an embedding dimension of 2. It describes single-head scaled dot-product attention with an output projection.
 
 ### 1. Token embeddings and projection matrices
 
 The input matrix is
 
 $$
-X =
+T =
 \begin{bmatrix}
 x_1 & x_2 \\
 y_1 & y_2 \\
@@ -52,7 +52,7 @@ $$
 The projected query, key, and value matrices are
 
 $$
-Q = XW_Q =
+Q = TW_Q =
 \begin{bmatrix}
 xq_1 & xq_2 \\
 yq_1 & yq_2 \\
@@ -61,7 +61,7 @@ zq_1 & zq_2
 $$
 
 $$
-K = XW_K =
+K = TW_K =
 \begin{bmatrix}
 xk_1 & xk_2 \\
 yk_1 & yk_2 \\
@@ -70,7 +70,7 @@ zk_1 & zk_2
 $$
 
 $$
-V = XW_V =
+V = TW_V =
 \begin{bmatrix}
 xv_1 & xv_2 \\
 yv_1 & yv_2 \\
@@ -242,7 +242,7 @@ $$
 
 ## Attention backward pass
 
-Given the loss $L$, we need to calculate gradients with respect to the query, key, value, and output projection matrices, as well as the input activations. We shall derive the gradient of one representative element from each projection matrix and one representative input activation before presenting the corresponding matrix formulas..
+Given the loss $L$, we need to calculate gradients with respect to the elements of the query, key, value, output projection matrices, as well as of the input activations. That is, for each of these elements how much does a change in its value affect the value of $L$? We shall derive the gradient of one representative element from each projection matrix and one representative input activation..
 
 ### Gradient of $O_1$
 
@@ -312,4 +312,4 @@ More generally, because $A=HW_O$,
 
 ### Gradient of $Q1$
 
-Q1 contributes directly to the first element of the query projection for all tokens in the sequence. Each of these query components affects the attention scores in that token’s row of the score matrix. Those scores affect the corresponding row of attention weights, weighted value sums, and final outputs.
+Q1 contributes directly to the first element of the query projection for all tokens in the sequence. Each of these query components affects the attention scores in that token’s row of the score matrix. Those scores affect the corresponding row of attention weights, weighted value sums, and final outputs. So a change in Q1 will change all of the components of the output matrix. 
