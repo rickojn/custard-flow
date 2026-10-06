@@ -80,6 +80,9 @@ $$
 
 ### 3. Attention scores
 
+Each token in the sequence has an attention score with regards to itself and the other 2 tokens. So the score matrix S will be a 3 x 3 matrix.
+
+
 Because the key dimension is $d_k = 2$, each query-key dot product is divided by $\sqrt{2}$:
 
 $$
