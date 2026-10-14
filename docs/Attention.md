@@ -315,4 +315,6 @@ More generally, because $A=HW_O$,
 
 ### Gradient of $Q1$
 
-Q1 contributes directly to the first element of the query projection for all tokens in the sequence. Each of these query components affects the attention scores in that token’s row of the score matrix. Those scores affect the corresponding row of attention weights, weighted value sums, and final outputs. So a change in Q1 will change all of the components of the output matrix. 
+The first element of the query matrix Q1 contributes to the value of all elements of all embeddings output from the attention block. The flow is as follows:
+
+Q1 -> first element of very query projecttion -> score of every token with respect to all tokens in the sequence -> attention weights of every token with respect to all tokens -> weighted sum of values for each element of each token -> all elements of every output token.
