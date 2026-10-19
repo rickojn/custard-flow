@@ -16,16 +16,17 @@ $$
 
 The query, key, value, and output projection matrices are
 
+
 $$
 W_Q =
 \begin{bmatrix}
-Q_1 & Q_2 \
+Q_1 & Q_2 \\
 Q_3 & Q_4
 \end{bmatrix},
 \qquad
 W_K =
 \begin{bmatrix}
-K_1 & K_2 \
+K_1 & K_2 \\
 K_3 & K_4
 \end{bmatrix},
 $$
@@ -33,13 +34,13 @@ $$
 $$
 W_V =
 \begin{bmatrix}
-V_1 & V_2 \
+V_1 & V_2 \\
 V_3 & V_4
 \end{bmatrix},
 \qquad
 W_O =
 \begin{bmatrix}
-O_1 & O_2 \
+O_1 & O_2 \\
 O_3 & O_4
 \end{bmatrix}.
 $$
@@ -110,7 +111,8 @@ with corresponding sequences of key and value vectors.
 
 ### 3. Attention scores
 
-Each token's query vector is compared with the key vector of every token in the sequence, including its own key vector.
+For this attention head we need to compute the relative amount each token will contribute to all tokens in the sequence including itself. This is calulated by first obtaining the attention score of each token with regards to every token in the sequence. The score of token P with regards to token Q is the dot product of the query vector of Q and the key vector of P 
+
 
 Because the key dimension is $d_k=2$, each query-key dot product is divided by $\sqrt{2}$.
 
@@ -182,7 +184,7 @@ For token $x$:
 
 $$
 \operatorname{softmax}([xS_x,xS_y,xS_z])
-========================================
+=
 
 [xW_x,xW_y,xW_z].
 $$
@@ -191,7 +193,7 @@ For token $y$:
 
 $$
 \operatorname{softmax}([yS_x,yS_y,yS_z])
-========================================
+=
 
 [yW_x,yW_y,yW_z].
 $$
@@ -200,7 +202,7 @@ For token $z$:
 
 $$
 \operatorname{softmax}([zS_x,zS_y,zS_z])
-========================================
+=
 
 [zW_x,zW_y,zW_z].
 $$
